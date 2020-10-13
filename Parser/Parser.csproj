@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6889D115-E394-4412-A83C-26900889634E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Parser</RootNamespace>
+    <AssemblyName>Parser</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Semantic\Date.cs" />
+    <Compile Include="Semantic\Option.cs" />
+    <Compile Include="Syntax\Syntax.cs" />
+    <Compile Include="Syntax\SyntaxRoot.cs" />
+    <Compile Include="Syntax\Value.cs" />
+    <Compile Include="Semantic\SemanticParser.cs" />
+    <Compile Include="Semantic\SemanticProperty.cs" />
+    <Compile Include="Semantic\SemanticPropertyArray.cs" />
+    <Compile Include="Semantic\GroupValue.cs" />
+    <Compile Include="Semantic\Visitor.cs" />
+    <Compile Include="Semantic\Select.cs" />
+    <Compile Include="Semantic\Next.cs" />
+    <Compile Include="Semantic\NextRandom.cs" />
+    <Compile Include="Semantic\ModifierGroup.cs" />
+    <Compile Include="Semantic\Condition\Condition.cs" />
+    <Compile Include="Semantic\Condition\ConditionAnd.cs" />
+    <Compile Include="Semantic\Condition\ConditionDefault.cs" />
+    <Compile Include="Semantic\Condition\ConditionEqual.cs" />
+    <Compile Include="Semantic\Condition\ConditionGreater.cs" />
+    <Compile Include="Semantic\Condition\ConditionLess.cs" />
+    <Compile Include="Semantic\Condition\ConditionNot.cs" />
+    <Compile Include="Semantic\Condition\ConditionOr.cs" />
+    <Compile Include="Semantic\Condition\ConditionTuple.cs" />
+    <Compile Include="Semantic\Operation\Operation.cs" />
+    <Compile Include="Semantic\Operation\OperationAdd.cs" />
+    <Compile Include="Semantic\Operation\OperationAssign.cs" />
+    <Compile Include="Semantic\Operation\OperationReduce.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Semantic\Condition\" />
+    <Folder Include="Semantic\Operation\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

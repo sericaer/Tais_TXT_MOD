@@ -1,0 +1,16 @@
+trigger = 
+{
+    greater = {chaoting.owe_tax, 0}
+}
+
+date = {month = 11, day=1}
+
+occur = 1
+
+option =
+{
+    selected = 
+    {
+        risk_start = RISK_CHAOTING_ROVKE_TAISHOU
+    }
+}

@@ -1,0 +1,9 @@
+trigger = false
+
+option =
+{
+    select = 
+    {
+        assign = {taishou.is_revoke, true}
+    }
+}

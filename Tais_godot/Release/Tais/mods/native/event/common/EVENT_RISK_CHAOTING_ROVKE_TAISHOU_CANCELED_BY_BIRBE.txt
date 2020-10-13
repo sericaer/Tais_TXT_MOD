@@ -1,0 +1,9 @@
+trigger = false
+
+option =
+{
+    selected = 
+    {
+        risk_cancel = RISK_CHAOTING_ROVKE_TAISHOU
+    }
+}

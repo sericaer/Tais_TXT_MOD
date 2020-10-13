@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\Tais_godot\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\Tais_godot\packages\NUnit.3.12.0\build\NUnit.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B27D30B1-B521-450C-8C2E-5AEE495CF5F0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>NUnitTest</RootNamespace>
+    <AssemblyName>NUnitTest</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\Tais_godot\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Tais_godot\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Modder\Event\TestEventCommon.cs" />
+    <Compile Include="Modder\Event\TestEventDepart.cs" />
+    <Compile Include="Modder\Mock\Demon.cs" />
+    <Compile Include="Modder\Mock\ModFileSystem.cs" />
+    <Compile Include="DataVisit\TestDataVisit.cs" />
+    <Compile Include="RunData\TestRoot.cs" />
+    <Compile Include="Modder\Warn\TestWarnCommon.cs" />
+    <Compile Include="Modder\Warn\TestWarnDepart.cs" />
+    <Compile Include="Modder\InitSelect\TestInitSelect.cs" />
+    <Compile Include="RunData\TestInitData.cs" />
+    <Compile Include="RunData\TestWarn.cs" />
+    <Compile Include="RunData\TestProcess.cs" />
+    <Compile Include="Parser\Semantic\TestCondition.cs" />
+    <Compile Include="RunData\TestChaoting.cs" />
+    <Compile Include="RunData\TestTaishou.cs" />
+    <Compile Include="RunData\TestRunData.cs" />
+    <Compile Include="Parser\Semantic\TestModifier.cs" />
+    <Compile Include="Tools\TestRandom.cs" />
+    <Compile Include="Parser\Semantic\TestSeleted.cs" />
+    <Compile Include="RunData\TestEconomy.cs" />
+    <Compile Include="Modder\Define\TestRisk.cs" />
+    <Compile Include="RunData\TestRisk.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GMData\GMData.csproj">
+      <Project>{dd5d111b-8b36-46b6-a33f-b2928fa885cc}</Project>
+      <Name>GMData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Parser\Parser.csproj">
+      <Project>{6889D115-E394-4412-A83C-26900889634E}</Project>
+      <Name>Parser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,90 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/End/EndScene.cs" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
+
+[node name="Panel" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+margin_right = 0.00012207
+margin_bottom = 120.0
+rect_min_size = Vector2( 0, 120 )
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
+margin_right = 1440.0
+margin_bottom = 120.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PanelContainer/CenterContainer"]
+margin_left = 590.0
+margin_top = 49.0
+margin_right = 850.0
+margin_bottom = 70.0
+text = "45645645645646456456456456"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 120.0
+margin_right = -10.0
+margin_bottom = -120.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
+margin_right = 1420.0
+margin_bottom = 660.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "dsfgadsfasdfadfasd
+asdfsdf
+dasfasdfasdf
+dfgsf
+dfadsfasd"
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -21.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 0, 120 )
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer2"]
+margin_right = 1440.0
+margin_bottom = 120.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="PanelContainer2/CenterContainer"]
+margin_left = 644.0
+margin_top = 46.0
+margin_right = 796.0
+margin_bottom = 73.0
+text = "STATIC_CONFIRM"
+[connection signal="pressed" from="PanelContainer2/CenterContainer/Button" to="." method="_on_Button_Confirm_button_up"]

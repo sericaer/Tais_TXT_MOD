@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Global/ClickFreeMask.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/Main/SysPanel/SysPanel.cs" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0.380392 )
+
+[node name="SysPanel" type="Panel"]
+self_modulate = Color( 0, 0, 0, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 659.0
+margin_top = 421.0
+margin_right = 781.0
+margin_bottom = 479.0
+
+[node name="Button_Quit" type="Button" parent="CenterContainer/VBoxContainer"]
+margin_right = 122.0
+margin_bottom = 27.0
+text = "STATIC_QUIT"
+
+[node name="Button_SAVE" type="Button" parent="CenterContainer/VBoxContainer"]
+margin_top = 31.0
+margin_right = 122.0
+margin_bottom = 58.0
+text = "STATIC_SAVE"
+[connection signal="gui_input" from="Panel" to="Panel" method="_on_Mask_gui_input"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Button_Quit" to="." method="_on_Button_Quit_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Button_SAVE" to="." method="_on_Button_Save_pressed"]

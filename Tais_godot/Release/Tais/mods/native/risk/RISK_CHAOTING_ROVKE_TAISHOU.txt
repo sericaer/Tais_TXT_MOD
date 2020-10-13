@@ -1,0 +1,77 @@
+cost_days = 30
+
+end_event = EVENT_TAISHOU_IS_REVOKED
+
+random_event = 
+{
+    EVENT_RISK_CHAOTING_ROVKE_TAISHOU_CANCELED_BY_POWER_PART =
+    {
+        modifer = 
+        {
+            value = 0.02
+            
+            condition = 
+            {
+                equal = {chaoting.power_party, taishou.party}
+            }
+        }
+    }
+    
+    EVENT_RISK_CHAOTING_ROVKE_TAISHOU_CANCELED_BY_BIRBE =
+    {
+        modifer = 
+        {
+            value = 0.005
+            
+            condition = 
+            {
+                greater = {risk.birbe, 5}
+            }
+        }
+        modifer = 
+        {
+            value = 0.005
+            
+            condition = 
+            {
+                greater = {risk.birbe, 10}
+            }
+        }
+        modifer = 
+        {
+            value = 0.005
+            
+            condition = 
+            {
+                greater = {risk.birbe, 15}
+            }
+        }
+        modifer = 
+        {
+            value = 0.005
+            
+            condition = 
+            {
+                greater = {risk.birbe, 20}
+            }
+        }
+        modifer = 
+        {
+            value = 0.005
+            
+            condition = 
+            {
+                greater = {risk.birbe, 25}
+            }
+        }
+        modifer = 
+        {
+            value = 0.005
+            
+            condition = 
+            {
+                greater = {risk.birbe, 30}
+            }
+        }
+    }
+}

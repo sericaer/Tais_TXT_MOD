@@ -1,0 +1,18 @@
+title = EVENT_TEST_TITLE
+desc = EVENT_TEST_DESC
+
+trigger = false
+
+date = {month=1, day=11}
+
+occur = 1
+
+option =
+{
+	desc = EVENT_TEST_OPTION_1_DESC
+	select = 
+	{
+	    add = {economy.value, economy.month_surplus}
+	    assign = {taishou.is_revoke, true}
+	}
+}

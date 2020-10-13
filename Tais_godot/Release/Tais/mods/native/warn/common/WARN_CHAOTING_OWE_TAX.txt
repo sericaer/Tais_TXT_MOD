@@ -1,0 +1,9 @@
+trigger = 
+{
+    greater = {chaoting.owe_tax, 0}
+}
+
+desc = 
+{
+    WARN_CHAOTING_OWE_TAX_DESC, chaoting.owe_tax
+}

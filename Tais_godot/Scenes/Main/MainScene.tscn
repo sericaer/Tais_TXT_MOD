@@ -1,0 +1,246 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scenes/Main/MainScene.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/Main/Map/MapRect.cs" type="Script" id=2]
+[ext_resource path="res://Scenes/Main/Top/Date.cs" type="Script" id=3]
+[ext_resource path="res://Global/ReactiveLabel.cs" type="Script" id=4]
+[ext_resource path="res://Scenes/Main/Top/SpeedContrl.cs" type="Script" id=5]
+[ext_resource path="res://Scenes/Main/Warn/WarnContainer.cs" type="Script" id=6]
+[ext_resource path="res://Scenes/Main/Top/Economy.cs" type="Script" id=7]
+[ext_resource path="res://Scenes/Main/Task/TaskContainer.cs" type="Script" id=9]
+
+[sub_resource type="StyleBoxTexture" id=1]
+
+[node name="Panel" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopContainer" type="PanelContainer" parent="VBoxContainer"]
+margin_right = 1440.0
+margin_bottom = 40.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopContainer"]
+margin_right = 1440.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+custom_constants/separation = 1
+
+[node name="Economy" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer"]
+margin_right = 320.0
+margin_bottom = 40.0
+focus_mode = 1
+size_flags_horizontal = 3
+enabled_focus_mode = 1
+script = ExtResource( 7 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopContainer/HBoxContainer/Economy"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 40 )
+size_flags_horizontal = 7
+size_flags_vertical = 7
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/Economy/HBoxContainer"]
+margin_left = 78.0
+margin_top = 9.0
+margin_right = 218.0
+margin_bottom = 30.0
+text = "STATIC_ECONOMY"
+
+[node name="Value" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/Economy/HBoxContainer"]
+margin_left = 222.0
+margin_top = 9.0
+margin_right = 242.0
+margin_bottom = 30.0
+text = "--"
+script = ExtResource( 4 )
+
+[node name="Button2" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer"]
+margin_left = 321.0
+margin_right = 641.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+
+[node name="Button3" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer"]
+margin_left = 642.0
+margin_right = 962.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+
+[node name="Date" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer"]
+margin_left = 963.0
+margin_right = 1283.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopContainer/HBoxContainer/Date"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 7
+alignment = 1
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/Date/HBoxContainer"]
+margin_left = 93.0
+margin_top = 9.0
+margin_right = 203.0
+margin_bottom = 30.0
+text = "STATIC_DATE"
+
+[node name="Value" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/Date/HBoxContainer"]
+margin_left = 207.0
+margin_top = 9.0
+margin_right = 227.0
+margin_bottom = 30.0
+text = "--"
+script = ExtResource( 4 )
+
+[node name="Control" type="HBoxContainer" parent="VBoxContainer/TopContainer/HBoxContainer"]
+margin_left = 1284.0
+margin_right = 1440.0
+margin_bottom = 40.0
+script = ExtResource( 5 )
+
+[node name="Button_Inc" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer/Control"]
+margin_right = 30.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 30, 0 )
+text = "+"
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TopContainer/HBoxContainer/Control"]
+margin_left = 34.0
+margin_right = 68.0
+margin_bottom = 40.0
+custom_constants/hseparation = 0
+text = "P"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_Dec" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer/Control"]
+margin_left = 72.0
+margin_right = 102.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 30, 0 )
+text = "-"
+
+[node name="Button_Sys" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer/Control"]
+margin_left = 106.0
+margin_right = 156.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 50, 0 )
+text = "SYS"
+
+[node name="Timer" type="Timer" parent="VBoxContainer/TopContainer/HBoxContainer/Control"]
+autostart = true
+
+[node name="WinContainer" type="Panel" parent="VBoxContainer"]
+margin_top = 41.0
+margin_right = 1440.0
+margin_bottom = 900.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MapContainer" type="CenterContainer" parent="VBoxContainer/WinContainer"]
+margin_left = 1.12244
+margin_right = 1441.12
+margin_bottom = 859.0
+rect_min_size = Vector2( 0, 200 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MapRect" type="TextureRect" parent="VBoxContainer/WinContainer/MapContainer"]
+margin_left = 719.0
+margin_top = 429.0
+margin_right = 719.0
+margin_bottom = 429.0
+stretch_mode = 4
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ImpContainer" type="HBoxContainer" parent="VBoxContainer/WinContainer"]
+margin_right = 1440.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 0, 150 )
+size_flags_vertical = 0
+custom_constants/separation = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonTaishou" type="Button" parent="VBoxContainer/WinContainer/ImpContainer"]
+margin_right = 120.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 120, 150 )
+text = "STATIC_TAISHOU"
+clip_text = true
+
+[node name="ButtonChaoting" type="Button" parent="VBoxContainer/WinContainer/ImpContainer"]
+margin_left = 121.0
+margin_right = 241.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 120, 150 )
+text = "STATIC_CHAOTING"
+clip_text = true
+
+[node name="WarnContainer" type="HBoxContainer" parent="VBoxContainer/WinContainer/ImpContainer"]
+margin_left = 242.0
+margin_right = 1440.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 70 )
+size_flags_horizontal = 3
+size_flags_vertical = 0
+alignment = 1
+script = ExtResource( 6 )
+
+[node name="TaskContainer" type="VBoxContainer" parent="VBoxContainer/WinContainer"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = -429.5
+margin_bottom = 429.5
+rect_min_size = Vector2( 200, 0 )
+alignment = 1
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="VBoxContainer/TopContainer/HBoxContainer/Economy" to="." method="_on_Button_Economy_pressed"]
+[connection signal="DaysInc" from="VBoxContainer/TopContainer/HBoxContainer/Control" to="." method="_on_DaysInc"]
+[connection signal="pressed" from="VBoxContainer/TopContainer/HBoxContainer/Control/Button_Inc" to="VBoxContainer/TopContainer/HBoxContainer/Control" method="_on_Button_Inc_pressed"]
+[connection signal="toggled" from="VBoxContainer/TopContainer/HBoxContainer/Control/CheckBox" to="VBoxContainer/TopContainer/HBoxContainer/Control" method="_on_CheckBox_toggled"]
+[connection signal="pressed" from="VBoxContainer/TopContainer/HBoxContainer/Control/Button_Dec" to="VBoxContainer/TopContainer/HBoxContainer/Control" method="_on_Button_Dec_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopContainer/HBoxContainer/Control/Button_Sys" to="." method="_on_Button_Sys_pressed"]
+[connection signal="timeout" from="VBoxContainer/TopContainer/HBoxContainer/Control/Timer" to="VBoxContainer/TopContainer/HBoxContainer/Control" method="_on_Timer_timeout"]
+[connection signal="MapClickSignal" from="VBoxContainer/WinContainer/MapContainer/MapRect" to="." method="_on_MapRect_MapClickSignal"]
+[connection signal="gui_input" from="VBoxContainer/WinContainer/MapContainer/MapRect" to="VBoxContainer/WinContainer/MapContainer/MapRect" method="_on_TextureRect_gui_input"]
+[connection signal="pressed" from="VBoxContainer/WinContainer/ImpContainer/ButtonTaishou" to="." method="_on_ButtonTaishou_pressed"]
+[connection signal="pressed" from="VBoxContainer/WinContainer/ImpContainer/ButtonChaoting" to="." method="_on_ButtonChaoting_pressed"]

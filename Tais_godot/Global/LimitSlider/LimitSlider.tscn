@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Global/LimitSlider/LimitSlider.cs" type="Script" id=1]
+
+[node name="LimitSlider" type="Panel"]
+margin_right = 120.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 120, 30 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSlider" type="HSlider" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="value_changed" from="HSlider" to="." method="_on_HSlider_value_changed"]
