@@ -27,6 +27,10 @@ window/size/width=1440
 window/size/height=900
 window/size/resizable=false
 
+[editor_plugins]
+
+enabled=PoolStringArray( "ui_design_tool" )
+
 [gui]
 
 theme/custom="res://Resources/theme/cn_theme.tres"

@@ -1,8 +1,24 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Start/StartScene.cs" type="Script" id=1]
+[ext_resource path="D:/MyProject/GitHub/UIDesignToolDemo/resources/fonts/NSimSun/NSimSun-Regular.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="Theme" id=1]
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 24
+use_filter = true
+font_data = ExtResource( 2 )
 
 [node name="Panel_Start" type="Panel"]
 anchor_right = 1.0
@@ -26,21 +42,24 @@ __meta__ = {
 }
 
 [node name="Button_Start" type="Button" parent="VBoxContainer"]
-margin_right = 122.0
-margin_bottom = 27.0
+margin_right = 144.0
+margin_bottom = 31.0
 theme = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "STATIC_NEW"
 
 [node name="Button_Load" type="Button" parent="VBoxContainer"]
-margin_top = 31.0
-margin_right = 122.0
-margin_bottom = 58.0
+margin_top = 35.0
+margin_right = 144.0
+margin_bottom = 66.0
+custom_fonts/font = SubResource( 3 )
 text = "STATIC_LOAD"
 
 [node name="Button_Quit" type="Button" parent="VBoxContainer"]
-margin_top = 62.0
-margin_right = 122.0
-margin_bottom = 89.0
+margin_top = 70.0
+margin_right = 144.0
+margin_bottom = 101.0
+custom_fonts/font = SubResource( 4 )
 text = "STATIC_QUIT"
 [connection signal="button_up" from="VBoxContainer/Button_Start" to="." method="_on_Button_Start_button_up"]
 [connection signal="pressed" from="VBoxContainer/Button_Load" to="." method="_on_Button_Load_pressed"]
