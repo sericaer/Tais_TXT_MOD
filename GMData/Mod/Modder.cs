@@ -67,9 +67,9 @@ namespace GMData.Mod
                 mods.Add(new Mod(modname, sub));
             }
 
-            GMRoot.define = new Define() {
-                parties = this.mods[0].parties;
-            }
+            GMRoot.define = new Define()
+            {
+            };
         }
 
     }

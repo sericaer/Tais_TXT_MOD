@@ -32,15 +32,15 @@ namespace TaisGodot.Scripts
 			}
 		}
 
-        internal static SaveLoadPanel Instance(bool enableLoad)
-        {
+		internal static SaveLoadPanel Instance(bool enableLoad)
+		{
 			var saveLoadPanel = ResourceLoader.Load<PackedScene>(path).Instance() as SaveLoadPanel;
 			saveLoadPanel.enableLoad = enableLoad;
 
 			return saveLoadPanel;
 		}
 
-        private void _on_ButtonCancel_pressed()
+		private void _on_ButtonCancel_pressed()
 		{
 			GD.Print("_on_ButtonCancel_pressed");
 			QueueFree();
