@@ -5,6 +5,7 @@ namespace TaisGodot.Scripts
 {
 	class SaveLoadPanel : Panel
 	{
+		public static string path = "res://Global/SaveLoadPanel/SaveLoadPanel.tscn";
 		[Signal]
 		internal delegate void LoadSaveFile(string name);
 
@@ -31,7 +32,15 @@ namespace TaisGodot.Scripts
 			}
 		}
 
-		private void _on_ButtonCancel_pressed()
+        internal static SaveLoadPanel Instance(bool enableLoad)
+        {
+			var saveLoadPanel = ResourceLoader.Load<PackedScene>(path).Instance() as SaveLoadPanel;
+			saveLoadPanel.enableLoad = enableLoad;
+
+			return saveLoadPanel;
+		}
+
+        private void _on_ButtonCancel_pressed()
 		{
 			GD.Print("_on_ButtonCancel_pressed");
 			QueueFree();

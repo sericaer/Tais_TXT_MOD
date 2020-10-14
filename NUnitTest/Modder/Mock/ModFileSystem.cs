@@ -64,7 +64,7 @@ namespace UnitTest.Modder.Mock
 
         internal void AddInitSelect(string fileName, string fileContent)
         {
-            var initSelectPath = modPath + "init_selects/";
+            var initSelectPath = modPath + "init_select/";
             Directory.CreateDirectory(initSelectPath);
 
             File.WriteAllText(initSelectPath + fileName, fileContent);

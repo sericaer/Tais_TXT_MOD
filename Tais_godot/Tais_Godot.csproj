@@ -104,11 +104,18 @@
     <Compile Include="Global\ReactiveProgressBar.cs" />
     <Compile Include="Scenes\Main\Risk\Risk.cs" />
     <Compile Include="Scenes\Main\Risk\RiskContainer.cs" />
+    <Compile Include="Scenes\Init\InitScene.cs" />
+    <Compile Include="Scenes\Init\Dynamic\InitSelectPanel\InitSelectPanel.cs" />
+    <Compile Include="Scenes\Init\Dynamic\InitNameAgePanel\InitNameAgePanel.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
     <Folder Include="Scenes\Main\Risk\" />
+    <Folder Include="Scenes\Init\" />
+    <Folder Include="Scenes\Init\Dynamic\" />
+    <Folder Include="Scenes\Init\Dynamic\InitSelectPanel\" />
+    <Folder Include="Scenes\Init\Dynamic\InitNameAgePanel\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GMData\GMData.csproj">

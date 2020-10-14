@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using GMData.Def;
 
 namespace GMData.Mod
 {
@@ -11,6 +12,36 @@ namespace GMData.Mod
             get
             {
                 return mods[0].languages;
+            }
+        }
+
+        public IEnumerable<GEvent> events
+        {
+            get
+            {
+                foreach (var eventObj in mods[0].events.Values)
+                {
+                    if (eventObj.isValid())
+                    {
+                        yield return eventObj;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<InitSelect> initSelects
+        {
+            get
+            {
+                return mods[0].initSelects;
+            }
+        }
+
+        public PersonName personName
+        {
+            get
+            {
+                return mods[0].personName;
             }
         }
 
@@ -29,7 +60,6 @@ namespace GMData.Mod
             }
         }
 
-        public IEnumerable<GEvent> events { get; }
     }
 
     internal class Mod
@@ -38,6 +68,9 @@ namespace GMData.Mod
         internal string path;
 
         internal List<Language> languages;
+        internal Dictionary<string, GEvent> events;
+        internal List<InitSelect> initSelects;
+        internal PersonName personName;
 
         public Mod(string name, string path)
         {
@@ -45,6 +78,8 @@ namespace GMData.Mod
             this.path = path;
 
             languages = Language.Load(path + "/language");
+            initSelects = InitSelect.Load(name, path + "/init_select");
+            personName = PersonName.Load(path + "/person_name");
         }
     }
 }

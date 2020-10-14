@@ -1,0 +1,23 @@
+is_first = true
+
+option =
+{
+    select =
+    {
+        assign = {item1.data1, 1}
+    }
+}
+option =
+{
+    select =
+    {
+        assign = {item1.data1, 2}
+    }
+}
+option =
+{
+    select =
+    {
+        assign = {item1.data1, 3}
+    }
+}

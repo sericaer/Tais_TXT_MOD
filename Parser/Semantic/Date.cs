@@ -33,5 +33,23 @@ namespace Parser.Semantic
 
             return SemanticParser.DoParser<Date>(item);
         }
+
+        public bool isTrue()
+        {
+            if (year != null && year != Visitor.GetValueFunc("date.year"))
+            {
+                return false;
+            }
+            if (month != null && month != Visitor.GetValueFunc("date.month"))
+            {
+                return false;
+            }
+            if (day != null && day != Visitor.GetValueFunc("date.day"))
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

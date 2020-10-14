@@ -33,9 +33,13 @@ namespace GMData.Run
 
         public Runner()
         {
+            taishou = new Taishou(GMRoot.initData.taishou);
+
             date = new Date(1,1,1);
 
             economy = new Economy(GMRoot.define.economy);
+
+            Visitor.SetVisitData(this);
         }
 
         public static Runner Deserialize(string content)

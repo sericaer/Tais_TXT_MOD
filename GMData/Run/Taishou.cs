@@ -34,11 +34,11 @@ namespace GMData.Run
         [JsonProperty]
         internal string partyName;
 
-        public Taishou(string name, int age, string partyName) : this()
+        public Taishou(Init.Taishou init) : this()
         {
-            this.name = name;
-            this.age = new SubjectValue<int>(age);
-            this.partyName = partyName;
+            this.name = init.name;
+            this.age = new SubjectValue<int>(init.age);
+            this.partyName = init.party;
         }
 
         [JsonConstructor]

@@ -62,11 +62,9 @@
     <Compile Include="DataVisit.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Run\Depart.cs" />
-    <Compile Include="Mod\GEvent\Date.cs" />
     <Compile Include="Mod\GEvent\EventGroup.cs" />
     <Compile Include="Mod\GEvent\GEvent.cs" />
     <Compile Include="Mod\GEvent\GEventParse.cs" />
-    <Compile Include="Mod\GEvent\Trigger.cs" />
     <Compile Include="Mod\Occur.cs" />
     <Compile Include="Mod\Option.cs" />
     <Compile Include="Mod\Text.cs" />
@@ -80,6 +78,11 @@
     <Compile Include="Run\Party.cs" />
     <Compile Include="Run\Chaoting.cs" />
     <Compile Include="Tools\GRandom.cs" />
+    <Compile Include="Mod\ModElementLoader.cs" />
+    <Compile Include="Mod\InitSelect.cs" />
+    <Compile Include="Init\InitData.cs" />
+    <Compile Include="Def\PersonName.cs" />
+    <Compile Include="Init\Taishou.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -90,6 +93,9 @@
       <Project>{6889D115-E394-4412-A83C-26900889634E}</Project>
       <Name>Parser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Init\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

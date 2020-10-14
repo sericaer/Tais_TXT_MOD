@@ -5,6 +5,7 @@ namespace TaisGodot.Scripts
 {
 	public class MainScene : Panel
 	{
+		public static string path = "res://Scenes/MainScene/MainScene.tscn";
 
 		internal static MainScene inst;
 

@@ -5,6 +5,13 @@ namespace GMData.Def
     public class Define
     {
         public List<Risk> risks;
+        public PersonName personName
+        {
+            get
+            {
+                return GMRoot.modder.personName;
+            }
+        }
 
         public Dictionary<string, DepartDef> departs;
         public Dictionary<string, PopDef> pops;
