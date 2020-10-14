@@ -19,7 +19,7 @@ namespace GMData.Run
         [JsonProperty, DataVisitorPropertyArray("depart")]
         public List<Depart> departs;
 
-        [JsonProperty, DataVisitorPropertyArray("depart")]
+        [JsonProperty, DataVisitorPropertyArray("pop")]
         public List<Pop> pops;
 
         [JsonProperty, DataVisitorProperty("chaoting")]
@@ -33,11 +33,13 @@ namespace GMData.Run
 
         public Runner()
         {
+            partys = Party.Init(GMRoot.define.parties);
+
             taishou = new Taishou(GMRoot.initData.taishou);
 
-            date = new Date(1,1,1);
+            date = new Date(GMRoot.initData.start_date);
 
-            economy = new Economy(GMRoot.define.economy);
+            //economy = new Economy(init.economy);
 
             Visitor.SetVisitData(this);
         }

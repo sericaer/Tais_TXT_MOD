@@ -57,6 +57,7 @@
     <Compile Include="RunData\TestEconomy.cs" />
     <Compile Include="Modder\Define\TestRisk.cs" />
     <Compile Include="RunData\TestRisk.cs" />
+    <Compile Include="RunData\TestDate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -10,18 +10,18 @@ namespace GMData.Run
         [DataVisitorProperty("type")]
         public string name;
 
-        public Party(Def.PartyDef def)
+        public Party(string name)
         {
-            this.name = def.name;
+            this.name = name;
         }
 
-        internal static List<Party> Init(List<Def.PartyDef> partyDefs)
+        internal static List<Party> Init(IEnumerable<GMData.Def.Party> partyDefs)
         {
             List<Party> rslt = new List<Party>();
 
             foreach(var def in partyDefs)
             {
-                rslt.Add(new Party(def));
+                rslt.Add(new Party(def.key));
             }
 
             return rslt;

@@ -37,12 +37,12 @@ namespace GMData.Run
             }
         }
 
-        internal Economy(Def.EconomyDef def)
+        internal Economy(Init.Economy init)
         {
-            curr = new SubjectValue<double>(def.curr);
+            curr = new SubjectValue<double>(init.curr);
 
-            incomes = new InComes(def);
-            outputs = new Outputs(def);
+            incomes = new InComes(init);
+            outputs = new Outputs(init);
 
             InitObservableData(new StreamingContext());
         }
@@ -68,8 +68,10 @@ namespace GMData.Run
         [JsonProperty]
         InCome popTax;
 
-        public InComes(Def.EconomyDef def) : this()
+        public InComes(Init.Economy init) : this()
         {
+            popTax.percent.Value = init.pop_tax_percent;
+
             InitObservableData(new StreamingContext());
         }
 
@@ -117,8 +119,11 @@ namespace GMData.Run
         [JsonProperty]
         Output reportChaoting;
 
-        public Outputs(Def.EconomyDef def) : this()
+        public Outputs(Init.Economy init) : this()
         {
+            departAdmin.percent.Value = init.expend_depart_admin;
+            reportChaoting.percent.Value = init.report_chaoting_percent;
+
             InitObservableData(new StreamingContext());
         }
 

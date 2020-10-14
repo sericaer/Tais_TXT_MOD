@@ -45,6 +45,14 @@ namespace GMData.Mod
             }
         }
 
+        public IEnumerable<Party> parties
+        {
+            get
+            {
+                return mods[0].parties;
+            }
+        }
+
         private List<Mod> mods;
 
         public IEnumerable<Warn> warns { get; }
@@ -58,6 +66,10 @@ namespace GMData.Mod
                 var modname = Path.GetFileName(sub);
                 mods.Add(new Mod(modname, sub));
             }
+
+            GMRoot.define = new Define() {
+                parties = this.mods[0].parties;
+            }
         }
 
     }
@@ -70,6 +82,7 @@ namespace GMData.Mod
         internal List<Language> languages;
         internal Dictionary<string, GEvent> events;
         internal List<InitSelect> initSelects;
+        internal List<Party> parties;
         internal PersonName personName;
 
         public Mod(string name, string path)
@@ -80,6 +93,7 @@ namespace GMData.Mod
             languages = Language.Load(path + "/language");
             initSelects = InitSelect.Load(name, path + "/init_select");
             personName = PersonName.Load(path + "/person_name");
+            parties = Party.Load(name, path + "party");
         }
     }
 }

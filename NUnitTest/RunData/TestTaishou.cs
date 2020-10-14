@@ -1,26 +1,33 @@
-﻿//using DataVisit;
-//using Modder;
-//using NUnit.Framework;
-//using RunData;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//namespace UnitTest.RunData
-//{
-//    [TestFixture()]
-//    public class TestTaishou : TestRunData
-//    {
-//        [Test()]
-//        public void Test_Init()
-//        {
-//            ModDataVisit.InitVisitMap(typeof(Root));
+﻿using DataVisit;
+using GMData;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+namespace UnitTest.RunData
+{
+    [TestFixture()]
+    public class TestTaishou
+    {
+        [SetUp]
+        public void Init()
+        {
+            GMRoot.initData = new GMData.Init.InitData();
+            GMRoot.initData.taishou.name = "TEST_NAME";
+            GMRoot.initData.taishou.age = 123;
+            GMRoot.initData.taishou.party = "TEST_PARTY";
 
-//            Root.Init(init);
-//            ModDataVisit.InitVisitData(Root.inst);
+            GMRoot.runner = new GMData.Run.Runner();
+            GMRoot.runner.partys.Add(new GMData.Run.Party(GMRoot.initData.taishou.party));
+        }
 
-//            Assert.AreEqual(init.common.name, Visitor.Get("taishou.name"));
-//            Assert.AreEqual(init.common.age, Visitor.Get("taishou.age"));
-//            Assert.AreEqual(init.common.party, Visitor.Get("taishou.party.type"));
-//        }
-//    }
-//}
+        [Test()]
+        public void Test_Init()
+        {
+
+            Assert.AreEqual(GMRoot.initData.taishou.name, Visitor.Get("taishou.name"));
+            Assert.AreEqual(GMRoot.initData.taishou.age, Visitor.Get("taishou.age"));
+            Assert.AreEqual(GMRoot.initData.taishou.party, Visitor.Get("taishou.party.type"));
+        }
+    }
+}

@@ -19,6 +19,6 @@ namespace GMData
         public static Run.Runner runner;
         public static Init.InitData initData;
 
-        public static Def.Define define = new Def.Define();
+        public static Def.Define define;
     }
 }

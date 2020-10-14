@@ -4,20 +4,20 @@ option =
 {
     select =
     {
-        assign = {item1.data1, 1}
+        assign = {taishou.party, SHIZU}
     }
 }
 option =
 {
     select =
     {
-        assign = {item1.data1, 2}
+        assign = {taishou.party, JUNGONG}
     }
 }
 option =
 {
     select =
     {
-        assign = {item1.data1, 3}
+        assign = {taishou.party, HUANGUAN}
     }
 }

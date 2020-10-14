@@ -75,7 +75,6 @@
     <Compile Include="Run\Economy.cs" />
     <Compile Include="Run\Pop.cs" />
     <Compile Include="Run\Taishou.cs" />
-    <Compile Include="Run\Party.cs" />
     <Compile Include="Run\Chaoting.cs" />
     <Compile Include="Tools\GRandom.cs" />
     <Compile Include="Mod\ModElementLoader.cs" />
@@ -83,6 +82,10 @@
     <Compile Include="Init\InitData.cs" />
     <Compile Include="Def\PersonName.cs" />
     <Compile Include="Init\Taishou.cs" />
+    <Compile Include="Init\Date.cs" />
+    <Compile Include="Init\Economy.cs" />
+    <Compile Include="Run\Party.cs" />
+    <Compile Include="Def\Party.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -13,11 +13,13 @@ namespace GMData.Def
             }
         }
 
+        public List<Party> parties;
+
         public Dictionary<string, DepartDef> departs;
         public Dictionary<string, PopDef> pops;
         public Dictionary<string, PartyDef> partys;
 
-        public EconomyDef economy;
+        //public EconomyDef economy;
         public ChaotingDef chaoting;
         public CropDef crop;
         public List<TaxEffect> pop_tax;
@@ -43,12 +45,12 @@ namespace GMData.Def
                     { "huanguan", new PartyDef() { name = "huanguan"} }
                 };
 
-            economy = new EconomyDef()
-            {
-                curr = 456,
-                pop_tax_percent = 30,
-                expend_depart_admin = 100,
-            };
+            //economy = new EconomyDef()
+            //{
+            //    curr = 456,
+            //    pop_tax_percent = 30,
+            //    expend_depart_admin = 100,
+            //};
 
 
             chaoting = new ChaotingDef()
@@ -93,13 +95,13 @@ namespace GMData.Def
         public double? consume;
     }
 
-    public class EconomyDef
-    {
-        public double curr;
-        public double pop_tax_percent;
-        public double expend_depart_admin;
-        public double report_chaoting_percent;
-    }
+    //public class EconomyDef
+    //{
+    //    public double curr;
+    //    public double pop_tax_percent;
+    //    public double expend_depart_admin;
+    //    public double report_chaoting_percent;
+    //}
 
     public class ChaotingDef
     {

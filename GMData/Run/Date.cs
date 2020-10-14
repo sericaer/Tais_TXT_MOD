@@ -147,11 +147,11 @@ namespace GMData.Run
         //    }
         //}
 
-        public Date(int y, int m, int d)
+        public Date(Init.Date init)
         {
-            year = new SubjectValue<int>(y);
-            month = new SubjectValue<int>(m);
-            day = new SubjectValue<int>(d);
+            year = new SubjectValue<int>((int)init.year);
+            month = new SubjectValue<int>((int)init.month);
+            day = new SubjectValue<int>((int)init.day);
 
             InitObservableData(new StreamingContext());
         }
