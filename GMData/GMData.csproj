@@ -86,6 +86,8 @@
     <Compile Include="Init\Economy.cs" />
     <Compile Include="Run\Party.cs" />
     <Compile Include="Def\Party.cs" />
+    <Compile Include="Def\Depart.cs" />
+    <Compile Include="Def\Pop.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

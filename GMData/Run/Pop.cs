@@ -40,34 +40,12 @@ namespace GMData.Run
             }
         }
 
-        internal Def.PopDef def
+        internal Def.Pop def
         {
             get
             {
-                return GMRoot.define.pops[name];
+                return GMRoot.define.pops.Single(x=>x.name == name);
             }
-        }
-
-        internal static List<Pop> Init(IEnumerable<Depart> departs)
-        {
-            var all = new List<Pop>();
-            foreach(var depart in departs)
-            {
-                all.AddRange(InitDepartPop(depart));
-            }
-            return all;
-        }
-
-        private static List<Pop> InitDepartPop(Depart depart)
-        {
-            var pops = new List<Pop>();
-
-            foreach (var pop_init in depart.def.pop_init)
-            {
-                pops.Add(new Pop(depart.name, pop_init.name, pop_init.num));
-            }
-
-            return pops;
         }
 
         internal void DaysInc()
@@ -75,7 +53,7 @@ namespace GMData.Run
 
         }
 
-        internal Pop(string depart_name, string name, int num)
+        internal Pop(string depart_name, string name, double num)
         {
             this.name = name;
             this.depart_name = depart_name;

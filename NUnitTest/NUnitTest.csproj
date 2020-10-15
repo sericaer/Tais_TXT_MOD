@@ -50,7 +50,7 @@
     <Compile Include="Parser\Semantic\TestCondition.cs" />
     <Compile Include="RunData\TestChaoting.cs" />
     <Compile Include="RunData\TestTaishou.cs" />
-    <Compile Include="RunData\TestRunData.cs" />
+    <Compile Include="RunData\TestRunDataBase.cs" />
     <Compile Include="Parser\Semantic\TestModifier.cs" />
     <Compile Include="Tools\TestRandom.cs" />
     <Compile Include="Parser\Semantic\TestSeleted.cs" />
@@ -58,6 +58,8 @@
     <Compile Include="Modder\Define\TestRisk.cs" />
     <Compile Include="RunData\TestRisk.cs" />
     <Compile Include="RunData\TestDate.cs" />
+    <Compile Include="Modder\Define\TestParty.cs" />
+    <Compile Include="RunData\TestDepart.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

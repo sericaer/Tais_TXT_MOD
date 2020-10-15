@@ -24,16 +24,11 @@ namespace UnitTest.RunData
     }
 
     [TestFixture()]
-    public class TestDate
+    public class TestDate : TestRunDataBase
     {
         [SetUp]
         public void Init()
         {
-            GMRoot.initData = new GMData.Init.InitData();
-            GMRoot.initData.start_date.day = 1;
-            GMRoot.initData.start_date.month = 1;
-            GMRoot.initData.start_date.year = 1;
-
             GMRoot.runner = new GMData.Run.Runner();
         }
 

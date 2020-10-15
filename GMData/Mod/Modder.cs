@@ -45,7 +45,7 @@ namespace GMData.Mod
             }
         }
 
-        public IEnumerable<Party> parties
+        public List<Party> parties
         {
             get
             {
@@ -69,6 +69,8 @@ namespace GMData.Mod
 
             GMRoot.define = new Define()
             {
+                parties = this.parties,
+                personName = personName
             };
         }
 
@@ -93,7 +95,7 @@ namespace GMData.Mod
             languages = Language.Load(path + "/language");
             initSelects = InitSelect.Load(name, path + "/init_select");
             personName = PersonName.Load(path + "/person_name");
-            parties = Party.Load(name, path + "party");
+            parties = Party.Load(name, path + "/party");
         }
     }
 }

@@ -33,11 +33,11 @@ namespace GMData.Run
             }
         }
 
-        internal Def.DepartDef def
+        internal Def.Depart def
         {
             get
             {
-                return GMRoot.define.departs[name];
+                return GMRoot.define.departs.Single(x=>x.key == name);
             }
         }
 
@@ -46,9 +46,15 @@ namespace GMData.Run
             return GMRoot.runner.departs.SingleOrDefault(x => x.SameColor((r, g, b)));
         }
 
-        internal static List<Depart> Init(IEnumerable<string> departs)
+        internal static List<Depart> Init(IEnumerable<GMData.Def.Depart> departDefs)
         {
-            return departs.Select(x => new Depart(x)).ToList();
+            List<Depart> departs = new List<Depart>();
+            foreach(var def in departDefs)
+            {
+                departs.Add(new Depart(def.key));
+            }
+
+            return departs;
         }
 
         internal static void DaysInc()
@@ -71,6 +77,13 @@ namespace GMData.Run
         {
             this.name = name;
             this.cropGrown = new SubjectValue<double>(0);
+
+            foreach (var pop_init in def.pop_init)
+            {
+                GMRoot.runner.pops.Add(new Pop(name, pop_init.name, pop_init.num));
+            }
+
+            InitObservableData(new StreamingContext());
         }
 
         [JsonConstructor]
@@ -94,7 +107,7 @@ namespace GMData.Run
 
         private bool SameColor((int r, int g, int b) p)
         {
-            return (def.color.r == p.r && def.color.g == p.g && def.color.b == p.b);
+            return ((int)def.color.r == p.r && def.color.g == p.g && def.color.b == p.b);
         }
     }
 }

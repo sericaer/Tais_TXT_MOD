@@ -28,8 +28,9 @@ namespace TaisGodot.Scripts
 			btnAgeInc = GetNode<Button>("VBoxContainer/AgeContainer/VBoxContainer/Button_Inc");
 			btnAgeDec = GetNode<Button>("VBoxContainer/AgeContainer/VBoxContainer/Button_Dec");
 
-			nameEdit.Text = GMRoot.modder.personName.RandomFull;
 			ageLabel.Text = DEF_AGE.ToString();
+
+			_on_NameRandomButton_Pressed();
 		}
 
 		internal static InitNameAgePanel Instance()
@@ -51,7 +52,7 @@ namespace TaisGodot.Scripts
 
 		private void _on_NameRandomButton_Pressed()
 		{
-			nameEdit.Text = GMRoot.modder.personName.RandomFull;
+			nameEdit.Text = GMRoot.define.personName.RandomFull;
 		}
 
 		private void _on_AgeIncButton_Pressed()

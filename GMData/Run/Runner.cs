@@ -33,11 +33,18 @@ namespace GMData.Run
 
         public Runner()
         {
-            partys = Party.Init(GMRoot.define.parties);
+            GMRoot.runner = this;
+
+            date = new Date(GMRoot.initData.start_date);
 
             taishou = new Taishou(GMRoot.initData.taishou);
 
-            date = new Date(GMRoot.initData.start_date);
+            partys = Party.Init(GMRoot.define.parties);
+
+            pops = new List<Pop>();
+
+            departs = Depart.Init(GMRoot.define.departs);
+
 
             //economy = new Economy(init.economy);
 
