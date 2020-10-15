@@ -32,6 +32,7 @@ namespace TaisGodot.Scripts
 		private void CreateInitSelectPanel(GMData.Mod.InitSelect initSelect)
 		{
 			var initSelectPanel = InitSelectPanel.Instance();
+			GD.Print("initSelectPanel.gmObj = initSelect");
 			initSelectPanel.gmObj = initSelect;
 
 			initSelectPanel.Connect("SelectNext", this, nameof(_on_SelectNext_Signal));
