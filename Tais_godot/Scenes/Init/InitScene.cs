@@ -42,10 +42,11 @@ namespace TaisGodot.Scripts
 
 		private void _on_SelectNext_Signal(string nextSelectName)
 		{
-			if(nextSelectName == null)
+			if(nextSelectName == "")
 			{
 				GMRoot.runner = new GMData.Run.Runner();
 				GetTree().ChangeScene(MainScene.path);
+				return;
 			}
 
 			var nextInitSelect = GMRoot.modder.initSelects.Single(x => x.key == nextSelectName);

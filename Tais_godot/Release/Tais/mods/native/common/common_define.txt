@@ -5,3 +5,10 @@ economy =
     output_percent_admin = 20,
     output_percent_chaoting_tax = 30
 }
+
+chaoting =
+{
+    power_party = HUANGUAN
+    report_pop_percent = 110
+    tax_percent = 30
+}

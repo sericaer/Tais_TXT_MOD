@@ -10,6 +10,9 @@ namespace GMData.Mod
         [SemanticProperty("economy")]
         internal Economy economy;
 
+        [SemanticProperty("chaoting")]
+        internal Chaoting chaoting;
+
         public Common()
         {
         }

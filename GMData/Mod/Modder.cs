@@ -97,7 +97,8 @@ namespace GMData.Mod
                 personName = this.personName,
                 departs = this.departs,
                 pops = this.pops,
-                economy = this.common.economy
+                economy = this.common.economy,
+                chaoting = this.common.chaoting
             };
         }
 

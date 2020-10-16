@@ -5,7 +5,7 @@ namespace TaisGodot.Scripts
 {
 	public class MainScene : Panel
 	{
-		public static string path = "res://Scenes/MainScene/MainScene.tscn";
+		public static string path = "res://Scenes/Main/MainScene.tscn";
 
 		internal static MainScene inst;
 
@@ -20,9 +20,9 @@ namespace TaisGodot.Scripts
 
 		public override void _Ready()
 		{
-			warnContainer = GetNode<WarnContainer>("VBoxContainer/WinContainer/ImpContainer/WarnContainer");
+			//warnContainer = GetNode<WarnContainer>("VBoxContainer/WinContainer/ImpContainer/WarnContainer");
 			//taskContainer = GetNode<TaskContainer>("VBoxContainer/WinContainer/TaskContainer");
-			riskContainer = GetNode<RiskContainer>("VBoxContainer/WinContainer/TaskContainer");
+			//riskContainer = GetNode<RiskContainer>("VBoxContainer/WinContainer/TaskContainer");
 		}
 
 		private async void _on_DaysInc()
