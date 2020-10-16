@@ -80,7 +80,7 @@ namespace GMData.Run
 
             foreach (var pop_init in def.pop_init)
             {
-                GMRoot.runner.pops.Add(new Pop(name, pop_init.name, pop_init.num));
+                GMRoot.runner.pops.Add(new Pop(name, pop_init.type, pop_init.num));
             }
 
             InitObservableData(new StreamingContext());

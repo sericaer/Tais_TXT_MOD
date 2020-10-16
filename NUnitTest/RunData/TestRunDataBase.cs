@@ -40,8 +40,8 @@ namespace UnitTest.RunData
                         color = new Depart.COLOR(){ r=1, g=1, b=1},
                         pop_init = new List<Depart.POP_INIT>()
                         {
-                            new Depart.POP_INIT(){name = "POP_1", num = 12345},
-                            new Depart.POP_INIT(){name = "POP_2", num = 67890}
+                            new Depart.POP_INIT(){type = "POP_1", num = 12345},
+                            new Depart.POP_INIT(){type = "POP_2", num = 67890}
                         }
                     },
                     new Depart()
@@ -50,18 +50,18 @@ namespace UnitTest.RunData
                         color = new Depart.COLOR(){ r=2, g=2, b=2},
                         pop_init = new List<Depart.POP_INIT>()
                         {
-                            new Depart.POP_INIT(){name = "POP_1", num = 1234},
-                            new Depart.POP_INIT(){name = "POP_2", num = 6789},
-                            new Depart.POP_INIT(){name = "POP_3", num = 200}
+                            new Depart.POP_INIT(){type = "POP_1", num = 1234},
+                            new Depart.POP_INIT(){type = "POP_2", num = 6789},
+                            new Depart.POP_INIT(){type = "POP_3", num = 200}
                         }
                     }
                 },
 
                 pops = new List<Pop>()
                 {
-                    new Pop() {name = "POP_1", is_collect_tax = true },
-                    new Pop() {name = "POP_2", is_collect_tax = true, consume = 100} ,
-                    new Pop() {name = "POP_3", is_collect_tax = false },
+                    new Pop() {key = "POP_1", is_collect_tax = true },
+                    new Pop() {key = "POP_2", is_collect_tax = true, consume = 100} ,
+                    new Pop() {key = "POP_3", is_collect_tax = false },
                 }
             };
         }

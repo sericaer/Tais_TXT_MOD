@@ -44,7 +44,7 @@ namespace GMData.Run
         {
             get
             {
-                return GMRoot.define.pops.Single(x=>x.name == name);
+                return GMRoot.define.pops.Single(x=>x.key == name);
             }
         }
 

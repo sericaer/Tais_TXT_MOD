@@ -54,6 +54,14 @@ namespace UnitTest.Modder.Mock
             File.WriteAllText(commonPath + file, content);
         }
 
+        internal void AddFile(string path, string file, string content)
+        {
+            var initSelectPath = modPath + path;
+            Directory.CreateDirectory(initSelectPath);
+
+            File.WriteAllText(initSelectPath + file, content);
+        }
+
         internal void AddRisk(string fileName, string fileContent)
         {
             var initSelectPath = modPath + "risks/";

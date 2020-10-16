@@ -36,7 +36,7 @@ namespace UnitTest.RunData
                 Assert.AreEqual(def.pop_init.Count(), depart.pops.Count());
                 foreach(var pop_init in def.pop_init)
                 {
-                    var pop = depart.pops.SingleOrDefault(x => x.name == pop_init.name);
+                    var pop = depart.pops.SingleOrDefault(x => x.name == pop_init.type);
                     Assert.NotNull(pop);
 
                     Assert.AreEqual(pop_init.num, pop.num.Value);

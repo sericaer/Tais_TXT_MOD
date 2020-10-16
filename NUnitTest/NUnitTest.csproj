@@ -60,6 +60,9 @@
     <Compile Include="RunData\TestDate.cs" />
     <Compile Include="Modder\Define\TestParty.cs" />
     <Compile Include="RunData\TestDepart.cs" />
+    <Compile Include="Modder\Define\TestDepart.cs" />
+    <Compile Include="Modder\Define\TestPop.cs" />
+    <Compile Include="RunData\TestPop.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

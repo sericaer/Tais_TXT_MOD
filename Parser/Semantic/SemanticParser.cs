@@ -26,9 +26,14 @@ namespace Parser.Semantic
 
         public static T DoParser<T>(SyntaxItem syntaxRoot)
         {
-            object rslt = Activator.CreateInstance<T>();
+            return (T)DoParser(syntaxRoot, typeof(T));
+        }
 
-            var fields = typeof(T).GetFields(BindingFlags.Public|BindingFlags.NonPublic | BindingFlags.Instance);
+        public static object DoParser(SyntaxItem syntaxRoot, Type t)
+        {
+            object rslt = Activator.CreateInstance(t);
+
+            var fields = t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var field in fields)
             {
                 var Properties = field.GetCustomAttributes(typeof(SemanticProperty), false);
@@ -45,7 +50,7 @@ namespace Parser.Semantic
                 }
             }
 
-            return (T)rslt;
+            return rslt;
         }
 
         private static void ParseSemanticProperty(SyntaxItem syntaxRoot, SemanticProperty property, FieldInfo field, ref object obj)
@@ -139,12 +144,12 @@ namespace Parser.Semantic
             else
             {
                 var ParseMethod = currType.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public);
-                if (ParseMethod == null)
+                if (ParseMethod != null)
                 {
-                    throw new Exception($"num '{currType}'");
+                    return ParseMethod.Invoke(null, new object[] { item });
                 }
 
-                return ParseMethod.Invoke(null, new object[] { item });
+                return DoParser(item, type);
             }
 
         }

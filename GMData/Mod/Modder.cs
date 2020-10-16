@@ -53,6 +53,22 @@ namespace GMData.Mod
             }
         }
 
+        public List<Depart> departs
+        {
+            get
+            {
+                return mods[0].departs;
+            }
+        }
+
+        public List<Pop> pops
+        {
+            get
+            {
+                return mods[0].pops;
+            }
+        }
+
         private List<Mod> mods;
 
         public IEnumerable<Warn> warns { get; }
@@ -70,7 +86,9 @@ namespace GMData.Mod
             GMRoot.define = new Define()
             {
                 parties = this.parties,
-                personName = personName
+                personName = this.personName,
+                departs = this.departs,
+                pops = this.pops
             };
         }
 
@@ -85,6 +103,9 @@ namespace GMData.Mod
         internal Dictionary<string, GEvent> events;
         internal List<InitSelect> initSelects;
         internal List<Party> parties;
+        internal List<Depart> departs;
+        internal List<Pop> pops;
+
         internal PersonName personName;
 
         public Mod(string name, string path)
@@ -96,6 +117,8 @@ namespace GMData.Mod
             initSelects = InitSelect.Load(name, path + "/init_select");
             personName = PersonName.Load(path + "/person_name");
             parties = Party.Load(name, path + "/party");
+            departs = Depart.Load(name, path + "/depart");
+            pops = Pop.Load(name, path + "/pop");
         }
     }
 }
