@@ -69,6 +69,14 @@ namespace GMData.Mod
             }
         }
 
+        public Common common
+        {
+            get
+            {
+                return mods[0].common;
+            }
+        }
+
         private List<Mod> mods;
 
         public IEnumerable<Warn> warns { get; }
@@ -88,7 +96,8 @@ namespace GMData.Mod
                 parties = this.parties,
                 personName = this.personName,
                 departs = this.departs,
-                pops = this.pops
+                pops = this.pops,
+                economy = this.common.economy
             };
         }
 
@@ -107,6 +116,7 @@ namespace GMData.Mod
         internal List<Pop> pops;
 
         internal PersonName personName;
+        internal Common common;
 
         public Mod(string name, string path)
         {
@@ -119,6 +129,7 @@ namespace GMData.Mod
             parties = Party.Load(name, path + "/party");
             departs = Depart.Load(name, path + "/depart");
             pops = Pop.Load(name, path + "/pop");
+            common = Common.Load(name, path + "/common");
         }
     }
 }

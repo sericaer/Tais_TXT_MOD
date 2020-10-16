@@ -62,6 +62,21 @@ namespace UnitTest.RunData
                     new Pop() {key = "POP_1", is_collect_tax = true },
                     new Pop() {key = "POP_2", is_collect_tax = true, consume = 100} ,
                     new Pop() {key = "POP_3", is_collect_tax = false },
+                },
+
+                economy = new Economy()
+                {
+                    curr = 123,
+                    income_percent_pop_tax = 30,
+                    output_percent_admin = 80,
+                    output_percent_chaoting_tax = 100
+                },
+
+                chaoting = new Chaoting()
+                {
+                    reportPopPercent = 110,
+                    powerParty = "TEST_PARTY",
+                    taxPercent = 20,
                 }
             };
         }

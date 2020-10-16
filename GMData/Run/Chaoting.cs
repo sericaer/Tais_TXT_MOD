@@ -52,18 +52,12 @@ namespace GMData.Run
         [JsonProperty]
         internal string powerPartyName;
 
-
-        internal static Chaoting Init(Def.ChaotingDef def)
-        {
-            return new Chaoting(def);
-        }
-
         internal static void DaysInc()
         {
 
         }
 
-        internal Chaoting(Def.ChaotingDef def)
+        internal Chaoting(Def.Chaoting def)
         {
             powerPartyName = def.powerParty;
             if(powerParty == null)

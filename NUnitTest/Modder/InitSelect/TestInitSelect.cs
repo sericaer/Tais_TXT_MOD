@@ -1,6 +1,7 @@
 ﻿using DataVisit;
 using GMData.Mod;
 using NUnit.Framework;
+using NUnitTest.Modder;
 using System;
 using System.Linq;
 using UnitTest.Modder.Mock;
@@ -8,10 +9,8 @@ using UnitTest.Modder.Mock;
 namespace UnitTest.Modder.Event
 {
     [TestFixture()]
-    public class TestInitSelect
+    public class TestInitSelect : TestModBase
     {
-        private ModFileSystem modFileSystem;
-        private GMData.Mod.Modder modder;
 
         private (string file, string content) INIT_SELECT_TEST = ("INIT_SELECT_TEST.txt",
             @"
@@ -96,39 +95,19 @@ namespace UnitTest.Modder.Event
                 }
             }");
 
-        public TestInitSelect()
+        public TestInitSelect() : base()
         {
             Parser.Semantic.Visitor.SetValueFunc = Visitor.Set;
             Parser.Semantic.Visitor.GetValueFunc = Visitor.Get;
 
             Visitor.InitVisitMap(typeof(Demon));
-
-            ModFileSystem.Clear();
-
-            modFileSystem = ModFileSystem.Generate(nameof(TestInitSelect));
-        }
-
-        private void LoadInitSelect(params (string file, string content)[] events)
-        {
-            foreach (var fevent in events)
-            {
-                modFileSystem.AddInitSelect(fevent.file, fevent.content);
-            }
-
-            modder = new GMData.Mod.Modder(ModFileSystem.path);
-        }
-
-        [SetUp]
-        public void Setup()
-        {
             Visitor.SetVisitData(Demon.Init());
-            ModFileSystem.Clear();
         }
 
         [Test()]
         public void TestEventNotTrigger()
         {
-            LoadInitSelect(INIT_SELECT_TEST, INIT_SELECT_TEST_1, INIT_SELECT_TEST_2, INIT_SELECT_TEST_1_1);
+            LoadModScript("init_select/", INIT_SELECT_TEST, INIT_SELECT_TEST_1, INIT_SELECT_TEST_2, INIT_SELECT_TEST_1_1);
 
             var initSelect = modder.initSelects.Single(x => x.isFirst);
 

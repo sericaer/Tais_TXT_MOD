@@ -2,6 +2,7 @@
 using GMData;
 using GMData.Mod;
 using NUnit.Framework;
+using NUnitTest.Modder;
 using System;
 using System.Linq;
 using UnitTest.Modder.Mock;
@@ -9,11 +10,8 @@ using UnitTest.Modder.Mock;
 namespace UnitTest.Modder.Event
 {
     [TestFixture()]
-    public class TestPop
+    public class TestPop : TestModBase
     {
-        private ModFileSystem modFileSystem;
-        private GMData.Mod.Modder modder;
-
         private (string file, string content) TEST_POP_1 = ("TEST_POP1.txt",
             @"
                 is_collect_tax = true
@@ -25,34 +23,11 @@ namespace UnitTest.Modder.Event
                 consume = 100
             ");
 
-        public TestPop()
-        {
-            ModFileSystem.Clear();
-
-            modFileSystem = ModFileSystem.Generate(nameof(TestParty));
-        }
-
-        private void LoadDepart(params (string file, string content)[] events)
-        {
-            foreach (var fevent in events)
-            {
-                modFileSystem.AddFile("pop/", fevent.file, fevent.content);
-            }
-
-            modder = new GMData.Mod.Modder(ModFileSystem.path);
-        }
-
-        [SetUp]
-        public void Setup()
-        {
-            Visitor.SetVisitData(Demon.Init());
-            ModFileSystem.Clear();
-        }
 
         [Test()]
         public void TestLoad()
         {
-            LoadDepart(TEST_POP_1, TEST_POP_2);
+            LoadModScript("pop/", TEST_POP_1, TEST_POP_2);
 
             var pop1 = GMRoot.define.pops.SingleOrDefault(x => x.key == TEST_POP_1.file.Replace(".txt", ""));
             Assert.NotNull(pop1);

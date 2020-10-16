@@ -29,31 +29,31 @@ namespace TaisGodot.Scripts
 		{
 			GMRoot.runner.DaysInc();
 
-			foreach (var spevent in SpecialEventDialog.Process())
-			{
-				var dialog = ShowSpecialDialog(spevent);
+			//foreach (var spevent in SpecialEventDialog.Process())
+			//{
+			//	var dialog = ShowSpecialDialog(spevent);
 
-				await ToSignal(dialog, "tree_exited");
-			}
+			//	await ToSignal(dialog, "tree_exited");
+			//}
 
-			foreach (var eventobj in GMRoot.modder.events)
-			{
-				var dialog = ShowDialog(eventobj);
+			//foreach (var eventobj in GMRoot.modder.events)
+			//{
+			//	var dialog = ShowDialog(eventobj);
 
-				await ToSignal(dialog, "tree_exited");
-			}
+			//	await ToSignal(dialog, "tree_exited");
+			//}
 
-			warnContainer.Refresh(GMRoot.modder.warns);
+			//warnContainer.Refresh(GMRoot.modder.warns);
 
-			//taskContainer.Refresh(Runner.GetTask());
+			////taskContainer.Refresh(Runner.GetTask());
 
-			riskContainer.Refresh(GMRoot.runner.risks);
+			//riskContainer.Refresh(GMRoot.runner.risks);
 
-			if (GMRoot.runner.isEnd())
-			{
-				GMRoot.runner = null;
-				GetTree().ChangeScene("res://Scenes/End/EndScene.tscn");
-			}
+			//if (GMRoot.runner.isEnd())
+			//{
+			//	GMRoot.runner = null;
+			//	GetTree().ChangeScene("res://Scenes/End/EndScene.tscn");
+			//}
 		}
 
 		internal static Node ShowDialog(GMData.Mod.GEvent eventobj)

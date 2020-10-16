@@ -41,6 +41,9 @@ namespace UnitTest.RunData
 
                     Assert.AreEqual(pop_init.num, pop.num.Value);
                 }
+
+                Assert.AreEqual(depart.pops.Sum(x=>x.tax.value.Value), depart.tax.Value);
+                Assert.AreEqual(depart.pops.Sum(x => x.adminExpend.value.Value), depart.adminExpendBase.Value);
             }
         }
     }

@@ -45,8 +45,9 @@ namespace GMData.Run
 
             departs = Depart.Init(GMRoot.define.departs);
 
+            chaoting = new Chaoting(GMRoot.define.chaoting);
 
-            //economy = new Economy(init.economy);
+            economy = new Economy(GMRoot.define.economy);
 
             Visitor.SetVisitData(this);
         }
@@ -58,6 +59,8 @@ namespace GMData.Run
 
         public void DaysInc()
         {
+            economy.DaysInc();
+
             date.Inc();
         }
 

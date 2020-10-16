@@ -8,13 +8,14 @@ namespace GMData.Def
         public List<Party> parties;
         public List<Depart> departs;
         public List<Pop> pops;
+        public Economy economy;
+        public Chaoting chaoting;
 
         public List<Risk> risks;
         //public Dictionary<string, PopDef> pops;
         public Dictionary<string, PartyDef> partys;
 
         //public EconomyDef economy;
-        public ChaotingDef chaoting;
         public CropDef crop;
         public List<TaxEffect> pop_tax;
        

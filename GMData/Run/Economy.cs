@@ -37,7 +37,7 @@ namespace GMData.Run
             }
         }
 
-        internal Economy(Init.Economy init)
+        internal Economy(Def.Economy init)
         {
             curr = new SubjectValue<double>(init.curr);
 
@@ -68,9 +68,9 @@ namespace GMData.Run
         [JsonProperty]
         InCome popTax;
 
-        public InComes(Init.Economy init) : this()
+        public InComes(Def.Economy init) : this()
         {
-            popTax.percent.Value = init.pop_tax_percent;
+            popTax.percent.Value = init.income_percent_pop_tax;
 
             InitObservableData(new StreamingContext());
         }
@@ -119,10 +119,10 @@ namespace GMData.Run
         [JsonProperty]
         Output reportChaoting;
 
-        public Outputs(Init.Economy init) : this()
+        public Outputs(Def.Economy init) : this()
         {
-            departAdmin.percent.Value = init.expend_depart_admin;
-            reportChaoting.percent.Value = init.report_chaoting_percent;
+            departAdmin.percent.Value = init.output_percent_admin;
+            reportChaoting.percent.Value = init.output_percent_chaoting_tax;
 
             InitObservableData(new StreamingContext());
         }
@@ -139,7 +139,7 @@ namespace GMData.Run
             reportChaoting = new Output("STATIC_REPORT_CHAOTING_TAX",
                                 0,
                                 GMRoot.runner.chaoting.expectMonthTaxValue);
-            reportChaoting.expend = () => GMRoot.runner.chaoting.ReportMonthTax(reportChaoting.currValue.Value);
+            reportChaoting.expend = GMRoot.runner.chaoting.ReportMonthTax;
         }
 
         public IEnumerator<Output> GetEnumerator()
@@ -154,7 +154,7 @@ namespace GMData.Run
         {
             foreach (var elem in Output.all)
             {
-                elem.expend?.Invoke();
+                elem.expend?.Invoke(elem.currValue.Value);
             }
         }
 
@@ -225,9 +225,9 @@ namespace GMData.Run
 
         public ObservableValue<double> maxValue;
 
-        public Action expend;
+        public Action<double> expend;
 
-        internal Output(string name, double percent, ObservableValue<double> maxValue, Action expend = null) : this()
+        internal Output(string name, double percent, ObservableValue<double> maxValue, Action<double> expend = null) : this()
         {
             this.name = name;
             this.percent = new SubjectValue<double>(percent);

@@ -88,6 +88,9 @@
     <Compile Include="Def\Party.cs" />
     <Compile Include="Def\Depart.cs" />
     <Compile Include="Def\Pop.cs" />
+    <Compile Include="Def\Economy.cs" />
+    <Compile Include="Def\Chaoting.cs" />
+    <Compile Include="Mod\Common.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

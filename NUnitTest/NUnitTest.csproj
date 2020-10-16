@@ -63,6 +63,8 @@
     <Compile Include="Modder\Define\TestDepart.cs" />
     <Compile Include="Modder\Define\TestPop.cs" />
     <Compile Include="RunData\TestPop.cs" />
+    <Compile Include="Modder\Define\TestCommon.cs" />
+    <Compile Include="Modder\TestModBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

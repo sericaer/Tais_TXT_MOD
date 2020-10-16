@@ -2,6 +2,7 @@
 using GMData;
 using GMData.Mod;
 using NUnit.Framework;
+using NUnitTest.Modder;
 using System;
 using System.Linq;
 using UnitTest.Modder.Mock;
@@ -9,11 +10,8 @@ using UnitTest.Modder.Mock;
 namespace UnitTest.Modder.Event
 {
     [TestFixture()]
-    public class TestDepart
+    public class TestDepart : TestModBase
     {
-        private ModFileSystem modFileSystem;
-        private GMData.Mod.Modder modder;
-
         private (string file, string content) TEST_DEPART_1 = ("TEST_DEPART_1.txt",
             @"
                 color = {r=1, g=2, b=3}
@@ -31,23 +29,6 @@ namespace UnitTest.Modder.Event
                 pop = {type = POP2, num = 5000}
             ");
 
-        public TestDepart()
-        {
-            ModFileSystem.Clear();
-
-            modFileSystem = ModFileSystem.Generate(nameof(TestParty));
-        }
-
-        private void LoadDepart(params (string file, string content)[] events)
-        {
-            foreach (var fevent in events)
-            {
-                modFileSystem.AddFile("depart/", fevent.file, fevent.content);
-            }
-
-            modder = new GMData.Mod.Modder(ModFileSystem.path);
-        }
-
         [SetUp]
         public void Setup()
         {
@@ -58,7 +39,7 @@ namespace UnitTest.Modder.Event
         [Test()]
         public void TestDepartLoad()
         {
-            LoadDepart(TEST_DEPART_1, TEST_DEPART_2);
+            LoadModScript("depart/", TEST_DEPART_1, TEST_DEPART_2);
 
             var depart1 = GMRoot.define.departs.SingleOrDefault(x => x.key == TEST_DEPART_1.file.Replace(".txt", ""));
 
