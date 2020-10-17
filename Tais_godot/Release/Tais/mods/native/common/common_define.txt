@@ -1,9 +1,9 @@
 economy =
 {
     curr = 123,
-    income_percent_pop_tax = 10,
-    output_percent_admin = 20,
-    output_percent_chaoting_tax = 30
+    income_percent_pop_tax = 20,
+    output_percent_admin = 80,
+    output_percent_chaoting_tax = 100
 }
 
 chaoting =

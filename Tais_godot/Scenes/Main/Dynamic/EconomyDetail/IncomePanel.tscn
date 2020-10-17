@@ -18,7 +18,7 @@ margin_right = 80.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 80, 30 )
 text = "--"
-align = 1
+align = 2
 valign = 1
 clip_text = true
 
@@ -34,10 +34,11 @@ size_flags_vertical = 4
 [node name="Value" type="Label" parent="."]
 margin_left = 300.0
 margin_top = 4.0
-margin_right = 320.0
+margin_right = 380.0
 margin_bottom = 25.0
+rect_min_size = Vector2( 80, 0 )
 text = "--"
-align = 1
 valign = 1
+clip_text = true
 script = ExtResource( 2 )
 [connection signal="value_changed" from="HSlider" to="." method="_on_HSlider_value_changed"]
