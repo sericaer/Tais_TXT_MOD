@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Main/MainScene.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Main/Map/MapRect.cs" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Scenes/Main/Top/SpeedContrl.cs" type="Script" id=5]
 [ext_resource path="res://Scenes/Main/Warn/WarnContainer.cs" type="Script" id=6]
 [ext_resource path="res://Scenes/Main/Top/Economy.cs" type="Script" id=7]
+[ext_resource path="res://Scenes/Main/Top/Pop.cs" type="Script" id=8]
 [ext_resource path="res://Scenes/Main/Task/TaskContainer.cs" type="Script" id=9]
 
 [sub_resource type="StyleBoxTexture" id=1]
@@ -38,8 +39,49 @@ margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
 custom_constants/separation = 1
 
+[node name="PopNum" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer"]
+margin_right = 255.0
+margin_bottom = 40.0
+focus_mode = 1
+size_flags_horizontal = 3
+enabled_focus_mode = 1
+script = ExtResource( 8 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopContainer/HBoxContainer/PopNum"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 40 )
+size_flags_horizontal = 7
+size_flags_vertical = 7
+custom_constants/separation = 10
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/PopNum/HBoxContainer"]
+margin_left = 67.0
+margin_top = 9.0
+margin_right = 157.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 90, 0 )
+size_flags_horizontal = 0
+text = "STATIC_REGISTER_POP_NUM"
+align = 2
+clip_text = true
+
+[node name="Value" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/PopNum/HBoxContainer"]
+margin_left = 167.0
+margin_top = 9.0
+margin_right = 187.0
+margin_bottom = 30.0
+size_flags_horizontal = 0
+text = "--"
+script = ExtResource( 4 )
+
 [node name="Economy" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer"]
-margin_right = 320.0
+margin_left = 256.0
+margin_right = 511.0
 margin_bottom = 40.0
 focus_mode = 1
 size_flags_horizontal = 3
@@ -52,41 +94,47 @@ anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 40 )
 size_flags_horizontal = 7
 size_flags_vertical = 7
+custom_constants/separation = 10
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/Economy/HBoxContainer"]
-margin_left = 78.0
+margin_left = 67.0
 margin_top = 9.0
-margin_right = 218.0
+margin_right = 157.0
 margin_bottom = 30.0
+rect_min_size = Vector2( 90, 0 )
+size_flags_horizontal = 0
 text = "STATIC_ECONOMY"
+align = 2
+clip_text = true
 
 [node name="Value" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/Economy/HBoxContainer"]
-margin_left = 222.0
+margin_left = 167.0
 margin_top = 9.0
-margin_right = 242.0
+margin_right = 187.0
 margin_bottom = 30.0
+size_flags_horizontal = 0
 text = "--"
 script = ExtResource( 4 )
 
 [node name="Button2" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer"]
-margin_left = 321.0
-margin_right = 641.0
+margin_left = 512.0
+margin_right = 767.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 
 [node name="Button3" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer"]
-margin_left = 642.0
-margin_right = 962.0
+margin_left = 768.0
+margin_right = 1023.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 
 [node name="Date" type="Button" parent="VBoxContainer/TopContainer/HBoxContainer"]
-margin_left = 963.0
-margin_right = 1283.0
+margin_left = 1024.0
+margin_right = 1279.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 
@@ -101,23 +149,23 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/Date/HBoxContainer"]
-margin_left = 93.0
+margin_left = 60.0
 margin_top = 9.0
-margin_right = 203.0
+margin_right = 170.0
 margin_bottom = 30.0
 text = "STATIC_DATE"
 
 [node name="Value" type="Label" parent="VBoxContainer/TopContainer/HBoxContainer/Date/HBoxContainer"]
-margin_left = 207.0
+margin_left = 174.0
 margin_top = 9.0
-margin_right = 227.0
+margin_right = 194.0
 margin_bottom = 30.0
 text = "--"
 script = ExtResource( 4 )
 
 [node name="Control" type="HBoxContainer" parent="VBoxContainer/TopContainer/HBoxContainer"]
-margin_left = 1284.0
-margin_right = 1440.0
+margin_left = 1280.0
+margin_right = 1436.0
 margin_bottom = 40.0
 script = ExtResource( 5 )
 
@@ -233,6 +281,7 @@ script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="pressed" from="VBoxContainer/TopContainer/HBoxContainer/PopNum" to="." method="_on_Button_RegistPop_pressed"]
 [connection signal="pressed" from="VBoxContainer/TopContainer/HBoxContainer/Economy" to="." method="_on_Button_Economy_pressed"]
 [connection signal="DaysInc" from="VBoxContainer/TopContainer/HBoxContainer/Control" to="." method="_on_DaysInc"]
 [connection signal="pressed" from="VBoxContainer/TopContainer/HBoxContainer/Control/Button_Inc" to="VBoxContainer/TopContainer/HBoxContainer/Control" method="_on_Button_Inc_pressed"]

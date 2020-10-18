@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
+using System.Linq;
+
 using DataVisit;
 using Newtonsoft.Json;
 
@@ -31,6 +34,8 @@ namespace GMData.Run
         [JsonProperty]
         public List<Risk> risks;
 
+        public ObservableValue<int> registerPopNum;
+
         public Runner()
         {
             GMRoot.runner = this;
@@ -48,6 +53,9 @@ namespace GMData.Run
             chaoting = new Chaoting(GMRoot.define.chaoting);
 
             economy = new Economy(GMRoot.define.economy);
+
+            registerPopNum = Observable.CombineLatest(pops.Where(x=>x.def.is_collect_tax).Select(x=>x.num.obs),
+                                                     (IList<double> taxs) => taxs.Sum(y=>(int)y)).ToOBSValue();
 
             Visitor.SetVisitData(this);
         }

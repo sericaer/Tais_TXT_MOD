@@ -5,7 +5,7 @@ namespace TaisGodot.Scripts
 {
 	class PopPanel : Panel
 	{
-		internal Pop gmObj;
+		internal GMData.Run.Pop gmObj;
 
 		public override void _Ready()
 		{

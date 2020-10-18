@@ -67,6 +67,7 @@
     <Compile Include="Scenes\Main\Imp\ImpContainer.cs" />
     <Compile Include="Scenes\Main\Task\Task.cs" />
     <Compile Include="Scenes\Main\Task\TaskContainer.cs" />
+    <Compile Include="Scenes\Main\Top\Pop.cs" />
     <Compile Include="Scenes\Main\Top\SpeedContrl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenes\Main\SysPanel\SysPanel.cs" />
@@ -110,13 +111,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Scenes\Main\Risk\" />
-    <Folder Include="Scenes\Init\" />
-    <Folder Include="Scenes\Init\Dynamic\" />
-    <Folder Include="Scenes\Init\Dynamic\InitSelectPanel\" />
-    <Folder Include="Scenes\Init\Dynamic\InitNameAgePanel\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\GMData\GMData.csproj">
       <Project>{DD5D111B-8B36-46B6-A33F-B2928FA885CC}</Project>

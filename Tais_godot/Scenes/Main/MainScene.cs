@@ -133,5 +133,10 @@ namespace TaisGodot.Scripts
 			var TaishouDetail = ResourceLoader.Load<PackedScene>("res://Scenes/Main/Dynamic/TaishouDetail/TaishouDetail.tscn").Instance();
 			AddChild(TaishouDetail);
 		}
+		
+		private void _on_Button_RegistPop_pressed()
+		{
+			// Replace with function body.
+		}
 	}
 }
