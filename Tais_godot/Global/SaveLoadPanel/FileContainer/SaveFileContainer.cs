@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 
 namespace TaisGodot.Scripts
@@ -10,15 +11,16 @@ namespace TaisGodot.Scripts
 			return GetNode<VBoxContainer>("VBoxContainer").GetChildren<SaveFileItemPanel>();
 		}
 
-		public override void _Ready()
-		{
+        internal void GenerateFileItems(bool enableLoad, Action<string> onTriggerLoad, Action<string> onTriggerDelete)
+        {
 			foreach (var filePath in System.IO.Directory.EnumerateFiles(GlobalPath.save, "*.save"))
 			{
-				var saveItemPanel = (SaveFileItemPanel)ResourceLoader.Load<PackedScene>("res://Global/SaveLoadPanel/FileContainer/SaveFileItem.tscn").Instance();
-				saveItemPanel.Name = System.IO.Path.GetFileNameWithoutExtension(filePath);
+				var fileItem = SaveFileItemPanel.Instance(this, enableLoad, filePath);
+				fileItem.actTriggerLoad = onTriggerLoad;
+				fileItem.actTriggerDelete = onTriggerDelete;
 
-				GetNode<VBoxContainer>("VBoxContainer").AddChild(saveItemPanel);
+				GetNode<VBoxContainer>("VBoxContainer").AddChild(fileItem);
 			}
 		}
-	}
+    }
 }

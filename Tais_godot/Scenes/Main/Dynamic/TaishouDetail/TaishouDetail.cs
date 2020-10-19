@@ -1,18 +1,22 @@
 using Godot;
 using GMData.Run;
 using GMData;
+using System;
 
 namespace TaisGodot.Scripts
 {
 	public class TaishouDetail : Panel
 	{
-		// Declare member variables here. Examples:
-		// private int a = 2;
-		// private string b = "text";
-
+		public const string path = "res://Scenes/Main/Dynamic/TaishouDetail/TaishouDetail.tscn";
 		Label Name;
 		Label Party;
 		ReactiveLabel Age;
+
+		internal static void Instance(Node parent)
+		{
+			var TaishouDetail = ResourceLoader.Load<PackedScene>(path).Instance();
+			parent.AddChild(TaishouDetail);
+		}
 
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
@@ -26,10 +30,10 @@ namespace TaisGodot.Scripts
 			Age.Assoc(GMRoot.runner.taishou.age);
 		}
 
-		//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-		//  public override void _Process(float delta)
-		//  {
-		//      
-		//  }
-	}
+        //  // Called every frame. 'delta' is the elapsed time since the previous frame.
+        //  public override void _Process(float delta)
+        //  {
+        //      
+        //  }
+    }
 }

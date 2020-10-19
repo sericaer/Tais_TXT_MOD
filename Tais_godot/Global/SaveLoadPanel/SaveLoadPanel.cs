@@ -6,6 +6,7 @@ namespace TaisGodot.Scripts
 	class SaveLoadPanel : Panel
 	{
 		public static string path = "res://Global/SaveLoadPanel/SaveLoadPanel.tscn";
+
 		[Signal]
 		internal delegate void LoadSaveFile(string name);
 
@@ -13,6 +14,16 @@ namespace TaisGodot.Scripts
 
 		private NewSaveContainer newSaveContainter;
 		private SaveFileContainer saveFileContainer;
+
+		internal static SaveLoadPanel Instance(Node parent, bool enableLoad)
+		{
+			var saveLoadPanel = ResourceLoader.Load<PackedScene>(path).Instance() as SaveLoadPanel;
+			saveLoadPanel.enableLoad = enableLoad;
+
+			parent.AddChild(saveLoadPanel);
+
+			return saveLoadPanel;
+		}
 
 		public override void _Ready()
 		{
@@ -22,22 +33,7 @@ namespace TaisGodot.Scripts
 			newSaveContainter.Visible = !enableLoad;
 			newSaveContainter.buttonConfirm.Connect("pressed", this, nameof(onTriggerSave));
 
-			foreach(var fileItem in saveFileContainer.EnumSaveFileItems())
-			{
-				fileItem.buttonDelete.Connect("pressed", this, nameof(onTriggerDelete), new Godot.Collections.Array() { fileItem });
-				fileItem.buttonLoad.Connect("pressed", this, nameof(onTriggerLoad), new Godot.Collections.Array() { fileItem });
-
-				fileItem.buttonLoad.Visible = enableLoad;
-
-			}
-		}
-
-		internal static SaveLoadPanel Instance(bool enableLoad)
-		{
-			var saveLoadPanel = ResourceLoader.Load<PackedScene>(path).Instance() as SaveLoadPanel;
-			saveLoadPanel.enableLoad = enableLoad;
-
-			return saveLoadPanel;
+			saveFileContainer.GenerateFileItems(enableLoad, onTriggerLoad, onTriggerDelete);
 		}
 
 		private void _on_ButtonCancel_pressed()
@@ -52,15 +48,11 @@ namespace TaisGodot.Scripts
 
 			if (System.IO.File.Exists(filePath))
 			{
-				var MsgboxPanel = (MsgboxPanel)ResourceLoader.Load<PackedScene>("res://Global/MsgboxPanel/MsgboxPanel.tscn").Instance();
-				MsgboxPanel.desc = "STATIC_SAVE_FILE_EXIT";
-				MsgboxPanel.action = () =>
+				MsgboxPanel.Instance(this, "STATIC_SAVE_FILE_EXIT", () =>
 				{
 					System.IO.File.WriteAllText(filePath, GMRoot.runner.Serialize());
 					QueueFree();
-				};
-
-				AddChild(MsgboxPanel);
+				});
 				return;
 			}
 
@@ -68,18 +60,14 @@ namespace TaisGodot.Scripts
 			QueueFree();
 		}
 
-		private void onTriggerDelete(SaveFileItemPanel fileItem)
+		private void onTriggerLoad(string path)
 		{
-			var filePath = GlobalPath.save + fileItem.Name + ".save";
-			System.IO.File.Delete(filePath);
-
-			fileItem.QueueFree();
+			EmitSignal(nameof(LoadSaveFile), path);
 		}
 
-		private void onTriggerLoad(SaveFileItemPanel fileItem)
+		private void onTriggerDelete(string path)
 		{
-			EmitSignal(nameof(LoadSaveFile), fileItem.Name);
-			fileItem.QueueFree();
+			System.IO.File.Delete(path);
 		}
 	}
 }

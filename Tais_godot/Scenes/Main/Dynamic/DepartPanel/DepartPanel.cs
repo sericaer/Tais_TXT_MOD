@@ -1,11 +1,24 @@
 using Godot;
 using GMData.Run;
+using System;
 
 namespace TaisGodot.Scripts
 {
 	class DepartPanel : Panel
 	{
+		public const string path = "res://Scenes/Main/Dynamic/DepartPanel/DepartPanel.tscn";
+
 		public Depart gmObj;
+
+
+		internal static DepartPanel Instance(Node parent, Depart depart)
+		{
+			var panel = (DepartPanel)ResourceLoader.Load<PackedScene>(path).Instance();
+			panel.gmObj = depart;
+
+			parent.AddChild(panel);
+			return panel;
+		}
 
 		public override void _Ready()
 		{
@@ -22,7 +35,7 @@ namespace TaisGodot.Scripts
 		{
 			QueueFree();
 		}
-	}
+    }
 }
 
 

@@ -14,8 +14,11 @@ namespace TaisGodot.Scripts
 		Slider sliderReportLast;
 		Slider sliderReportCurr;
 
+		public override string path => "res://Scenes/Main/Dynamic/DialogPanel/SpecialDialogPanel/ReportPopNumDialog.tscn";
+
 		public ReportPopNumDialog()
 		{
+
 		}
 
 		public override bool IsVaild()

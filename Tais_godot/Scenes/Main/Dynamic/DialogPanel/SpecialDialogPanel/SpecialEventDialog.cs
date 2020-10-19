@@ -19,6 +19,10 @@ namespace TaisGodot.Scripts
             };
         }
 
+        public abstract string path { get; }
+
+        public abstract bool IsVaild();
+
         internal string name
         {
             get
@@ -37,8 +41,6 @@ namespace TaisGodot.Scripts
             SpeedContrl.UnPause();
         }
 
-        public abstract bool IsVaild();
-
         internal static IEnumerable<SpecialEventDialog> Process()
         {
             foreach(var dialog in all)
@@ -53,6 +55,14 @@ namespace TaisGodot.Scripts
         internal static SpecialEventDialog GetEvent(string nextEventKey)
         {
             return all.SingleOrDefault(x => x.name == nextEventKey);
+        }
+
+        internal SpecialEventDialog Instance(Node parent)
+        {
+            var dialog = (SpecialEventDialog)ResourceLoader.Load<PackedScene>(path).Instance();
+            parent.AddChild(dialog);
+
+            return dialog;
         }
     }
 }

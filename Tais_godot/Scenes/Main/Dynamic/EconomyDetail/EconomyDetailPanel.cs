@@ -1,10 +1,12 @@
 using Godot;
 using GMData;
+using System;
 
 namespace TaisGodot.Scripts
 {
 	public class EconomyDetailPanel : Panel
 	{
+		public const string path = "res://Scenes/Main/Dynamic/EconomyDetail/EconomyDetailPanel.tscn";
 		// Declare member variables here. Examples:
 		// private int a = 2;
 		// private string b = "text";
@@ -13,6 +15,14 @@ namespace TaisGodot.Scripts
 		ReactiveLabel surplus;
 		ReactiveLabel incomeTotal;
 		ReactiveLabel outputTotal;
+
+		public static EconomyDetailPanel Instance(Node parent)
+        {
+			var panel = ResourceLoader.Load<PackedScene>(path).Instance();
+			parent.AddChild(panel);
+
+			return (EconomyDetailPanel)panel;
+		}
 
 		public override void _Ready()
 		{
@@ -99,11 +109,11 @@ namespace TaisGodot.Scripts
 			//}
 		}
 
-		//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-		//  public override void _Process(float delta)
-		//  {
-		//      
-		//  }
-	}
+        //  // Called every frame. 'delta' is the elapsed time since the previous frame.
+        //  public override void _Process(float delta)
+        //  {
+        //      
+        //  }
+    }
 }
 

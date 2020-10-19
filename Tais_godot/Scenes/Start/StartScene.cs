@@ -8,6 +8,8 @@ namespace TaisGodot.Scripts
 {
 	public class StartScene : Panel
 	{
+		public const string path = "res://Scenes/Start/StartScene.tscn";
+
 		static StartScene()
 		{
 			GMRoot.logger = GD.Print;
@@ -28,9 +30,7 @@ namespace TaisGodot.Scripts
 
 		private void _on_Button_Load_pressed()
 		{
-			var loadPanel = SaveLoadPanel.Instance(true);
-			AddChild(loadPanel);
-
+			var loadPanel = SaveLoadPanel.Instance(this, true);
 			loadPanel.Connect("LoadSaveFile", this, nameof(_on_LoadSaveFile_Signed));
 		}
 
@@ -39,9 +39,9 @@ namespace TaisGodot.Scripts
 			GetTree().Quit();
 		}
 
-		private void _on_LoadSaveFile_Signed(string fileName)
+		private void _on_LoadSaveFile_Signed(string path)
 		{
-			var content = File.ReadAllText(GlobalPath.save + fileName + ".save");
+			var content = File.ReadAllText(path);
 			GMRoot.runner = GMData.Run.Runner.Deserialize(content);
 
 			GetTree().ChangeScene(MainScene.path);

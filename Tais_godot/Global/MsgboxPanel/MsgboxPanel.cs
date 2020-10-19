@@ -13,6 +13,17 @@ namespace TaisGodot.Scripts
 			GetNode<RichTextLabel>("CenterContainer/PanelContainer/VBoxContainer/Desc").Text = desc;
 		}
 
+		internal static MsgboxPanel Instance(Node parent, string desc, Action action)
+        {
+			var panel = (MsgboxPanel)ResourceLoader.Load<PackedScene>("res://Global/MsgboxPanel/MsgboxPanel.tscn").Instance();
+			panel.desc = desc;
+			panel.action = action;
+
+			parent.AddChild(panel);
+
+			return panel;
+		}
+
 		private void _on_ButtonConfirm_pressed()
 		{
 			action?.Invoke();
