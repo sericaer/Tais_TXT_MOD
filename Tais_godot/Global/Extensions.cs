@@ -21,5 +21,21 @@ namespace TaisGodot.Scripts
 
             return rslt;
         }
+
+        public static T GetParentRecursion<T>(this Node node) where T : Node
+        {
+            var curr = node;
+            while(curr != null)
+            {
+                if(curr is T)
+                {
+                    return (T)curr;
+                }
+
+                curr = curr.GetParent();
+            }
+
+            return null;
+        }
     }
 }

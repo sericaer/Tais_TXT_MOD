@@ -30,30 +30,30 @@ namespace TaisGodot.Scripts
 		{
 			GMRoot.runner.DaysInc();
 
-            foreach (var spevent in SpecialEventDialog.Process())
-            {
-                await ToSignal(ShowSpecialDialog(spevent), "tree_exited");
-            }
+			foreach (var spevent in SpecialEventDialog.Process())
+			{
+				await ToSignal(ShowSpecialDialog(spevent), "tree_exited");
+			}
 
-            //foreach (var eventobj in GMRoot.modder.events)
-            //{
-            //	var dialog = ShowDialog(eventobj);
+			//foreach (var eventobj in GMRoot.modder.events)
+			//{
+			//	var dialog = ShowDialog(eventobj);
 
-            //	await ToSignal(dialog, "tree_exited");
-            //}
+			//	await ToSignal(dialog, "tree_exited");
+			//}
 
-            //warnContainer.Refresh(GMRoot.modder.warns);
+			//warnContainer.Refresh(GMRoot.modder.warns);
 
-            ////taskContainer.Refresh(Runner.GetTask());
+			////taskContainer.Refresh(Runner.GetTask());
 
-            //riskContainer.Refresh(GMRoot.runner.risks);
+			//riskContainer.Refresh(GMRoot.runner.risks);
 
-            //if (GMRoot.runner.isEnd())
-            //{
-            //	GMRoot.runner = null;
-            //	GetTree().ChangeScene("res://Scenes/End/EndScene.tscn");
-            //}
-        }
+			//if (GMRoot.runner.isEnd())
+			//{
+			//	GMRoot.runner = null;
+			//	GetTree().ChangeScene("res://Scenes/End/EndScene.tscn");
+			//}
+		}
 
 		internal static Node ShowDialog(GMData.Mod.GEvent eventobj)
 		{
@@ -72,12 +72,12 @@ namespace TaisGodot.Scripts
 			return dialogNode;
 		}
 
-        internal static Node ShowSpecialDialog(SpecialEventDialog spEvent)
-        {
+		internal static Node ShowSpecialDialog(SpecialEventDialog spEvent)
+		{
 			return spEvent.Instance(inst);
 		}
 
-        private void _on_MapRect_MapClickSignal(int r, int g, int b)
+		private void _on_MapRect_MapClickSignal(int r, int g, int b)
 		{
 			GD.Print($"{r}, {g}, {b}");
 

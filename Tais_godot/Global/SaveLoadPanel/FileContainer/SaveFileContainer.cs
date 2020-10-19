@@ -11,8 +11,8 @@ namespace TaisGodot.Scripts
 			return GetNode<VBoxContainer>("VBoxContainer").GetChildren<SaveFileItemPanel>();
 		}
 
-        internal void GenerateFileItems(bool enableLoad, Action<string> onTriggerLoad, Action<string> onTriggerDelete)
-        {
+		internal void GenerateFileItems(bool enableLoad, Action<string> onTriggerLoad, Action<string> onTriggerDelete)
+		{
 			foreach (var filePath in System.IO.Directory.EnumerateFiles(GlobalPath.save, "*.save"))
 			{
 				var fileItem = SaveFileItemPanel.Instance(this, enableLoad, filePath);
@@ -22,5 +22,5 @@ namespace TaisGodot.Scripts
 				GetNode<VBoxContainer>("VBoxContainer").AddChild(fileItem);
 			}
 		}
-    }
+	}
 }

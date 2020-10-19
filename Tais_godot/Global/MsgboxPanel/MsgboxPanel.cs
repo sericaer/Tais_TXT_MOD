@@ -14,7 +14,7 @@ namespace TaisGodot.Scripts
 		}
 
 		internal static MsgboxPanel Instance(Node parent, string desc, Action action)
-        {
+		{
 			var panel = (MsgboxPanel)ResourceLoader.Load<PackedScene>("res://Global/MsgboxPanel/MsgboxPanel.tscn").Instance();
 			panel.desc = desc;
 			panel.action = action;

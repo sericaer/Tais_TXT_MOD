@@ -17,7 +17,7 @@ namespace TaisGodot.Scripts
 		ReactiveLabel outputTotal;
 
 		public static EconomyDetailPanel Instance(Node parent)
-        {
+		{
 			var panel = ResourceLoader.Load<PackedScene>(path).Instance();
 			parent.AddChild(panel);
 
@@ -109,11 +109,11 @@ namespace TaisGodot.Scripts
 			//}
 		}
 
-        //  // Called every frame. 'delta' is the elapsed time since the previous frame.
-        //  public override void _Process(float delta)
-        //  {
-        //      
-        //  }
-    }
+		//  // Called every frame. 'delta' is the elapsed time since the previous frame.
+		//  public override void _Process(float delta)
+		//  {
+		//      
+		//  }
+	}
 }
 

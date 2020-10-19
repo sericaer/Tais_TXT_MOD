@@ -7,7 +7,7 @@ namespace TaisGodot.Scripts
 		public const string path = "res://Scenes/Main/SysPanel/SysPanel.tscn";
 
 		public static void Instance(Node parent)
-        {
+		{
 			var SysPanel = ResourceLoader.Load<PackedScene>(path).Instance();
 			parent.AddChild(SysPanel);
 		}
