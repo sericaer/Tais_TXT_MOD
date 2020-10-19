@@ -54,8 +54,6 @@ namespace GMData.Run
 
         public Runner(Init.InitData init) : this()
         {
-            InterfaceAssociate();
-
             date = new Date(init.start_date);
 
             taishou = new Taishou(init.taishou);
@@ -72,6 +70,8 @@ namespace GMData.Run
         [JsonConstructor]
         private Runner()
         {
+            InterfaceAssociate();
+
             Visitor.SetVisitData(this);
         }
 
