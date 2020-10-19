@@ -18,8 +18,6 @@ namespace TaisGodot.Scripts
 				var fileItem = SaveFileItemPanel.Instance(this, enableLoad, filePath);
 				fileItem.actTriggerLoad = onTriggerLoad;
 				fileItem.actTriggerDelete = onTriggerDelete;
-
-				GetNode<VBoxContainer>("VBoxContainer").AddChild(fileItem);
 			}
 		}
 	}
