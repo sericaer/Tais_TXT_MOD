@@ -85,8 +85,7 @@ namespace GMData.Run
 
         public ObservableValue<double> value;
 
-
-        internal ObservableBufferedValue(IObservable<double> baseValue)
+        internal void SetBaseValue(IObservable<double> baseValue)
         {
             this.baseValue = new ObservableValue<double>(baseValue);
             this.buffers = new ObservableCollection<(string name, double value)>();
@@ -102,12 +101,11 @@ namespace GMData.Run
             value = Observable.CombineLatest(this.baseValue.obs, bufferChanged, (x, y) => x + y).ToOBSValue();
         }
 
-
-        [JsonConstructor]
-        private ObservableBufferedValue()
+        internal ObservableBufferedValue()
         {
             this.buffers = new ObservableCollection<(string name, double value)>();
         }
+
 
     }
 

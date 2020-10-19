@@ -12,7 +12,7 @@ namespace UnitTest.RunData
         [SetUp]
         public void Init()
         {
-            GMRoot.runner = new GMData.Run.Runner();
+            GMRoot.runner = GMData.Run.Runner.Generate();
         }
 
         [Test()]
@@ -43,8 +43,31 @@ namespace UnitTest.RunData
                 }
 
                 Assert.AreEqual(depart.pops.Sum(x=>x.tax.value.Value), depart.tax.Value);
-                Assert.AreEqual(depart.pops.Sum(x => x.adminExpend.value.Value), depart.adminExpendBase.Value);
+                Assert.AreEqual(depart.pops.Sum(x => x.adminExpend.value.Value), depart.adminExpend.Value);
             }
+        }
+
+        [Test()]
+        public void TestGetByColor()
+        {
+            var departDef0 = GMRoot.define.departs[0];
+            var departObj0 = GMData.Run.Depart.GetByColor((int)departDef0.color.r, (int)departDef0.color.g, (int)departDef0.color.b);
+
+            Assert.AreEqual(departDef0, departObj0.def);
+
+            var departDef1 = GMRoot.define.departs[1];
+            var departObj1 = GMData.Run.Depart.GetByColor((int)departDef1.color.r, (int)departDef1.color.g, (int)departDef1.color.b);
+
+            Assert.AreEqual(departDef1, departObj1.def);
+        }
+
+        [Test()]
+        public void Test_Serialize()
+        {
+            var json = GMRoot.runner.Serialize();
+            GMRoot.runner = GMData.Run.Runner.Deserialize(json);
+
+            Test_Init();
         }
     }
 }

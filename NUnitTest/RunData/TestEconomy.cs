@@ -14,7 +14,7 @@ namespace UnitTest.RunData
         [SetUp]
         public void Init()
         {
-            GMRoot.runner = new GMData.Run.Runner();
+            GMRoot.runner = GMData.Run.Runner.Generate();
         }
 
         [Test()]
@@ -25,20 +25,17 @@ namespace UnitTest.RunData
             var incomePopTax = GMRoot.runner.economy.incomes.Single(x => x.name == "STATIC_POP_TAX");
 
             Assert.AreEqual(GMRoot.define.economy.income_percent_pop_tax, incomePopTax.percent.Value);
-            Assert.AreEqual(GMRoot.runner.departs.Sum(x => x.tax.Value), incomePopTax.maxValue.Value);
-            Assert.AreEqual(incomePopTax.maxValue.Value * incomePopTax.percent.Value / 100, incomePopTax.currValue.Value);
+            Assert.AreEqual(GMRoot.runner.departs.Sum(x=>x.tax.Value), incomePopTax.currValue.Value);
 
             var outputAdmin = GMRoot.runner.economy.outputs.Single(x => x.name == "STATIC_ADMIN_EXPEND");
 
             Assert.AreEqual(GMRoot.define.economy.output_percent_admin, outputAdmin.percent.Value);
-            Assert.AreEqual(GMRoot.runner.departs.Sum(x => x.adminExpendBase.Value), outputAdmin.maxValue.Value);
-            Assert.AreEqual(outputAdmin.maxValue.Value * outputAdmin.percent.Value / 100, outputAdmin.currValue.Value);
+            Assert.AreEqual(GMRoot.runner.departs.Sum(x=>x.adminExpend.Value), outputAdmin.currValue.Value);
 
             var outputChaotingTax = GMRoot.runner.economy.outputs.Single(x => x.name == "STATIC_REPORT_CHAOTING_TAX");
 
-            Assert.AreEqual(GMRoot.define.economy.output_percent_admin, outputAdmin.percent.Value);
-            Assert.AreEqual(GMRoot.runner.departs.Sum(x => x.adminExpendBase.Value), outputAdmin.maxValue.Value);
-            Assert.AreEqual(outputAdmin.maxValue.Value * outputAdmin.percent.Value / 100, outputAdmin.currValue.Value);
+            Assert.AreEqual(GMRoot.define.economy.output_percent_chaoting_tax, outputChaotingTax.percent.Value);
+            Assert.AreEqual(GMRoot.runner.chaoting.expectMonthTaxValue.Value, outputChaotingTax.currValue.Value);
 
             Assert.AreEqual(GMRoot.runner.economy.incomes.Sum(x=>x.currValue.Value), GMRoot.runner.economy.incomes.total.Value);
             Assert.AreEqual(GMRoot.runner.economy.outputs.Sum(x => x.currValue.Value), GMRoot.runner.economy.outputs.total.Value);
@@ -62,6 +59,15 @@ namespace UnitTest.RunData
 
                 Assert.AreEqual(curr, Visitor.Get("economy.value"));
             }
+        }
+
+        [Test()]
+        public void Test_Serialize()
+        {
+            var json = GMRoot.runner.Serialize();
+            GMRoot.runner = GMData.Run.Runner.Deserialize(json);
+
+            Test_Init();
         }
 
         //    [Test()]

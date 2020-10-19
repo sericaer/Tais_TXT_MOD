@@ -43,20 +43,20 @@ namespace GMData.Run
 
             incomes = new InComes(init);
             outputs = new Outputs(init);
+        }
 
-            InitObservableData(new StreamingContext());
+        internal void DataAssocate()
+        {
+            incomes.DataAssocate();
+            outputs.DataAssocate();
+
+            monthSurplus = Observable.CombineLatest(incomes.total.obs, outputs.total.obs, (i, o) => i - o).ToOBSValue();
         }
 
         [JsonConstructor]
         private Economy()
         {
 
-        }
-
-        [OnDeserialized]
-        private void InitObservableData(StreamingContext context)
-        {
-            monthSurplus = Observable.CombineLatest(incomes.total.obs, outputs.total.obs, (i, o) => i - o).ToOBSValue();
         }
     }
 
@@ -66,13 +66,13 @@ namespace GMData.Run
         public ObservableValue<double> total;
 
         [JsonProperty]
-        InCome popTax;
+        internal InCome popTax;
 
         public InComes(Def.Economy init) : this()
         {
             popTax.percent.Value = init.income_percent_pop_tax;
 
-            InitObservableData(new StreamingContext());
+            // InitObservableData(new StreamingContext());
         }
 
         [JsonConstructor]
@@ -80,9 +80,9 @@ namespace GMData.Run
         {
             InCome.all = new List<InCome>();
 
-            popTax = new InCome("STATIC_POP_TAX",
-                                 0,
-                                 Observable.CombineLatest(GMRoot.runner.departs.Select(x => x.tax.obs), (IList<double> taxs) => taxs.Sum()).ToOBSValue());
+            popTax = new InCome("STATIC_POP_TAX");
+                                 //0,
+                                 //Observable.CombineLatest(GMRoot.runner.departs.Select(x => x.tax.obs), (IList<double> taxs) => taxs.Sum()).ToOBSValue());
         }
 
         public IEnumerator<InCome> GetEnumerator()
@@ -101,8 +101,7 @@ namespace GMData.Run
             }
         }
 
-        [OnDeserialized]
-        private void InitObservableData(StreamingContext context)
+        internal void DataAssocate()
         {
             total = Observable.CombineLatest(InCome.all.Select(x => x.currValue.obs), (IList<double> all) => all.Sum()).ToOBSValue();
         }
@@ -114,17 +113,17 @@ namespace GMData.Run
         public ObservableValue<double> total;
 
         [JsonProperty]
-        Output departAdmin;
+        public Output departAdmin;
 
         [JsonProperty]
-        Output reportChaoting;
+        public Output reportChaoting;
 
         public Outputs(Def.Economy init) : this()
         {
             departAdmin.percent.Value = init.output_percent_admin;
             reportChaoting.percent.Value = init.output_percent_chaoting_tax;
 
-            InitObservableData(new StreamingContext());
+            //InitObservableData(new StreamingContext());
         }
 
         [JsonConstructor]
@@ -132,14 +131,14 @@ namespace GMData.Run
         {
             Output.all = new List<Output>();
 
-            departAdmin = new Output("STATIC_ADMIN_EXPEND",
-                                 0,
-                                 Observable.CombineLatest(GMRoot.runner.departs.Select(x => x.adminExpendBase.obs), (IList<double> expend) => expend.Sum()).ToOBSValue());
+            departAdmin = new Output("STATIC_ADMIN_EXPEND");
+            //0,
+            //Observable.CombineLatest(GMRoot.runner.departs.Select(x => x.adminExpend.obs), (IList<double> expend) => expend.Sum()).ToOBSValue());
 
-            reportChaoting = new Output("STATIC_REPORT_CHAOTING_TAX",
-                                0,
-                                GMRoot.runner.chaoting.expectMonthTaxValue);
-            reportChaoting.expend = GMRoot.runner.chaoting.ReportMonthTax;
+            reportChaoting = new Output("STATIC_REPORT_CHAOTING_TAX");
+                                //0,
+                                //GMRoot.runner.chaoting.expectMonthTaxValue);
+            //reportChaoting.expend = GMRoot.runner.chaoting.ReportMonthTax;
         }
 
         public IEnumerator<Output> GetEnumerator()
@@ -166,8 +165,7 @@ namespace GMData.Run
             }
         }
 
-        [OnDeserialized]
-        private void InitObservableData(StreamingContext context)
+        internal void DataAssocate()
         {
             total = Observable.CombineLatest(Output.all.Select(x => x.currValue.obs), (IList<double> all) => all.Sum()).ToOBSValue();
         }
@@ -186,15 +184,26 @@ namespace GMData.Run
 
         public ObservableValue<double> currValue;
 
-        public ObservableValue<double> maxValue;
+        //public ObservableValue<double> maxValue;
 
-        internal InCome(string name, double percent, ObservableValue<double> maxValue) : this()
+        //internal InCome(string name, double percent, ObservableValue<double> maxValue) : this()
+        //{
+        //    this.name = name;
+        //    this.percent = new SubjectValue<double>(percent);
+        //    this.maxValue = maxValue;
+
+        //    InitObservableData(new StreamingContext());
+        //}
+
+        internal void SetObsCurrValue(IObservable<double> value)
+        {
+            currValue = new ObservableValue<double>(value);
+        }
+
+        internal InCome(string name) : this()
         {
             this.name = name;
-            this.percent = new SubjectValue<double>(percent);
-            this.maxValue = maxValue;
-
-            InitObservableData(new StreamingContext());
+            this.percent = new SubjectValue<double>(0);
         }
 
         [JsonConstructor]
@@ -203,11 +212,11 @@ namespace GMData.Run
             all.Add(this);
         }
 
-        [OnDeserialized]
-        private void InitObservableData(StreamingContext context)
-        {
-            this.currValue = Observable.CombineLatest(this.percent.obs, maxValue.obs, (p, m) => p * m / 100).ToOBSValue();
-        }
+        //[OnDeserialized]
+        //private void InitObservableData(StreamingContext context)
+        //{
+        //    this.currValue = Observable.CombineLatest(this.percent.obs, maxValue.obs, (p, m) => p * m / 100).ToOBSValue();
+        //}
     }
 
     [JsonObject(MemberSerialization.OptIn)]
@@ -223,30 +232,35 @@ namespace GMData.Run
 
         public ObservableValue<double> currValue;
 
-        public ObservableValue<double> maxValue;
+        //public ObservableValue<double> maxValue;
 
         public Action<double> expend;
 
-        internal Output(string name, double percent, ObservableValue<double> maxValue, Action<double> expend = null) : this()
+        //internal Output(string name, double percent, ObservableValue<double> maxValue, Action<double> expend = null) : this()
+        //{
+        //    this.name = name;
+        //    this.percent = new SubjectValue<double>(percent);
+        //    this.maxValue = maxValue;
+        //    this.expend = expend;
+
+        //    InitObservableData(new StreamingContext());
+        //}
+
+        internal Output(string name) : this() 
         {
             this.name = name;
-            this.percent = new SubjectValue<double>(percent);
-            this.maxValue = maxValue;
-            this.expend = expend;
+            this.percent = new SubjectValue<double>(0);
+        }
 
-            InitObservableData(new StreamingContext());
+        internal void SetObsCurrValue(IObservable<double> value)
+        {
+            currValue = new ObservableValue<double>(value);
         }
 
         [JsonConstructor]
         private Output()
         {
             all.Add(this);
-        }
-
-        [OnDeserialized]
-        private void InitObservableData(StreamingContext context)
-        {
-            this.currValue = Observable.CombineLatest(this.percent.obs, maxValue.obs, (p, m) => p * m / 100).ToOBSValue();
         }
     }
 }

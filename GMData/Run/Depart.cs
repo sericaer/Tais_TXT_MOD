@@ -14,6 +14,9 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Depart
     {
+        public static Func<string, IEnumerable<Pop>> funcGetPop;
+        public static Func<string, Def.Depart> funcGetDef;
+
         [JsonProperty, DataVisitorProperty("name")]
         public string name;
 
@@ -23,35 +26,25 @@ namespace GMData.Run
         public ObservableValue<int> popNum;
 
         public ObservableValue<double> tax;
-        public ObservableValue<double> adminExpendBase;
+        public ObservableValue<double> adminExpend;
 
-        public IEnumerable<Pop> pops
-        {
-            get
-            {
-                return GMRoot.runner.pops.Where(x => x.depart_name == name);
-            }
-        }
+        public IEnumerable<Pop> pops => funcGetPop(name);
 
-        internal Def.Depart def
-        {
-            get
-            {
-                return GMRoot.define.departs.Single(x=>x.key == name);
-            }
-        }
+        internal Def.Depart def => funcGetDef(name);
 
         public static Depart GetByColor(int r, int g, int b)
         {
             return GMRoot.runner.departs.SingleOrDefault(x => x.SameColor((r, g, b)));
         }
 
-        internal static List<Depart> Init(IEnumerable<GMData.Def.Depart> departDefs)
+        internal static List<Depart> Init(IEnumerable<GMData.Def.Depart> departDefs, out List<Pop> pops)
         {
+            pops = new List<Pop>();
+
             List<Depart> departs = new List<Depart>();
             foreach(var def in departDefs)
             {
-                departs.Add(new Depart(def.key));
+                departs.Add(new Depart(def, ref pops));
             }
 
             return departs;
@@ -73,17 +66,15 @@ namespace GMData.Run
 
         }
 
-        internal Depart(string name)
+        internal Depart(GMData.Def.Depart def, ref List<Pop> pops)
         {
-            this.name = name;
+            this.name = def.key;
             this.cropGrown = new SubjectValue<double>(0);
 
             foreach (var pop_init in def.pop_init)
             {
-                GMRoot.runner.pops.Add(new Pop(name, pop_init.type, pop_init.num));
+                pops.Add(new Pop(name, pop_init.type, pop_init.num));
             }
-
-            InitObservableData(new StreamingContext());
         }
 
         [JsonConstructor]
@@ -92,8 +83,7 @@ namespace GMData.Run
 
         }
 
-        [OnDeserialized]
-        internal void InitObservableData(StreamingContext context)
+        internal void DataAssocate()
         {
             popNum = Observable.CombineLatest(pops.Where(x => x.def.is_collect_tax).Select(x => x.num.obs),
                                   (IList<double> nums) => nums.Sum(y => (int)y)).ToOBSValue();
@@ -101,7 +91,7 @@ namespace GMData.Run
             tax = Observable.CombineLatest(pops.Select(x => x.tax.value.obs),
                                     (IList<double> nums) => nums.Sum()).ToOBSValue();
 
-            adminExpendBase = Observable.CombineLatest(pops.Select(x => x.adminExpend.value.obs),
+            adminExpend = Observable.CombineLatest(pops.Select(x => x.adminExpend.value.obs),
                                    (IList<double> nums) => nums.Sum()).ToOBSValue();
         }
 

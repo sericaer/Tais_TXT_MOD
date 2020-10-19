@@ -12,6 +12,8 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Taishou
     {
+        public static Func<string, Party> FuncGetParty;
+
         [DataVisitorProperty("is_revoke")]
         public bool isRevoke;
 
@@ -26,7 +28,7 @@ namespace GMData.Run
         { 
             get
             {
-                return GMRoot.runner.partys.Find(x => x.name == partyName);
+                return FuncGetParty(partyName);
             }
         }
 

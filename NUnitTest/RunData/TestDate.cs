@@ -29,7 +29,7 @@ namespace UnitTest.RunData
         [SetUp]
         public void Init()
         {
-            GMRoot.runner = new GMData.Run.Runner();
+            GMRoot.runner = GMData.Run.Runner.Generate();
         }
 
         [Test()]
@@ -76,6 +76,15 @@ namespace UnitTest.RunData
             Assert.True(GMRoot.runner.date > (1, null, null));
             Assert.True(GMRoot.runner.date > (1, 12, null));
             Assert.True(GMRoot.runner.date > (null, null, 1));
+        }
+
+        [Test()]
+        public void Test_Serialize()
+        {
+            var json = GMRoot.runner.Serialize();
+            GMRoot.runner = GMData.Run.Runner.Deserialize(json);
+
+            TestInc();
         }
     }
 }

@@ -11,6 +11,8 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Chaoting
     {
+        public static Func<string, Party> funcGetParty;
+
         [JsonProperty]
         public SubjectValue<int> reportPopNum;
 
@@ -41,13 +43,8 @@ namespace GMData.Run
         private double _extraTax;
 
         [DataVisitorProperty("power_party")]
-        public Party powerParty
-        {
-            get
-            {
-                return GMRoot.runner.partys.Find(x => x.name == powerPartyName);
-            }
-        }
+        public Party powerParty => funcGetParty(powerPartyName);
+
 
         [JsonProperty]
         internal string powerPartyName;
@@ -57,7 +54,7 @@ namespace GMData.Run
 
         }
 
-        internal Chaoting(Def.Chaoting def)
+        internal Chaoting(Def.Chaoting def, double popNum)
         {
             powerPartyName = def.powerParty;
             if(powerParty == null)
@@ -65,10 +62,8 @@ namespace GMData.Run
                 throw new Exception($"can not find chaoting power party ${powerPartyName}");
             }
 
-            reportPopNum = new SubjectValue<int>((int)(GMRoot.runner.departs.Sum(x => x.popNum.Value) * def.reportPopPercent / 100));
+            reportPopNum = new SubjectValue<int>((int)(popNum * def.reportPopPercent / 100));
             reportTaxPercent = new SubjectValue<double>(def.taxPercent);
-
-            InitObservableData(new StreamingContext());
         }
 
         internal void ReportMonthTax(double value)
@@ -76,17 +71,16 @@ namespace GMData.Run
             _extraTax += value - expectMonthTaxValue.Value;
         }
 
+        internal void DataAssocate()
+        {
+            expectMonthTaxValue = Observable.CombineLatest(reportPopNum.obs, reportTaxPercent.obs,
+                                        (x, y) => x * 0.006 * y / 100)
+                                        .ToOBSValue();
+        }
+
         [JsonConstructor]
         private Chaoting()
         {
-        }
-
-        [OnDeserialized]
-        private void InitObservableData(StreamingContext context)
-        {
-            expectMonthTaxValue = Observable.CombineLatest(reportPopNum.obs, reportTaxPercent.obs,
-                                        (x, y)=> x*0.006*y/100)
-                                        .ToOBSValue();
         }
     }
 }
