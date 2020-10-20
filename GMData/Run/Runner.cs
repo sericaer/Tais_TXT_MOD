@@ -81,7 +81,7 @@ namespace GMData.Run
 
             Pop.funcGetDef = (name) => GMRoot.define.pops.Single(x => x.key == name);
             Pop.funcGetDepart = (departName) => departs.Single(x => x.name == departName);
-            Pop.funcGetTaxpercent = ()=> economy.incomes.popTax.percent.obs;
+            Pop.funcGetTaxpercent = ()=> economy.incomes.popTax.percent.obs.Select(x=>x/100);
 
             Depart.funcGetPop = (name) => pops.Where(x => x.depart_name == name);
             Depart.funcGetDef = (name) => GMRoot.define.departs.Single(x => x.key == name);
