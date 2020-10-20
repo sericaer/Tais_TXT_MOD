@@ -15,8 +15,8 @@ namespace TaisGodot.Scripts
 		}
 
 		private void _on_Button_Pressed()
-        {
+		{
 			PopDetail.Instance(this, gmObj);
-        }
+		}
 	}
 }

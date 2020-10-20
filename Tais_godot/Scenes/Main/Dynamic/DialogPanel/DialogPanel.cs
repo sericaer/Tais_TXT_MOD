@@ -76,7 +76,7 @@ namespace TaisGodot.Scripts
 			Exit();
 		}
 
-        private void Exit()
+		private void Exit()
 		{
 			QueueFree();
 

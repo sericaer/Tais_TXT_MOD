@@ -107,7 +107,8 @@ namespace GMData.Run
 
             economy.incomes.popTax.SetObsCurrValue(Observable.CombineLatest(departs.Select(x => x.tax.obs)).Select(x=>x.Sum()));
             economy.outputs.departAdmin.SetObsCurrValue(Observable.CombineLatest(departs.Select(x => x.adminExpend.obs)).Select(x => x.Sum()));
-            economy.outputs.reportChaoting.SetObsCurrValue(chaoting.expectMonthTaxValue.obs);
+            economy.outputs.reportChaoting.SetObsCurrValue(Observable.CombineLatest(chaoting.expectMonthTaxValue.obs, 
+                                                          economy.outputs.reportChaoting.percent.obs, (x, y)=> x*y/100));
             economy.outputs.reportChaoting.expend = chaoting.ReportMonthTax;
 
             economy.DataAssocate();

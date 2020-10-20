@@ -37,9 +37,9 @@ namespace TaisGodot.Scripts
 			}
 
 			foreach (var eventobj in GMRoot.modder.events)
-            {
-                await ToSignal(ShowDialog(eventobj), "tree_exited");
-            }
+			{
+				await ToSignal(ShowDialog(eventobj), "tree_exited");
+			}
 
 			//riskContainer.Refresh();
 

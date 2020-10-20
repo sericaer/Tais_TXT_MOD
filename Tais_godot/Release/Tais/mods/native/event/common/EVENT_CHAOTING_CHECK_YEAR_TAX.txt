@@ -2,9 +2,10 @@ trigger =
 {
     and = 
     {
-        not = { date = {year = 1} }
+        not = {equal = {date.year, 1}}
         greater = {chaoting.owe_tax, 0}
     }
+   
 }
 
 date = {month = 1, day=1}
