@@ -1,59 +1,56 @@
-﻿//using DataVisit;
-//using Modder;
-//using NUnit.Framework;
-//using RunData;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//namespace UnitTest.RunData
-//{
-//    [TestFixture()]
-//    public class TestRisk : TestRunData
-//    {
-//        [Test()]
-//        public void Test_RiskStart()
-//        {
-//            ModDataVisit.InitVisitMap(typeof(Root));
+﻿using DataVisit;
+using GMData;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+namespace UnitTest.RunData
+{
+    [TestFixture()]
+    public class TestRisk : TestRunDataBase
+    {
+        [SetUp]
+        public void Init()
+        {
+            GMRoot.runner = GMData.Run.Runner.Generate();
+        }
 
-//            Root.Init(init);
-//            ModDataVisit.InitVisitData(Root.inst);
+        [Test()]
+        public void Test_RiskStart()
+        {
+            Assert.AreEqual(0, GMRoot.runner.risks.Count());
 
-//            Assert.AreEqual(0, Risk.all.Count());
+            var def = GMRoot.define.risks[0];
+            Visitor.Set("risk.start", def.key);
 
-//            var def = Root.def.risks[0];
-//            Visitor.Set("risk.start", def.key);
+            var risk = GMRoot.runner.risks.SingleOrDefault(x => x.key == def.key);
+            Assert.NotNull(risk);
+            Assert.AreEqual(0, risk.percent.Value);
+        }
 
-//            var risk = Risk.all.SingleOrDefault(x => x.key == def.key);
-//            Assert.NotNull(risk);
-//            Assert.AreEqual(0, risk.percent.Value);
-//        }
+        [Test()]
+        public void Test_RiskDaysInc()
+        {
+            var def = GMRoot.define.risks[0];
 
-//        [Test()]
-//        public void Test_RiskDaysInc()
-//        {
-//            ModDataVisit.InitVisitMap(typeof(Root));
+            Visitor.Set("risk.start", def.key);
 
-//            Root.Init(init);
-//            ModDataVisit.InitVisitData(Root.inst);
+            var risk = GMRoot.runner.risks.SingleOrDefault(x => x.key == def.key);
+            Assert.NotNull(risk);
 
-//            var def = Root.def.risks[0];
+            double percent = 0.0;
+            Assert.AreEqual(percent, risk.percent.Value);
 
-//            var risk = new Risk(def.key);
-//            Risk.all.Add(risk);
+            for (int i = 1; i <= def.cost_days; i++)
+            {
+                risk.DaysInc();
 
-//            double percent = 0.0;
-//            Assert.AreEqual(percent, risk.percent.Value);
+                percent += (100 / def.cost_days);
+                Assert.AreEqual(percent, risk.percent.Value);
+            }
 
-//            for (int i=1; i<=def.cost_days; i++)
-//            {
-//                Risk.DaysInc();
-
-//                percent += (100 / def.cost_days);
-//                Assert.AreEqual(percent, risk.percent.Value);
-//            }
-
-//            Risk.DaysInc();
-//            Assert.AreEqual(0, Risk.all.Count());
-//        }
-//    }
-//}
+            risk.DaysInc();
+            Assert.AreEqual(0, GMRoot.runner.risks.Count());
+        }
+    }
+}

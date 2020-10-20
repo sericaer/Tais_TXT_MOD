@@ -34,6 +34,9 @@ namespace GMData.Run
         [JsonProperty]
         public List<Risk> risks;
 
+        [DataVisitorProperty("risk")]
+        public RiskMgr riskMgr;
+
         public ObservableValue<int> registerPopNum;
 
         public static Runner Generate()
@@ -65,6 +68,9 @@ namespace GMData.Run
             chaoting = new Chaoting(GMRoot.define.chaoting, pops.Where(x=>x.def.is_collect_tax).Sum(x=>x.num.Value));
 
             economy = new Economy(GMRoot.define.economy);
+
+            risks = new List<Risk>();
+            riskMgr = new RiskMgr();
         }
 
         [JsonConstructor]
@@ -114,6 +120,10 @@ namespace GMData.Run
             economy.DaysInc();
 
             date.Inc();
+
+            risks.ForEach(x => x.DaysInc());
+
+            risks.RemoveAll(x => x.isEnd);
         }
 
         public bool isEnd()

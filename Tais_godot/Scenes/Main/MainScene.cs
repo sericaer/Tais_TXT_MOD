@@ -24,6 +24,7 @@ namespace TaisGodot.Scripts
 			//warnContainer = GetNode<WarnContainer>("VBoxContainer/WinContainer/ImpContainer/WarnContainer");
 			//taskContainer = GetNode<TaskContainer>("VBoxContainer/WinContainer/TaskContainer");
 			//riskContainer = GetNode<RiskContainer>("VBoxContainer/WinContainer/TaskContainer");
+			//riskContainer.gmRisks = GMRoot.runner.risks;
 		}
 
 		private async void _on_DaysInc()
@@ -35,23 +36,25 @@ namespace TaisGodot.Scripts
 				await ToSignal(ShowSpecialDialog(spevent), "tree_exited");
 			}
 
-            foreach (var eventobj in GMRoot.modder.events)
+			foreach (var eventobj in GMRoot.modder.events)
             {
                 await ToSignal(ShowDialog(eventobj), "tree_exited");
             }
 
-            //warnContainer.Refresh(GMRoot.modder.warns);
+			//riskContainer.Refresh();
 
-            ////taskContainer.Refresh(Runner.GetTask());
+			//warnContainer.Refresh(GMRoot.modder.warns);
 
-            //riskContainer.Refresh(GMRoot.runner.risks);
+			////taskContainer.Refresh(Runner.GetTask());
 
-            //if (GMRoot.runner.isEnd())
-            //{
-            //	GMRoot.runner = null;
-            //	GetTree().ChangeScene("res://Scenes/End/EndScene.tscn");
-            //}
-        }
+			//riskContainer.Refresh(GMRoot.runner.risks);
+
+			//if (GMRoot.runner.isEnd())
+			//{
+			//	GMRoot.runner = null;
+			//	GetTree().ChangeScene("res://Scenes/End/EndScene.tscn");
+			//}
+		}
 
 		internal static Node ShowDialog(GMData.Mod.GEvent eventobj)
 		{

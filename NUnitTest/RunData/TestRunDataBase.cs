@@ -77,6 +77,11 @@ namespace UnitTest.RunData
                     reportPopPercent = 110,
                     powerParty = "TEST_PARTY",
                     taxPercent = 20,
+                },
+
+                risks = new List<Risk>()
+                {
+                    new Risk(){ key = "TEST_RISK_0", cost_days = 100}
                 }
             };
         }

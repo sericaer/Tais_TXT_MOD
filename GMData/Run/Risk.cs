@@ -41,7 +41,7 @@ namespace GMData.Run
             this.percent = new SubjectValue<double>(0.0);
         }
 
-        internal bool isEnd
+        public bool isEnd
         {
             get
             {
@@ -64,9 +64,9 @@ namespace GMData.Run
         //    }
         //}
 
-        internal static List<Risk> Init()
+        internal void DaysInc()
         {
-            return new List<Risk>();
+            percent.Value += 100 / def.cost_days;
         }
     }
 }

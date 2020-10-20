@@ -1,9 +1,13 @@
 trigger = 
 {
-    greater = {chaoting.owe_tax, 0}
+    and = 
+    {
+        not = { date = {year = 1} }
+        greater = {chaoting.owe_tax, 0}
+    }
 }
 
-date = {month = 11, day=1}
+date = {month = 1, day=1}
 
 occur = 1
 
