@@ -71,6 +71,11 @@ namespace GMData.Run
             _extraTax += value - expectMonthTaxValue.Value;
         }
 
+        internal void ReportTaxPlus(double value)
+        {
+            _extraTax += value;
+        }
+
         internal void DataAssocate()
         {
             expectMonthTaxValue = Observable.CombineLatest(reportPopNum.obs, reportTaxPercent.obs,

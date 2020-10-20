@@ -30,7 +30,7 @@ namespace UnitTest.RunData
                     var popDef = GMRoot.define.pops.SingleOrDefault(x => x.key == pop.name);
                     Assert.AreEqual(popDef, pop.def);
 
-                    Assert.AreEqual(pop.def.is_collect_tax ? pop.num.Value*0.01*GMRoot.runner.economy.incomes.popTax.percent.Value : 0, pop.tax.value.Value);
+                    Assert.AreEqual(pop.def.is_collect_tax ? pop.num.Value * 0.01 * GMRoot.runner.economy.incomes.popTax.percent.Value /100 : 0, pop.tax.value.Value);
                     Assert.AreEqual(pop.def.is_collect_tax ? pop.num.Value * 0.0005 : 0, pop.adminExpend.value.Value);
 
                     if(popDef.consume == null)
