@@ -9,6 +9,18 @@ namespace TaisGodot.Scripts
 {
 	class DialogPanel : Panel
 	{
+		public const string path = "res://Scenes/Main/Dynamic/DialogPanel/DialogPanel.tscn";
+
+		internal static DialogPanel Instance(Node parent, GMData.Mod.GEvent eventObj)
+		{
+			var dialogNode = (DialogPanel)ResourceLoader.Load<PackedScene>(path).Instance();
+			dialogNode.gEventObj = eventObj;
+
+			parent.AddChild(dialogNode);
+
+			return dialogNode;
+		}
+
 		public DialogPanel()
 		{
 			SpeedContrl.Pause();
@@ -64,7 +76,7 @@ namespace TaisGodot.Scripts
 			Exit();
 		}
 
-		private void Exit()
+        private void Exit()
 		{
 			QueueFree();
 

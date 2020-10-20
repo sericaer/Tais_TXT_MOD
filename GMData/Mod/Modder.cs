@@ -21,9 +21,9 @@ namespace GMData.Mod
             {
                 foreach (var eventObj in mods[0].events.Values)
                 {
-                    if (eventObj.isValid())
+                    foreach(var rslt in eventObj.Check())
                     {
-                        yield return eventObj;
+                        yield return rslt;
                     }
                 }
             }
@@ -131,6 +131,7 @@ namespace GMData.Mod
             departs = Depart.Load(name, path + "/depart");
             pops = Pop.Load(name, path + "/pop");
             common = Common.Load(name, path + "/common");
+            events = GEvent.Load(name, path + "/event");
         }
     }
 }

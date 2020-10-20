@@ -13,6 +13,9 @@ namespace UnitTest.Modder.Mock
             return inst;
         }
 
+        [DataVisitorProperty("date")]
+        public GMData.Run.Date date;
+
         [DataVisitorProperty("item1")]
         public Item1 item1;
 
@@ -21,6 +24,8 @@ namespace UnitTest.Modder.Mock
 
         public Demon()
         {
+            date = new GMData.Run.Date(new GMData.Init.Date());
+
             item1 = new Item1();
 
             departs = new List<Depart>() { new Depart(),

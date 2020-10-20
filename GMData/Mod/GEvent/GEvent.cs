@@ -10,8 +10,11 @@ using Parser.Syntax;
 
 namespace GMData.Mod
 {
-    public partial class GEvent
+    public abstract partial class GEvent
     {
+
+        public static Func<IEnumerable<GEvent>> funcCheck;
+
         public string key;
         public Title title;
         public Desc desc;
@@ -21,9 +24,20 @@ namespace GMData.Mod
 
         internal GEventParse parse;
 
+        internal static Dictionary<string, GEvent> Load(string name, string path)
+        {
+            var dict = new Dictionary<string, GEvent>();
+
+            GEventCommon.Load(name, path + "/common", ref dict);
+
+            return dict;
+        }
+
+        internal abstract IEnumerable<GEvent> Check();
+
         public bool isValid()
         {
-            if(parse.date != null || !parse.date.isTrue())
+            if(parse.date != null && !parse.date.isTrue())
             {
                 return false;
             }

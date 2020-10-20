@@ -35,41 +35,27 @@ namespace TaisGodot.Scripts
 				await ToSignal(ShowSpecialDialog(spevent), "tree_exited");
 			}
 
-			//foreach (var eventobj in GMRoot.modder.events)
-			//{
-			//	var dialog = ShowDialog(eventobj);
+            foreach (var eventobj in GMRoot.modder.events)
+            {
+                await ToSignal(ShowDialog(eventobj), "tree_exited");
+            }
 
-			//	await ToSignal(dialog, "tree_exited");
-			//}
+            //warnContainer.Refresh(GMRoot.modder.warns);
 
-			//warnContainer.Refresh(GMRoot.modder.warns);
+            ////taskContainer.Refresh(Runner.GetTask());
 
-			////taskContainer.Refresh(Runner.GetTask());
+            //riskContainer.Refresh(GMRoot.runner.risks);
 
-			//riskContainer.Refresh(GMRoot.runner.risks);
-
-			//if (GMRoot.runner.isEnd())
-			//{
-			//	GMRoot.runner = null;
-			//	GetTree().ChangeScene("res://Scenes/End/EndScene.tscn");
-			//}
-		}
+            //if (GMRoot.runner.isEnd())
+            //{
+            //	GMRoot.runner = null;
+            //	GetTree().ChangeScene("res://Scenes/End/EndScene.tscn");
+            //}
+        }
 
 		internal static Node ShowDialog(GMData.Mod.GEvent eventobj)
 		{
-			GD.Print(eventobj.title.Format);
-			GD.Print(eventobj.desc.Format);
-			foreach (var op in eventobj.options)
-			{
-				GD.Print(op.desc.Format);
-			}
-
-			var dialogNode = (DialogPanel)ResourceLoader.Load<PackedScene>("res://Scenes/Main/Dynamic/DialogPanel/DialogPanel.tscn").Instance();
-			dialogNode.gEventObj = eventobj;
-
-			inst.AddChild(dialogNode);
-
-			return dialogNode;
+			return DialogPanel.Instance(inst, eventobj);
 		}
 
 		internal static Node ShowSpecialDialog(SpecialEventDialog spEvent)

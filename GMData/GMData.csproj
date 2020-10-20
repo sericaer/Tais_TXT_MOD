@@ -91,6 +91,7 @@
     <Compile Include="Def\Economy.cs" />
     <Compile Include="Def\Chaoting.cs" />
     <Compile Include="Mod\Common.cs" />
+    <Compile Include="Mod\GEvent\GEventCommon.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

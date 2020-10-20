@@ -11,13 +11,13 @@ namespace NUnitTest.Modder
 
         internal TestModBase()
         {
-            ModFileSystem.Clear();
-
             modFileSystem = ModFileSystem.Generate(this.GetType().Name);
         }
 
         internal void LoadModScript(string path, params (string file, string content)[] events)
         {
+            ModFileSystem.Clear();
+
             foreach (var fevent in events)
             {
                 modFileSystem.AddFile(path, fevent.file, fevent.content);
