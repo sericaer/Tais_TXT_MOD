@@ -13,5 +13,10 @@ namespace TaisGodot.Scripts
 
 			GetNode<ReactiveLabel>("Num").Assoc(gmObj.num);
 		}
+
+		private void _on_Button_Pressed()
+        {
+			PopDetail.Instance(this, gmObj);
+        }
 	}
 }

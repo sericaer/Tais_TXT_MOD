@@ -108,6 +108,7 @@
     <Compile Include="Scenes\Init\InitScene.cs" />
     <Compile Include="Scenes\Init\Dynamic\InitSelectPanel\InitSelectPanel.cs" />
     <Compile Include="Scenes\Init\Dynamic\InitNameAgePanel\InitNameAgePanel.cs" />
+    <Compile Include="Scenes\Main\Dynamic\PopDetail\PopDetail.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
@@ -117,6 +118,9 @@
       <Project>{DD5D111B-8B36-46B6-A33F-B2928FA885CC}</Project>
       <Name>GMData</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scenes\Main\Dynamic\PopDetail\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

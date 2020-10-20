@@ -106,9 +106,7 @@ namespace GMData.Run
 
             economy.DataAssocate();
 
-            registerPopNum = Observable.CombineLatest(pops.Where(x => x.def.is_collect_tax).Select(x => x.num.obs),
-                                         (IList<double> taxs) => taxs.Sum(y => (int)y)).ToOBSValue();
-
+            registerPopNum = Observable.CombineLatest(departs.Select(x=>x.popNum.obs)).Select(x=>x.Sum()).ToOBSValue();
         }
 
         public void DaysInc()
