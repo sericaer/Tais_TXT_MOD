@@ -37,6 +37,26 @@ namespace GMData.Mod
             }
         }
 
+        public GEvent GetEvent(string key)
+        {
+            return mods[0].events[key];
+        }
+
+        public IEnumerable<Warn> warns
+        {
+            get
+            {
+                foreach (var warnObj in mods[0].warns)
+                {
+                    if(warnObj.isValid())
+                    {
+                        yield return warnObj;
+
+                    }
+                }
+            }
+        }
+
         public PersonName personName
         {
             get
@@ -79,8 +99,6 @@ namespace GMData.Mod
 
         private List<Mod> mods;
 
-        public IEnumerable<Warn> warns { get; }
-
         public Modder(string path)
         {
             mods = new List<Mod>();
@@ -115,6 +133,7 @@ namespace GMData.Mod
         internal List<Party> parties;
         internal List<Depart> departs;
         internal List<Pop> pops;
+        internal List<Warn> warns;
 
         internal PersonName personName;
         internal Common common;
@@ -132,6 +151,7 @@ namespace GMData.Mod
             pops = Pop.Load(name, path + "/pop");
             common = Common.Load(name, path + "/common");
             events = GEvent.Load(name, path + "/event");
+            warns = Warn.Load(name, path + "/warn");
         }
     }
 }

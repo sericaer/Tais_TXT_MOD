@@ -65,6 +65,7 @@
     <Compile Include="RunData\TestPop.cs" />
     <Compile Include="Modder\Define\TestCommon.cs" />
     <Compile Include="Modder\TestModBase.cs" />
+    <Compile Include="Modder\Risk\TestRisk.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -80,5 +81,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Modder\Risk\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

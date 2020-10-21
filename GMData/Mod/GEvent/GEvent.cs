@@ -12,9 +12,6 @@ namespace GMData.Mod
 {
     public abstract partial class GEvent
     {
-
-        public static Func<IEnumerable<GEvent>> funcCheck;
-
         public string key;
         public Title title;
         public Desc desc;

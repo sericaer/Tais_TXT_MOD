@@ -92,6 +92,7 @@
     <Compile Include="Def\Chaoting.cs" />
     <Compile Include="Mod\Common.cs" />
     <Compile Include="Mod\GEvent\GEventCommon.cs" />
+    <Compile Include="Mod\Warn\WarnCommon.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

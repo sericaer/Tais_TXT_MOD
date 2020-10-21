@@ -42,5 +42,14 @@ namespace GMData.Mod
         {
             return trigger.Rslt();
         }
+
+        internal static List<Warn> Load(string name, string path)
+        {
+            var list = new List<Warn>();
+
+            WarnCommon.Load(name, path + "/common", ref list);
+
+            return list;
+        }
     }
 }

@@ -27,42 +27,17 @@ namespace GMData.Run
         [JsonProperty]
         public SubjectValue<double> percent;
 
-        private Def.Risk def
-        {
-            get
-            {
-                return GMRoot.define.risks.Single(x => x.key == key);
-            }
-        }
+        public bool isEnd => percent.Value > 100 || Math.Abs(percent.Value - 100) < 0.0001;
+
+        public string endEvent => def.endEvent;
+
+        private Def.Risk def => GMRoot.define.risks.Single(x => x.key == key);
 
         public Risk(string key)
         {
             this.key = key;
             this.percent = new SubjectValue<double>(0.0);
         }
-
-        public bool isEnd
-        {
-            get
-            {
-                return percent.Value > 100 || Math.Abs(percent.Value - 100) < 0.0001;
-            }
-        }
-
-        //internal static IEnumerable<string> DaysInc()
-        //{
-        //    all.RemoveAll(risk => risk.isEnd);
-
-        //    foreach(var risk in all)
-        //    {
-        //        risk.percent.Value += 100 / risk.def.cost_days;
-
-        //        if(risk.isEnd)
-        //        {
-        //            yield return risk.def.endEvent;
-        //        }
-        //    }
-        //}
 
         internal void DaysInc()
         {

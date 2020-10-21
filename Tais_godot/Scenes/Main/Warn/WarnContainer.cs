@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GMData;
 using Godot;
 
 namespace TaisGodot.Scripts
@@ -15,33 +16,28 @@ namespace TaisGodot.Scripts
 
 		}
 
-        internal void Refresh(IEnumerable<GMData.Mod.Warn> warns)
+        internal void Refresh()
         {
 			var warnItems = this.GetChildren<WarnItem>().ToList();
+			warnItems.ForEach(x => x.ClearDesc());
 
-			var needRemoves = warnItems.FindAll(x => !warns.Any(y=>y.key == x.Name));
-			needRemoves.ForEach(x =>
+			foreach (var warn in GMRoot.modder.warns)
 			{
-				warnItems.Remove(x);
-				x.QueueFree();
-			});
-
-			foreach(var warnGroup in warns.GroupBy(x=>x.key))
-            {
-				var warnItem = warnItems.SingleOrDefault(x => x.Name == warnGroup.Key);
+				var warnItem = warnItems.SingleOrDefault(x => x.Name == warn.key);
 				if (warnItem == null)
-                {
+				{
 					warnItem = (WarnItem)ResourceLoader.Load<PackedScene>("res://Scenes/Main/Warn/WarnItem.tscn").Instance();
-					warnItem.Name = warnGroup.Key;
+					warnItem.Name = warn.key;
 
 					AddChild(warnItem);
 				}
 
-				warnItem.Refresh(warnGroup.Select(x=>x.desc));
+				warnItem.AddDesc(warn.desc);
 			}
-			
-        }
-	}
+
+			warnItems.RemoveAll(x => x.DescEmpty());
+		}
+    }
 }
 
 

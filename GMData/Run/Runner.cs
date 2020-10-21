@@ -37,6 +37,9 @@ namespace GMData.Run
         [DataVisitorProperty("risk")]
         public RiskMgr riskMgr;
 
+        [DataVisitorProperty("gm_end")]
+        public bool gmEnd;
+
         public ObservableValue<int> registerPopNum;
 
         public static Runner Generate()
@@ -129,7 +132,7 @@ namespace GMData.Run
 
         public bool isEnd()
         {
-            throw new NotImplementedException();
+            return gmEnd;
         }
 
         public string Serialize()

@@ -8,9 +8,10 @@ namespace TaisGodot.Scripts
 {
 	class RiskContainer : VBoxContainer
 	{
-        internal void Refresh()
+        internal IEnumerable<GMData.Mod.GEvent> Refresh()
         {
 			var riskItems = this.GetChildren<Risk>().ToList();
+			riskItems.RemoveAll(x => x.gmObj.isEnd);
 
 			var needAdds = GMRoot.runner.risks.Where(x => !riskItems.Any(y => y.gmObj == x)).ToList();
 			needAdds.ForEach(x =>
@@ -19,7 +20,13 @@ namespace TaisGodot.Scripts
 				riskItem.Connect("tree_exited", this, nameof(_on_DeleteRisk), new Godot.Collections.Array() {x});
 			});
 
-			riskItems.RemoveAll(x => x.gmObj.isEnd);
+			foreach(var risk in GMRoot.runner.risks)
+            {
+				if(risk.isEnd && risk.endEvent != null)
+                {
+					yield return GMRoot.modder.GetEvent(risk.endEvent);
+                }
+            }
 		}
 
 		private void _on_DeleteRisk(GMData.Run.Risk risk)
