@@ -109,6 +109,9 @@
     <Compile Include="Scenes\Init\Dynamic\InitSelectPanel\InitSelectPanel.cs" />
     <Compile Include="Scenes\Init\Dynamic\InitNameAgePanel\InitNameAgePanel.cs" />
     <Compile Include="Scenes\Main\Dynamic\PopDetail\PopDetail.cs" />
+    <Compile Include="Global\Table\TableContainer.cs" />
+    <Compile Include="Global\Table\TableDataElemPanel.cs" />
+    <Compile Include="Global\Table\TableColumElemPanel.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
