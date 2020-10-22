@@ -37,9 +37,6 @@ namespace GMData.Run
         [DataVisitorProperty("risk")]
         public RiskMgr riskMgr;
 
-        [DataVisitorProperty("gm_end")]
-        public bool gmEnd;
-
         public ObservableValue<int> registerPopNum;
 
         public static Runner Generate()
@@ -132,7 +129,7 @@ namespace GMData.Run
 
         public bool isEnd()
         {
-            return gmEnd;
+            return taishou.isRevoke;
         }
 
         public string Serialize()

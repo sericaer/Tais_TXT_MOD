@@ -69,6 +69,7 @@
     <Compile Include="Semantic\Operation\OperationAdd.cs" />
     <Compile Include="Semantic\Operation\OperationAssign.cs" />
     <Compile Include="Semantic\Operation\OperationReduce.cs" />
+    <Compile Include="Semantic\Operation\OperationRiskStart.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

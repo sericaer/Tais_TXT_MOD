@@ -1,0 +1,4 @@
+trigger = 
+{
+    less = {economy.month_surplus, 0}
+}

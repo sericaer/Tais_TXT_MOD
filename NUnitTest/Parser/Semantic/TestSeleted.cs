@@ -22,6 +22,11 @@ namespace NUnitTest.ParserT.SemanticT
                 sub = new TestDataSub()
                 {
                     a = 1
+                },
+
+                risk = new Risk()
+                {
+                    start = ""
                 }
             };
         }
@@ -104,6 +109,32 @@ namespace NUnitTest.ParserT.SemanticT
 
             Assert.AreEqual(0, TestData.inst.sub.a);
         }
+
+
+        [Test()]
+        public void TestRiskStart()
+        {
+            string raw = @"test_demon =
+            {
+                selected =
+                {
+                    risk.start = RISK_TEST
+                }
+            }";
+
+            DataVisit.Visitor.InitVisitMap(typeof(TestData));
+            DataVisit.Visitor.SetVisitData(TestData.inst);
+
+            Parser.Semantic.Visitor.GetValueFunc = DataVisit.Visitor.Get;
+            Parser.Semantic.Visitor.SetValueFunc = DataVisit.Visitor.Set;
+
+            var syntaxItem = SyntaxItem.RootParse(raw);
+            TestDemon demo = SemanticParser.DoParser<TestDemon>(syntaxItem.Find("test_demon"));
+
+            demo.operation.Do();
+
+            Assert.AreEqual("RISK_TEST", TestData.inst.risk.start);
+        }
     }
 
     public class TestData
@@ -112,11 +143,20 @@ namespace NUnitTest.ParserT.SemanticT
 
         [DataVisitorProperty("sub")]
         public TestDataSub sub;
+
+        [DataVisitorProperty("risk")]
+        public Risk risk;
     }
 
     public class TestDataSub
     {
         [DataVisitorProperty("a")]
         public double a;
+    }
+
+    public class Risk
+    {
+        [DataVisitorProperty("start")]
+        public string start;
     }
 }

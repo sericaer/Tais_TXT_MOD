@@ -16,6 +16,6 @@ option =
 {
     selected = 
     {
-        risk_start = RISK_CHAOTING_ROVKE_TAISHOU
+        risk.start = RISK_CHAOTING_REOVKE_TAISHOU
     }
 }

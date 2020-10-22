@@ -31,6 +31,9 @@ namespace Parser.Semantic
                     case "assign":
                         rslt.opList.Add(OperationAssign.Parse(subItem));
                         break;
+                    case "risk.start":
+                        rslt.opList.Add(OperationRiskStart.Parse(subItem));
+                        break;
                     default:
                         throw new Exception($"can not support {subItem.key} in select");
                 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using GMData.Mod;
 using Parser.Semantic;
 
 namespace GMData.Def
@@ -20,7 +21,7 @@ namespace GMData.Def
 
         public string key;
 
-        internal static List<Risk> Load(string path)
+        internal static List<Risk> Load(string mod, string path)
         {
             List<Risk> rslt = new List<Risk>();
 
@@ -29,13 +30,13 @@ namespace GMData.Def
                 return rslt;
             }
 
-            //foreach (var file in Directory.EnumerateFiles(path, "*.txt"))
-            //{
-            //    var risk = DefElementLoader.Load<Risk>(file, File.ReadAllText(file));
-            //    risk.file = file;
-            //    risk.key = Path.GetFileNameWithoutExtension(file);
-            //    rslt.Add(risk);
-            //}
+            foreach (var file in Directory.EnumerateFiles(path, "*.txt"))
+            {
+                var risk = ModElementLoader.Load<Risk>(file, File.ReadAllText(file));
+                risk.file = file;
+                risk.key = Path.GetFileNameWithoutExtension(file);
+                rslt.Add(risk);
+            }
 
             return rslt;
         }

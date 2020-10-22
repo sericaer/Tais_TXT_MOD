@@ -97,6 +97,14 @@ namespace GMData.Mod
             }
         }
 
+        public List<Risk> risks
+        {
+            get
+            {
+                return mods[0].risks;
+            }
+        }
+
         private List<Mod> mods;
 
         public Modder(string path)
@@ -116,7 +124,8 @@ namespace GMData.Mod
                 departs = this.departs,
                 pops = this.pops,
                 economy = this.common.economy,
-                chaoting = this.common.chaoting
+                chaoting = this.common.chaoting,
+                risks = this.risks
             };
         }
 
@@ -134,6 +143,7 @@ namespace GMData.Mod
         internal List<Depart> departs;
         internal List<Pop> pops;
         internal List<Warn> warns;
+        internal List<Risk> risks;
 
         internal PersonName personName;
         internal Common common;
@@ -152,6 +162,7 @@ namespace GMData.Mod
             common = Common.Load(name, path + "/common");
             events = GEvent.Load(name, path + "/event");
             warns = Warn.Load(name, path + "/warn");
+            risks = Risk.Load(name, path + "/risk");
         }
     }
 }
