@@ -65,7 +65,7 @@ namespace TableGodot
 
         private void UpdateTable()
         {
-            var tabeDataElemPanel = this.GetChildren<TabeDataElemUI>().ToList();
+            var tabeDataElemPanel = this.GetChildren<TableDataElemUI>().ToList();
             tabeDataElemPanel.ForEach(x => x.QueueFree());
 
             for (int i=0; i< tableData.Count; i++)
@@ -83,7 +83,7 @@ namespace TableGodot
 
         private Node LoadDataUI(string path, string desc)
         {
-            var tabeDataElemPanel = (TabeDataElemUI)ResourceLoader.Load<PackedScene>(path).Instance();
+            var tabeDataElemPanel = (TableDataElemUI)ResourceLoader.Load<PackedScene>(path).Instance();
             tabeDataElemPanel.desc = desc;
 
             AddChild(tabeDataElemPanel);

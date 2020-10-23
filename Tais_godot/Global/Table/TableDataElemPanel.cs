@@ -3,7 +3,7 @@ using Godot;
 
 namespace TableGodot
 {
-    public class TabeDataElemUI : PanelContainer
+    public class TableDataElemUI : PanelContainer
     {
         public string desc;
 
