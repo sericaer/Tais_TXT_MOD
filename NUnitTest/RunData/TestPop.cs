@@ -39,7 +39,7 @@ namespace UnitTest.RunData
                     }
                     else
                     {
-                        Assert.AreEqual(pop.def.consume, pop.consume.value.Value);
+                        Assert.AreEqual(pop.def.consume + GMRoot.runner.economy.incomes.popTax.pop_consume_effect.Value, pop.consume.value.Value);
                     }
                 }
             }

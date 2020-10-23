@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Runtime.Serialization;
 using DataVisit;
 using Newtonsoft.Json;
 
@@ -78,35 +80,53 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class ObservableBufferedValue
     {
-        public ObservableValue<double> baseValue;
+        [JsonProperty]
+        public double? baseValue;
 
         [JsonProperty]
-        public ObservableCollection<(string name, double value)> buffers;
+        public OrderedDictionary buffers = new OrderedDictionary();
 
-        public ObservableValue<double> value;
+        public SubjectValue<double> value = new SubjectValue<double>(0);
 
-        internal void SetBaseValue(IObservable<double> baseValue)
+        public void SetBaseValue(double baseValue)
         {
-            this.baseValue = new ObservableValue<double>(baseValue);
-            this.buffers = new ObservableCollection<(string name, double value)>();
-
-            var bufferChanged = Observable.FromEventPattern(
-                                    (EventHandler<NotifyCollectionChangedEventArgs> ev)
-                                        => new NotifyCollectionChangedEventHandler(ev),
-                                           ev => buffers.CollectionChanged += ev,
-                                           ev => buffers.CollectionChanged -= ev)
-                                .Select(x => buffers.Sum(y => y.value))
-                                .StartWith(buffers.Sum(y => y.value));
-
-            value = Observable.CombineLatest(this.baseValue.obs, bufferChanged, (x, y) => x + y).ToOBSValue();
-        }
-
-        internal ObservableBufferedValue()
-        {
-            this.buffers = new ObservableCollection<(string name, double value)>();
+            this.baseValue = baseValue;
+            UpdateValue();
         }
 
 
+        public void SetBuffer(string key, double value)
+        {
+            if(buffers.Contains(key))
+            {
+                buffers[key] = value;
+            }
+            else
+            {
+                buffers.Add(key, value);
+            }
+            
+            UpdateValue();
+        }
+
+
+        private void UpdateValue()
+        {
+            double rslt = 0;
+            foreach(double elem in buffers.Values)
+            {
+                rslt += elem;
+            }
+            rslt += baseValue == null ? 0 : baseValue.Value;
+
+            value.Value = rslt;
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            UpdateValue();
+        }
     }
 
 }

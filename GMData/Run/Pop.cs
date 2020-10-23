@@ -15,7 +15,6 @@ namespace GMData.Run
     {
         internal static Func<string, Depart> funcGetDepart;
         internal static Func<string, Def.Pop> funcGetDef;
-        internal static Func<IObservable<double>> funcGetTaxpercent;
 
         [JsonProperty]
         public string name;
@@ -61,16 +60,21 @@ namespace GMData.Run
             }
         }
 
-        internal void DataAssociate()
+        internal void DataAssociate(IObservable<double> tax_percent, IObservable<double> consume_effect)
         {
-            var taxBase = this.num.obs.Select(x => def.is_collect_tax ? x * 0.01 : 0);
+            num.obs.Subscribe(x => this.adminExpend.SetBaseValue(def.is_collect_tax ? x * 0.0005 : 0));
 
-            this.tax.SetBaseValue(Observable.CombineLatest(taxBase, funcGetTaxpercent(), (b, p) => b * p));
-            this.adminExpend.SetBaseValue(this.num.obs.Select(x => def.is_collect_tax ? x * 0.0005 : 0));
-
-            if (this.consume != null)
+            if (def.is_collect_tax)
             {
-                this.consume.SetBaseValue(new SubjectValue<double>(def.consume.Value).obs);
+                Observable.CombineLatest(num.obs, tax_percent).Subscribe(list =>
+                    tax.SetBuffer("STATIC_POP_TAX_LEVEL", list.Aggregate(0.01, (x, y) => x * y)));
+            }         
+
+            if (consume != null)
+            {
+                this.consume.SetBaseValue(def.consume.Value);
+
+                consume_effect.Subscribe(effect => consume.SetBuffer("STATIC_POP_TAX_LEVEL", effect));
             }
         }
 

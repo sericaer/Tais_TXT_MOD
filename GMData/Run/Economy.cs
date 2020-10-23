@@ -81,8 +81,12 @@ namespace GMData.Run
             InCome.all = new List<InCome>();
 
             popTax = new InCome("STATIC_POP_TAX");
-                                 //0,
-                                 //Observable.CombineLatest(GMRoot.runner.departs.Select(x => x.tax.obs), (IList<double> taxs) => taxs.Sum()).ToOBSValue());
+
+            popTax.pop_tax_effect = popTax.percent.obs.Select(x => x / 100).ToOBSValue();
+            popTax.pop_consume_effect = popTax.percent.obs.Select(x => x * -2 / 3).ToOBSValue();
+
+            //0,
+            //Observable.CombineLatest(GMRoot.runner.departs.Select(x => x.tax.obs), (IList<double> taxs) => taxs.Sum()).ToOBSValue());
         }
 
         public IEnumerator<InCome> GetEnumerator()
@@ -172,7 +176,7 @@ namespace GMData.Run
     }
 
     [JsonObject(MemberSerialization.OptIn)]
-    public class InCome
+    public class InCome : EffectGroup
     {
         public static List<InCome> all;
 
@@ -183,7 +187,6 @@ namespace GMData.Run
         public SubjectValue<double> percent;
 
         public ObservableValue<double> currValue;
-
         //public ObservableValue<double> maxValue;
 
         //internal InCome(string name, double percent, ObservableValue<double> maxValue) : this()
@@ -203,12 +206,13 @@ namespace GMData.Run
         internal InCome(string name) : this()
         {
             this.name = name;
-            this.percent = new SubjectValue<double>(0);
         }
 
         [JsonConstructor]
         private InCome()
         {
+            this.percent = new SubjectValue<double>(0);
+
             all.Add(this);
         }
 
@@ -262,5 +266,11 @@ namespace GMData.Run
         {
             all.Add(this);
         }
+    }
+
+    public class EffectGroup
+    {
+        public ObservableValue<double> pop_tax_effect;
+        public ObservableValue<double> pop_consume_effect;
     }
 }

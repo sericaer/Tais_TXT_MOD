@@ -87,8 +87,7 @@ namespace GMData.Run
 
             Pop.funcGetDef = (name) => GMRoot.define.pops.Single(x => x.key == name);
             Pop.funcGetDepart = (departName) => departs.Single(x => x.name == departName);
-            Pop.funcGetTaxpercent = ()=> economy.incomes.popTax.percent.obs.Select(x=>x/100);
-
+            
             Depart.funcGetPop = (name) => pops.Where(x => x.depart_name == name);
             Depart.funcGetDef = (name) => GMRoot.define.departs.Single(x => x.key == name);
 
@@ -99,7 +98,10 @@ namespace GMData.Run
         {
             date.DataAssociate();
 
-            pops.ForEach(x => x.DataAssociate());
+            pops.ForEach(pop =>
+            {
+                pop.DataAssociate(economy.incomes.popTax.pop_tax_effect.obs, economy.incomes.popTax.pop_consume_effect.obs);
+            });
 
             departs.ForEach(x => x.DataAssocate());
 
