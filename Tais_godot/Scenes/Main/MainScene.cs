@@ -21,9 +21,9 @@ namespace TaisGodot.Scripts
 
 		public override void _Ready()
 		{
-			warnContainer = GetNode<WarnContainer>("VBoxContainer/WinContainer/ImpContainer/WarnContainer");
+			warnContainer = GetNode<WarnContainer>("VBoxContainer/WinContainer/ImpContainer/HBoxContainer/WarnContainer");
 			//taskContainer = GetNode<TaskContainer>("VBoxContainer/WinContainer/TaskContainer");
-			riskContainer = GetNode<RiskContainer>("VBoxContainer/WinContainer/TaskContainer");
+			riskContainer = GetNode<RiskContainer>("VBoxContainer/WinContainer/ImpContainer/HBoxContainer/RiskContainer");
 			//riskContainer.gmRisks = GMRoot.runner.risks;
 		}
 
@@ -42,24 +42,24 @@ namespace TaisGodot.Scripts
 			}
 
 			foreach (var eventobj in riskContainer.Refresh())
-            {
+			{
 				await ToSignal(ShowDialog(eventobj), "tree_exited");
 			}
 
 			warnContainer.Refresh();
 
-            //warnContainer.Refresh(GMRoot.modder.warns);
+			//warnContainer.Refresh(GMRoot.modder.warns);
 
-            ////taskContainer.Refresh(Runner.GetTask());
+			////taskContainer.Refresh(Runner.GetTask());
 
-            //riskContainer.Refresh(GMRoot.runner.risks);
+			//riskContainer.Refresh(GMRoot.runner.risks);
 
-            if (GMRoot.runner.isEnd())
-            {
-                GMRoot.runner = null;
-                GetTree().ChangeScene(EndScene.path);
-            }
-        }
+			if (GMRoot.runner.isEnd())
+			{
+				GMRoot.runner = null;
+				GetTree().ChangeScene(EndScene.path);
+			}
+		}
 
 		internal static Node ShowDialog(GMData.Mod.GEvent eventobj)
 		{

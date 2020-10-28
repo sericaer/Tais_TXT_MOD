@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace TaisGodot.Scripts
 {
-	class RiskContainer : VBoxContainer
+	class RiskContainer : HBoxContainer
 	{
         internal IEnumerable<GMData.Mod.GEvent> Refresh()
         {
