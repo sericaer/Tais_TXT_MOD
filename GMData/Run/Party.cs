@@ -10,21 +10,9 @@ namespace GMData.Run
         [DataVisitorProperty("type")]
         public string name;
 
-        public Party(string name)
+        public Party(Def.Party def)
         {
-            this.name = name;
-        }
-
-        internal static List<Party> Init(IEnumerable<GMData.Def.Party> partyDefs)
-        {
-            List<Party> rslt = new List<Party>();
-
-            foreach(var def in partyDefs)
-            {
-                rslt.Add(new Party(def.key));
-            }
-
-            return rslt;
+            this.name = def.key;
         }
 
         [JsonConstructor]

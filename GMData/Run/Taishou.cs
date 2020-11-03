@@ -12,8 +12,6 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Taishou
     {
-        public static Func<string, Party> FuncGetParty;
-
         [DataVisitorProperty("is_revoke")]
         public bool isRevoke;
 
@@ -23,18 +21,8 @@ namespace GMData.Run
         [DataVisitorProperty("age"), JsonProperty]
         public SubjectValue<int> age;
 
-        [DataVisitorProperty("party")]
-        public Party party
-        { 
-            get
-            {
-                return FuncGetParty(partyName);
-            }
-        }
-
-
         [JsonProperty]
-        internal string partyName;
+        public string partyName;
 
         public Taishou(Init.Taishou init) : this()
         {

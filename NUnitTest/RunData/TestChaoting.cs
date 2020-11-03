@@ -1,5 +1,6 @@
 ﻿using DataVisit;
 using GMData;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,25 +11,27 @@ namespace UnitTest.RunData
     [TestFixture()]
     public class TestChaoting : TestRunDataBase
     {
+        private GMData.Run.Chaoting chaoting;
+
         [SetUp]
         public void Init()
         {
-            GMRoot.runner = GMData.Run.Runner.Generate();
+            chaoting = new GMData.Run.Chaoting(GMRoot.define.chaoting, 123456);
         }
 
         [Test()]
         public void Test_Init()
         {
-            Assert.AreEqual(GMRoot.define.chaoting.powerParty, GMRoot.runner.chaoting.powerParty.name);
-            Assert.AreEqual((int)(GMRoot.define.chaoting.reportPopPercent /100 * GMRoot.runner.pops.Where(x=>x.def.is_collect_tax).Sum(x=>x.num.Value)), GMRoot.runner.chaoting.reportPopNum.Value);
-            Assert.AreEqual(GMRoot.define.chaoting.taxPercent/100 * 0.006 * GMRoot.runner.chaoting.reportPopNum.Value, GMRoot.runner.chaoting.expectMonthTaxValue.Value);
+            Assert.AreEqual(GMRoot.define.chaoting.powerParty, chaoting.powerPartyName);
+            Assert.AreEqual((int)(GMRoot.define.chaoting.reportPopPercent /100 * 123456), chaoting.reportPopNum.Value);
+            Assert.AreEqual(GMRoot.define.chaoting.taxPercent/100 * 0.006 * chaoting.reportPopNum.Value, chaoting.expectMonthTaxValue.Value);
         }
 
         [Test()]
         public void Test_Serialize()
         {
-            var json = GMRoot.runner.Serialize();
-            GMRoot.runner = GMData.Run.Runner.Deserialize(json);
+            var json = JsonConvert.SerializeObject(chaoting);
+            chaoting = JsonConvert.DeserializeObject<GMData.Run.Chaoting>(json);
 
             Test_Init();
         }
@@ -36,45 +39,30 @@ namespace UnitTest.RunData
         [Test()]
         public void Test_ChaotingExtraTax()
         {
-
-            Assert.AreEqual(0, Visitor.Get("chaoting.extra_tax"));
-            Assert.AreEqual(0, Visitor.Get("chaoting.owe_tax"));
+            Assert.AreEqual(0, chaoting.extraTax);
 
             var extraTax = 100.0;
-            GMRoot.runner.chaoting.ReportMonthTax(GMRoot.runner.chaoting.expectMonthTaxValue.Value + extraTax);
+            chaoting.ReportMonthTax(chaoting.expectMonthTaxValue.Value + extraTax);
 
-            Assert.AreEqual(extraTax, Visitor.Get("chaoting.extra_tax"));
-            Assert.AreEqual(0, Visitor.Get("chaoting.owe_tax"));
+            Assert.AreEqual(extraTax, chaoting.extraTax);
+            
         }
 
         [Test()]
         public void Test_ChaotingOweTax()
         {
-            Assert.AreEqual(0, Visitor.Get("chaoting.extra_tax"));
-            Assert.AreEqual(0, Visitor.Get("chaoting.owe_tax"));
+            Assert.AreEqual(0, chaoting.oweTax);
 
             var oweTax = 100.0;
-            GMRoot.runner.chaoting.ReportMonthTax(GMRoot.runner.chaoting.expectMonthTaxValue.Value - oweTax);
+            chaoting.ReportMonthTax(chaoting.expectMonthTaxValue.Value - oweTax);
 
-            Assert.AreEqual(0, Visitor.Get("chaoting.extra_tax"));
-            Assert.AreEqual(oweTax, Visitor.Get("chaoting.owe_tax"));
+            Assert.AreEqual(oweTax, chaoting.oweTax);
 
             var plusTax = 120.0;
-            GMRoot.runner.chaoting.ReportTaxPlus(plusTax);
+            chaoting.ReportTaxPlus(plusTax);
 
-            Assert.AreEqual(plusTax - oweTax, Visitor.Get("chaoting.extra_tax"));
-            Assert.AreEqual(0, Visitor.Get("chaoting.owe_tax"));
+            Assert.AreEqual(0, chaoting.oweTax);
+            Assert.AreEqual(plusTax - oweTax, chaoting.extraTax);
         }
-
-        //[Test()]
-        //public void Test_ChaotingPowerParty()
-        //{
-        //    ModDataVisit.InitVisitMap(typeof(Root));
-
-        //    Root.Init(init);
-        //    ModDataVisit.InitVisitData(Root.inst);
-
-        //    Assert.AreEqual(Root.def.chaoting.powerParty, Visitor.Get("chaoting.power_party.type"));
-        //}
     }
 }

@@ -20,6 +20,12 @@ namespace TaisGodot.Scripts
 			reactiveDispose = data.Subscribe(this.SetValue);
 		}
 
+		internal void Assoc<T>(ObservableValueEx<T> data, Func<string, string> adpt = null)
+		{
+			this.adpt = adpt;
+			reactiveDispose = data.Subscribe(this.SetValue);
+		}
+
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);

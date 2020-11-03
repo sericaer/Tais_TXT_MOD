@@ -13,75 +13,75 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Pop
     {
-        internal static Func<string, Depart> funcGetDepart;
-        internal static Func<string, Def.Pop> funcGetDef;
-
         [JsonProperty]
         public string name;
-
-        [JsonProperty]
-        public string depart_name;
 
         [JsonProperty]
         public SubjectValue<double> num;
 
         [JsonProperty]
-        public ObservableBufferedValue adminExpend;
+        public ObsBufferedValue adminExpend;
 
         [JsonProperty]
-        public ObservableBufferedValue tax;
+        public ObsBufferedValue tax;
 
         [JsonProperty]
-        public ObservableBufferedValue consume;
+        public ObsBufferedValue consume;
 
         [DataVisitorProperty("depart")]
-        public Depart depart => funcGetDepart(depart_name);
+        internal Depart depart;
 
-        internal Def.Pop def => funcGetDef(name);
+        internal Def.Pop def => GMRoot.define.pops.Single(x=>x.key == name);
 
         internal void DaysInc()
         {
 
         }
 
-        internal Pop(string depart_name, string name, double num)
+        internal Pop(Depart depart, string name, double num)
         {
             this.name = name;
-            this.depart_name = depart_name;
 
+            this.depart = depart;
             this.num = new SubjectValue<double>(num);
 
-            this.tax = new ObservableBufferedValue();
-            this.adminExpend = new ObservableBufferedValue();
+            if(def.is_collect_tax)
+            {
+                this.tax = new ObsBufferedValue();
+                this.adminExpend = new ObsBufferedValue();
+            }
 
             if (def.consume != null)
             {
-                this.consume = new ObservableBufferedValue();
+                this.consume = new ObsBufferedValue();
             }
-        }
 
-        internal void DataAssociate(IObservable<double> tax_percent, IObservable<double> consume_effect)
-        {
-            num.obs.Subscribe(x => this.adminExpend.SetBaseValue(def.is_collect_tax ? x * 0.0005 : 0));
-
-            if (def.is_collect_tax)
-            {
-                Observable.CombineLatest(num.obs, tax_percent).Subscribe(list =>
-                    tax.SetBuffer("STATIC_POP_TAX_LEVEL", list.Aggregate(0.01, (x, y) => x * y)));
-            }         
-
-            if (consume != null)
-            {
-                this.consume.SetBaseValue(def.consume.Value);
-
-                consume_effect.Subscribe(effect => consume.SetBuffer("STATIC_POP_TAX_LEVEL", effect));
-            }
+            DataReactive(new StreamingContext());
         }
 
         [JsonConstructor]
         private Pop()
         {
             
+        }
+
+        [OnDeserialized]
+        private void DataReactive(StreamingContext context)
+        {
+            if (adminExpend != null)
+            {
+                num.Subscribe(x => adminExpend.SetBaseValue(x * 0.0005));
+            }
+
+            if (tax != null)
+            {
+                num.Subscribe(x => tax.SetBaseValue(x * 0.01));
+            }
+
+            if (consume != null)
+            {
+                this.consume.SetBaseValue(def.consume.Value);
+            }
         }
     }
 }

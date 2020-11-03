@@ -5,7 +5,7 @@ namespace TaisGodot.Scripts
 {
 	public class IncomePanel : HBoxContainer
 	{
-		internal InCome gmObj;
+		internal IncomAdjust gmObj;
 
 		HSlider slider;
 
@@ -14,8 +14,8 @@ namespace TaisGodot.Scripts
 		{
 			slider = GetNode<HSlider>("HSlider");
 
-			GetNode<Label>("Label").Text = gmObj.name;
-			GetNode<ReactiveLabel>("Value").Assoc(gmObj.currValue);
+			GetNode<Label>("Label").Text = gmObj.key;
+			//GetNode<ReactiveLabel>("Value").Assoc(gmObj.currValue);
 
 			slider.Value = gmObj.percent.Value;
 

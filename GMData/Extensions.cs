@@ -31,6 +31,10 @@ namespace GMData
             list.ForEach(x => x.DaysInc());
         }
 
+        public static IEnumerable<TResult> SelectNotNull<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+        {
+            return source.Select(selector).Where(x=>x!= null);
+        }
     }
 
     public static class ObjectExtensions

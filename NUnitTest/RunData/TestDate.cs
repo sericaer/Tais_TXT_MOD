@@ -1,5 +1,6 @@
 ﻿using DataVisit;
 using GMData;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -26,10 +27,12 @@ namespace UnitTest.RunData
     [TestFixture()]
     public class TestDate : TestRunDataBase
     {
+        private GMData.Run.Date date;
+
         [SetUp]
         public void Init()
         {
-            GMRoot.runner = GMData.Run.Runner.Generate();
+            date = new GMData.Run.Date(GMRoot.initData.start_date);
         }
 
         [Test()]
@@ -41,11 +44,11 @@ namespace UnitTest.RunData
                 {
                     for (int d = 1; d <= 30; d++)
                     {
-                        Assert.AreEqual(d, Visitor.Get("date.day"));
-                        Assert.AreEqual(m, Visitor.Get("date.month"));
-                        Assert.AreEqual(y, Visitor.Get("date.year"));
+                        Assert.AreEqual(d, date.day.Value);
+                        Assert.AreEqual(m, date.month.Value);
+                        Assert.AreEqual(y, date.year.Value);
 
-                        GMRoot.runner.date.Inc();
+                        date.Inc();
                     }
                 }
             }
@@ -54,35 +57,35 @@ namespace UnitTest.RunData
         [Test()]
         public void TestCompare()
         {
-            GMRoot.runner.date.year.Value = 2;
-            GMRoot.runner.date.month.Value = 2;
-            GMRoot.runner.date.day.Value = 2;
+            date.year.Value = 2;
+            date.month.Value = 2;
+            date.day.Value = 2;
 
-            Assert.True(GMRoot.runner.date == (2, null, null));
-            Assert.True(GMRoot.runner.date == (null, 2, null));
-            Assert.True(GMRoot.runner.date == (null, null, 2));
-            Assert.True(GMRoot.runner.date == (2, 2, 2));
-            Assert.True(GMRoot.runner.date == (null, 2, 2));
-            Assert.True(GMRoot.runner.date == (2, 2, null));
-            Assert.True(GMRoot.runner.date == (2, null, 2));
-            Assert.True(GMRoot.runner.date == (null, 2, 2));
+            Assert.True(date == (2, null, null));
+            Assert.True(date == (null, 2, null));
+            Assert.True(date == (null, null, 2));
+            Assert.True(date == (2, 2, 2));
+            Assert.True(date == (null, 2, 2));
+            Assert.True(date == (2, 2, null));
+            Assert.True(date == (2, null, 2));
+            Assert.True(date == (null, 2, 2));
 
-            Assert.True(GMRoot.runner.date < (3, null, null));
-            Assert.True(GMRoot.runner.date < (3, null, 1));
-            Assert.True(GMRoot.runner.date < (3, 1, 1));
-            Assert.True(GMRoot.runner.date < (null, 2, 3));
-            Assert.True(GMRoot.runner.date < (null, 3, 1));
+            Assert.True(date < (3, null, null));
+            Assert.True(date < (3, null, 1));
+            Assert.True(date < (3, 1, 1));
+            Assert.True(date < (null, 2, 3));
+            Assert.True(date < (null, 3, 1));
 
-            Assert.True(GMRoot.runner.date > (1, null, null));
-            Assert.True(GMRoot.runner.date > (1, 12, null));
-            Assert.True(GMRoot.runner.date > (null, null, 1));
+            Assert.True(date > (1, null, null));
+            Assert.True(date > (1, 12, null));
+            Assert.True(date > (null, null, 1));
         }
 
         [Test()]
         public void Test_Serialize()
         {
-            var json = GMRoot.runner.Serialize();
-            GMRoot.runner = GMData.Run.Runner.Deserialize(json);
+            var json = JsonConvert.SerializeObject(date);
+            date = JsonConvert.DeserializeObject<GMData.Run.Date>(json);
 
             TestInc();
         }

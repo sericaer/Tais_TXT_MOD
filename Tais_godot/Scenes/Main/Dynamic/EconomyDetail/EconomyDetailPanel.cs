@@ -33,10 +33,10 @@ namespace TaisGodot.Scripts
 			outputTotal = GetNode<ReactiveLabel>("CenterContainer/EconomyDetail/VBoxContainer/HBoxContainer/Output/VBoxContainer/Total/Value");
 
 			surplus.Assoc(GMRoot.runner.economy.monthSurplus);
-			incomeTotal.Assoc(GMRoot.runner.economy.incomes.total);
-			outputTotal.Assoc(GMRoot.runner.economy.outputs.total);
+			incomeTotal.Assoc(GMRoot.runner.economy.incomeTotal);
+			outputTotal.Assoc(GMRoot.runner.economy.outputTotal);
 
-			foreach (var income in GMRoot.runner.economy.incomes)
+			foreach (var income in GMRoot.runner.economy.incomeAdjusts)
 			{
 				var incomPanel = (IncomePanel)ResourceLoader.Load<PackedScene>("res://Scenes/Main/Dynamic/EconomyDetail/IncomePanel.tscn").Instance();
 				incomPanel.gmObj = income;
@@ -44,7 +44,7 @@ namespace TaisGodot.Scripts
 				GetNode<VBoxContainer>("CenterContainer/EconomyDetail/VBoxContainer/HBoxContainer/Income/VBoxContainer/VBoxContainer").AddChild(incomPanel);
 			}
 
-			foreach (var output in GMRoot.runner.economy.outputs)
+			foreach (var output in GMRoot.runner.economy.outputAdjusts)
 			{
 				var outputPanel = (OutputPanel)ResourceLoader.Load<PackedScene>("res://Scenes/Main/Dynamic/EconomyDetail/OutputPanel.tscn").Instance();
 				outputPanel.gmObj = output;

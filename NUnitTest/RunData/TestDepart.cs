@@ -1,5 +1,6 @@
 ﻿using DataVisit;
 using GMData;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -9,64 +10,45 @@ namespace UnitTest.RunData
     [TestFixture()]
     public class TestDepart : TestRunDataBase
     {
+        private GMData.Def.Depart def;
+        private GMData.Run.Depart depart;
+
         [SetUp]
         public void Init()
         {
-            GMRoot.runner = GMData.Run.Runner.Generate();
+            def = GMRoot.define.departs.First();
+            depart = new GMData.Run.Depart(def);
         }
 
         [Test()]
         public void Test_Init()
         {
-            int i = 0;
-            Visitor.Pos pos = null;
-            while (Visitor.EnumerateVisit("depart", ref pos))
+            Assert.AreEqual(def.pop_init.Count(), depart.pops.Count());
+            foreach (var pop_init in def.pop_init)
             {
-                var def = GMRoot.define.departs[i];
-                Assert.AreEqual(def.key, Visitor.Get("depart.name"));
-                Assert.AreEqual(0, Visitor.Get("depart.crop_grown"));
-                i++;
+                var pop = depart.pops.SingleOrDefault(x => x.name == pop_init.type);
+                Assert.NotNull(pop);
+
+                Assert.AreEqual(pop_init.num, pop.num.Value);
             }
 
-            foreach(var def in GMRoot.define.departs)
-            {
-                var depart = GMRoot.runner.departs.SingleOrDefault(x => x.name == def.key);
-                Assert.NotNull(depart);
-
-                Assert.AreEqual(def.pop_init.Count(), depart.pops.Count());
-                foreach(var pop_init in def.pop_init)
-                {
-                    var pop = depart.pops.SingleOrDefault(x => x.name == pop_init.type);
-                    Assert.NotNull(pop);
-
-                    Assert.AreEqual(pop_init.num, pop.num.Value);
-                }
-
-                Assert.AreEqual(depart.pops.Sum(x=>x.tax.value.Value), depart.tax.Value);
-                Assert.AreEqual(depart.pops.Sum(x => x.adminExpend.value.Value), depart.adminExpend.Value);
-            }
+            Assert.AreEqual(depart.pops.Sum(x => x.tax?.value.Value), depart.tax.Value);
+            Assert.AreEqual(depart.pops.Sum(x => x.adminExpend?.value.Value), depart.adminExpend.Value);
         }
 
-        [Test()]
-        public void TestGetByColor()
-        {
-            var departDef0 = GMRoot.define.departs[0];
-            var departObj0 = GMData.Run.Depart.GetByColor((int)departDef0.color.r, (int)departDef0.color.g, (int)departDef0.color.b);
+        //[Test()]
+        //public void TestGetByColor()
+        //{
+        //    var departObj = GMData.Run.Depart.GetByColor((int)def.color.r, (int)def.color.g, (int)def.color.b);
 
-            Assert.AreEqual(departDef0, departObj0.def);
-
-            var departDef1 = GMRoot.define.departs[1];
-            var departObj1 = GMData.Run.Depart.GetByColor((int)departDef1.color.r, (int)departDef1.color.g, (int)departDef1.color.b);
-
-            Assert.AreEqual(departDef1, departObj1.def);
-        }
+        //    Assert.AreEqual(depart, departObj);
+        //}
 
         [Test()]
         public void Test_Serialize()
         {
-            var json = GMRoot.runner.Serialize();
-            GMRoot.runner = GMData.Run.Runner.Deserialize(json);
-
+            var json = JsonConvert.SerializeObject(depart, Formatting.Indented);
+            depart = JsonConvert.DeserializeObject<GMData.Run.Depart>(json);
             Test_Init();
         }
     }

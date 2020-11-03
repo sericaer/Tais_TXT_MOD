@@ -26,7 +26,7 @@ namespace TaisGodot.Scripts
 			Age = GetNode<ReactiveLabel>("CenterContainer/PanelContainer/HBoxContainer/RightContainer/VBoxContainer/HBoxContainer/VBoxContainer/Age/Value");
 
 			Name.Text = GMRoot.runner.taishou.name;
-			Party.Text = GMRoot.runner.taishou.party.name;
+			Party.Text = GMRoot.runner.taishou.partyName;
 			Age.Assoc(GMRoot.runner.taishou.age);
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Runtime.Serialization;
 using DataVisit;
 using Newtonsoft.Json;
 
@@ -22,13 +23,13 @@ namespace GMData.Run
         [JsonProperty, DataVisitorPropertyArray("depart")]
         public List<Depart> departs;
 
-        [JsonProperty, DataVisitorPropertyArray("pop")]
-        public List<Pop> pops;
-
         [JsonProperty, DataVisitorProperty("chaoting")]
         public Chaoting chaoting;
 
-        [JsonProperty]
+        [DataVisitorPropertyArray("pop")]
+        public List<Pop> pops => departs.SelectMany(x => x.pops).ToList();
+
+        [JsonProperty, DataVisitorPropertyArray("party")]
         public List<Party> parties;
 
         [JsonProperty]
@@ -42,16 +43,12 @@ namespace GMData.Run
         public static Runner Generate()
         {
             var runner = new Runner(GMRoot.initData);
-            runner.DataAssociate();
-
             return runner;
         }
 
         public static Runner Deserialize(string json)
         {
             var obj = JsonConvert.DeserializeObject<Runner>(json);
-            obj.DataAssociate();
-
             return obj;
         }
 
@@ -61,66 +58,113 @@ namespace GMData.Run
 
             taishou = new Taishou(init.taishou);
 
-            parties = Party.Init(GMRoot.define.parties);
+            parties = GMRoot.define.parties.Select(def => new Party(def)).ToList();
 
-            departs = Depart.Init(GMRoot.define.departs, out pops);
+            departs = GMRoot.define.departs.Select(def => new Depart(def)).ToList();
 
-            chaoting = new Chaoting(GMRoot.define.chaoting, pops.Where(x=>x.def.is_collect_tax).Sum(x=>x.num.Value));
+            chaoting = new Chaoting(GMRoot.define.chaoting, pops.Where(x => x.def.is_collect_tax).Sum(x => x.num.Value));
 
             economy = new Economy(GMRoot.define.economy);
 
             risks = new List<Risk>();
             riskMgr = new RiskMgr();
+
+            DataReactive(new StreamingContext());
         }
 
         [JsonConstructor]
         private Runner()
         {
-            InterfaceAssociate();
-
             Visitor.SetVisitData(this);
         }
 
-        private void InterfaceAssociate()
+        [OnDeserialized]
+        private void DataReactive(StreamingContext context)
         {
-            Taishou.FuncGetParty = (name) => parties.Find(x => x.name == name);
-
-            Pop.funcGetDef = (name) => GMRoot.define.pops.Single(x => x.key == name);
-            Pop.funcGetDepart = (departName) => departs.Single(x => x.name == departName);
-            
-            Depart.funcGetPop = (name) => pops.Where(x => x.depart_name == name);
-            Depart.funcGetDef = (name) => GMRoot.define.departs.Single(x => x.key == name);
-
-            Chaoting.funcGetParty = (name) => parties.Single(x => x.name == name);
-        }
-
-        private void DataAssociate()
-        {
-            date.DataAssociate();
-
-            pops.ForEach(pop =>
+            economy.incomeAdjusts.ForEach(adjust =>
             {
-                pop.DataAssociate(economy.incomes.popTax.pop_tax_effect.obs, economy.incomes.popTax.pop_consume_effect.obs);
+                adjust.effect_pop_tax?.Subscribe(x =>
+                {
+                    foreach (var tax in pops.SelectNotNull(p => p.tax))
+                    {
+                        tax.SetBuffer(adjust.key, tax.baseValue.Value * x);
+                    }
+                });
             });
 
-            departs.ForEach(x => x.DataAssocate());
+            economy.outputAdjusts.ForEach(adjust =>
+            {
+                adjust.effect_spend_admin?.Subscribe(x =>
+                {
+                    foreach (var admin in pops.SelectNotNull(p => p.adminExpend))
+                    {
+                        admin.SetBuffer(adjust.key, admin.baseValue.Value * x);
+                    }
+                });
 
-            chaoting.DataAssocate();
+                adjust.effect_report_chaoting?.Subscribe(x =>
+                {
 
-            economy.incomes.popTax.SetObsCurrValue(Observable.CombineLatest(departs.Select(x => x.tax.obs)).Select(x=>x.Sum()));
-            economy.outputs.departAdmin.SetObsCurrValue(Observable.CombineLatest(departs.Select(x => x.adminExpend.obs)).Select(x => x.Sum()));
-            economy.outputs.reportChaoting.SetObsCurrValue(Observable.CombineLatest(chaoting.expectMonthTaxValue.obs, 
-                                                          economy.outputs.reportChaoting.percent.obs, (x, y)=> x*y/100));
-            economy.outputs.reportChaoting.expend = chaoting.ReportMonthTax;
+                });
+            });
 
-            economy.DataAssocate();
 
-            registerPopNum = Observable.CombineLatest(departs.Select(x=>x.popNum.obs)).Select(x=>x.Sum()).ToOBSValue();
+            pops.SelectNotNull(pop => pop.tax).Select(tax => tax.value)
+                .CombineLatest()
+                .Subscribe(taxes =>
+                {
+                    economy.incomeDetails.Single(x => x.type == IncomeDetail.TYPE.POP_TAX)
+                           .Value.OnNext(taxes.Sum());
+                });
+
+            pops.SelectNotNull(pop => pop.adminExpend).Select(admin => admin.value)
+                .CombineLatest()
+                .Subscribe(admin =>
+                {
+                    economy.outputDetails.Single(x => x.type == OutputDetail.TYPE.ADMIN)
+                           .Value.OnNext(admin.Sum());
+                });
         }
+            //private void InterfaceAssociate()
+            //{
+            //    Taishou.FuncGetParty = (name) => parties.Find(x => x.name == name);
+
+            //    Pop.funcGetDef = (name) => GMRoot.define.pops.Single(x => x.key == name);
+            //    Pop.funcGetDepart = (departName) => departs.Single(x => x.name == departName);
+
+            //    Depart.funcGetPop = (name) => pops.Where(x => x.depart_name == name);
+            //    Depart.funcGetDef = (name) => GMRoot.define.departs.Single(x => x.key == name);
+
+            //    Chaoting.funcGetParty = (name) => parties.Single(x => x.name == name);
+            //}
+
+            //private void DataAssociate()
+            //{
+            //    date.DataAssociate();
+
+            //    pops.ForEach(pop =>
+            //    {
+            //        pop.DataAssociate(economy.incomes.popTax.pop_tax_effect.obs, economy.incomes.popTax.pop_consume_effect.obs);
+            //    });
+
+            //    departs.ForEach(x => x.DataAssocate());
+
+            //    chaoting.DataAssocate();
+
+            //    economy.incomes.popTax.SetObsCurrValue(Observable.CombineLatest(departs.Select(x => x.tax.obs)).Select(x=>x.Sum()));
+            //    economy.outputs.departAdmin.SetObsCurrValue(Observable.CombineLatest(departs.Select(x => x.adminExpend.obs)).Select(x => x.Sum()));
+            //    economy.outputs.reportChaoting.SetObsCurrValue(Observable.CombineLatest(chaoting.expectMonthTaxValue.obs, 
+            //                                                  economy.outputs.reportChaoting.percent.obs, (x, y)=> x*y/100));
+            //    economy.outputs.reportChaoting.expend = chaoting.ReportMonthTax;
+
+            //    economy.DataAssocate();
+
+            //    registerPopNum = Observable.CombineLatest(departs.Select(x=>x.popNum.obs)).Select(x=>x.Sum()).ToOBSValue();
+            //}
 
         public void DaysInc()
         {
-            economy.DaysInc();
+            economy.DaysInc(date);
 
             date.Inc();
 

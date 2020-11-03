@@ -14,40 +14,38 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Depart
     {
-        public static Func<string, IEnumerable<Pop>> funcGetPop;
-        public static Func<string, Def.Depart> funcGetDef;
-
         [JsonProperty, DataVisitorProperty("name")]
         public string name;
 
         [JsonProperty, DataVisitorProperty("crop_grown")]
         public SubjectValue<double> cropGrown;
 
-        public ObservableValue<int> popNum;
+        public ObservableValueEx<int> popNum;
 
-        public ObservableValue<double> tax;
-        public ObservableValue<double> adminExpend;
+        public ObservableValueEx<double> tax;
+        public ObservableValueEx<double> adminExpend;
 
-        public IEnumerable<Pop> pops => funcGetPop(name);
+        [JsonProperty]
+        public Pop[] pops
+        {
+            get
+            {
+                return _pops.ToArray();
+            }
+            set
+            {
+                _pops.AddRange(value);
+                _pops.ForEach(x=>x.depart = this);
+            }
+        }
 
-        internal Def.Depart def => funcGetDef(name);
+        private List<Pop> _pops = new List<Pop>();
+
+        internal Def.Depart def => GMRoot.define.departs.Single(x=>x.key == name);
 
         public static Depart GetByColor(int r, int g, int b)
         {
             return GMRoot.runner.departs.SingleOrDefault(x => x.SameColor((r, g, b)));
-        }
-
-        internal static List<Depart> Init(IEnumerable<GMData.Def.Depart> departDefs, out List<Pop> pops)
-        {
-            pops = new List<Pop>();
-
-            List<Depart> departs = new List<Depart>();
-            foreach(var def in departDefs)
-            {
-                departs.Add(new Depart(def, ref pops));
-            }
-
-            return departs;
         }
 
         internal static void DaysInc()
@@ -66,33 +64,37 @@ namespace GMData.Run
 
         }
 
-        internal Depart(GMData.Def.Depart def, ref List<Pop> pops)
+        internal Depart(GMData.Def.Depart def) : this()
         {
             this.name = def.key;
-            this.cropGrown = new SubjectValue<double>(0);
 
-            foreach (var pop_init in def.pop_init)
-            {
-                pops.Add(new Pop(name, pop_init.type, pop_init.num));
-            }
+            pops = def.pop_init.Select(pop_def => new Pop(this, pop_def.type, pop_def.num)).ToArray();
+
+            DataReactive(new StreamingContext());
         }
 
         [JsonConstructor]
         private Depart()
         {
-
+            this.cropGrown = new SubjectValue<double>(0);
+            this.tax = new ObservableValueEx<double>();
+            this.adminExpend = new ObservableValueEx<double>();
         }
 
-        internal void DataAssocate()
+        [OnDeserialized]
+        private void DataReactive(StreamingContext context)
         {
-            popNum = Observable.CombineLatest(pops.Where(x => x.def.is_collect_tax).Select(x => x.num.obs),
-                                  (IList<double> nums) => nums.Sum(y => (int)y)).ToOBSValue();
+            pops.Where(x => x.def.is_collect_tax).Select(x => x.num.obs)
+                .CombineLatest()
+                .Subscribe(nums => popNum.OnNext((int)nums.Sum()));
 
-            tax = Observable.CombineLatest(pops.Select(x => x.tax.value.obs),
-                                    (IList<double> nums) => nums.Sum()).ToOBSValue();
+            pops.Where(x => x.tax != null).Select(x => x.tax.value.obs)
+                .CombineLatest()
+                .Subscribe(taxes => tax.OnNext(taxes.Sum()));
 
-            adminExpend = Observable.CombineLatest(pops.Select(x => x.adminExpend.value.obs),
-                                   (IList<double> nums) => nums.Sum()).ToOBSValue();
+            pops.Where(x => x.adminExpend != null).Select(x => x.adminExpend.value.obs)
+                .CombineLatest()
+                .Subscribe(adms => adminExpend.OnNext(adms.Sum()));
         }
 
         private bool SameColor((int r, int g, int b) p)

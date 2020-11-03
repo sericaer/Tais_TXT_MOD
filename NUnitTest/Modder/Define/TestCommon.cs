@@ -36,9 +36,9 @@ namespace UnitTest.Modder.Define
             LoadModScript("common/", TEST_COMMON);
 
             Assert.AreEqual(123, GMRoot.define.economy.curr);
-            Assert.AreEqual(10, GMRoot.define.economy.income_percent_pop_tax);
-            Assert.AreEqual(20, GMRoot.define.economy.output_percent_admin);
-            Assert.AreEqual(30, GMRoot.define.economy.output_percent_chaoting_tax);
+            //Assert.AreEqual(10, GMRoot.define.economy.income_percent_pop_tax);
+            //Assert.AreEqual(20, GMRoot.define.economy.output_percent_admin);
+            //Assert.AreEqual(30, GMRoot.define.economy.output_percent_chaoting_tax);
         }
     }
 }

@@ -31,6 +31,43 @@ namespace GMData.Run
         }
     }
 
+    public class ObservableValueEx<T> : RValue<T>, ISubject<T>
+    {
+        internal readonly BehaviorSubject<T> obs;
+
+        public override T Value { get { return obs.First(); } }
+
+        public ObservableValueEx()
+        {
+            obs = new BehaviorSubject<T>(default(T));
+        }
+
+        public void OnCompleted()
+        {
+            obs.OnCompleted();
+        }
+
+        public void OnError(Exception error)
+        {
+            obs.OnError(error);
+        }
+
+        public void OnNext(T value)
+        {
+            obs.OnNext(value);
+        }
+
+        public IDisposable Subscribe(IObserver<T> observer)
+        {
+            return obs.Subscribe(observer);
+        }
+
+        public IDisposable Subscribe(Action<T> action)
+        {
+            return obs.Subscribe(action);
+        }
+    }
+
     [JsonConverter(typeof(SubjectValueConverter))]
     public class SubjectValue<T> : RWValue<T>
     {
@@ -78,22 +115,34 @@ namespace GMData.Run
     }
 
     [JsonObject(MemberSerialization.OptIn)]
-    public class ObservableBufferedValue
+    public class ObsBufferedValue
     {
-        [JsonProperty]
-        public double? baseValue;
+        public SubjectValue<double> baseValue;
+        public ObservableValueEx<double> value;
 
         [JsonProperty]
-        public OrderedDictionary buffers = new OrderedDictionary();
+        public OrderedDictionary buffers;
 
-        public SubjectValue<double> value = new SubjectValue<double>(0);
-
-        public void SetBaseValue(double baseValue)
+        public ObsBufferedValue()
         {
-            this.baseValue = baseValue;
-            UpdateValue();
+            value = new ObservableValueEx<double>();
+
+            buffers = new OrderedDictionary();
         }
 
+        public void SetBaseValue(double value)
+        {
+            if(this.baseValue == null)
+            {
+                this.baseValue = new SubjectValue<double>(value);
+            }
+            else
+            {
+                this.baseValue.Value = value;
+            }
+
+            this.baseValue.Subscribe(x => UpdateValue());
+        }
 
         public void SetBuffer(string key, double value)
         {
@@ -119,7 +168,7 @@ namespace GMData.Run
             }
             rslt += baseValue == null ? 0 : baseValue.Value;
 
-            value.Value = rslt;
+            value.OnNext(rslt);
         }
 
         [OnDeserialized]

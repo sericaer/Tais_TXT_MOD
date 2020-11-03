@@ -67,9 +67,37 @@ namespace UnitTest.RunData
                 economy = new Economy()
                 {
                     curr = 123,
-                    income_percent_pop_tax = 30,
-                    output_percent_admin = 80,
-                    output_percent_chaoting_tax = 100
+
+                    incomes = new List<IncomeAdjust>()
+                    {
+                        new IncomeAdjust
+                        {
+                            key = "POP_TAX",
+                            percent = 0.3,
+                            effect_pop_tax = +2,
+                            effect_pop_consume = -0.5,
+                        }
+                    },
+
+                    outputs = new List<OutputAdjust>()
+                    {
+                        new OutputAdjust()
+                        {
+                            key = "ADMIN",
+                            percent = 0.8,
+                        }, 
+                        new OutputAdjust()
+                        {
+                            key = "CHAOTING",
+                            percent = 1,
+                            effect_report_chaoting = +1,
+                            effect_spend_admin = +1
+                        }
+                    }
+
+                    //income_percent_pop_tax = 30,
+                    //output_percent_admin = 80,
+                    //output_percent_chaoting_tax = 100
                 },
 
                 chaoting = new Chaoting()

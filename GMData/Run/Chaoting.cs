@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
@@ -11,43 +12,26 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Chaoting
     {
-        public static Func<string, Party> funcGetParty;
-
         [JsonProperty]
         public SubjectValue<int> reportPopNum;
 
         [JsonProperty]
         public SubjectValue<double> reportTaxPercent;
 
+        [JsonProperty]
+        internal string powerPartyName;
+
         public ObservableValue<double> expectMonthTaxValue;
 
         [DataVisitorProperty("extra_tax")]
-        public double extraTax
-        {
-            get
-            {
-                return _extraTax > 0 ? _extraTax : 0;
-            }
-        }
+        public double extraTax => _extraTax > 0 ? _extraTax : 0;
 
         [DataVisitorProperty("owe_tax")]
-        public double oweTax
-        {
-            get
-            {
-                return _extraTax < 0 ? _extraTax*-1 : 0;
-            }
-        }
+        public double oweTax => _extraTax < 0 ? _extraTax * -1 : 0;
 
         [JsonProperty]
         private double _extraTax;
 
-        [DataVisitorProperty("power_party")]
-        public Party powerParty => funcGetParty(powerPartyName);
-
-
-        [JsonProperty]
-        internal string powerPartyName;
 
         internal static void DaysInc()
         {
@@ -57,13 +41,11 @@ namespace GMData.Run
         internal Chaoting(Def.Chaoting def, double popNum)
         {
             powerPartyName = def.powerParty;
-            if(powerParty == null)
-            {
-                throw new Exception($"can not find chaoting power party ${powerPartyName}");
-            }
 
             reportPopNum = new SubjectValue<int>((int)(popNum * def.reportPopPercent / 100));
             reportTaxPercent = new SubjectValue<double>(def.taxPercent);
+
+            DataReactive(new StreamingContext());
         }
 
         internal void ReportMonthTax(double value)
@@ -76,7 +58,8 @@ namespace GMData.Run
             _extraTax += value;
         }
 
-        internal void DataAssocate()
+        [OnDeserialized]
+        internal void DataReactive(StreamingContext context)
         {
             expectMonthTaxValue = Observable.CombineLatest(reportPopNum.obs, reportTaxPercent.obs,
                                         (x, y) => x * 0.006 * y / 100)

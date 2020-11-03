@@ -11,61 +11,113 @@ namespace UnitTest.RunData
     [TestFixture()]
     public class TestEconomy : TestRunDataBase
     {
+        private GMData.Run.Economy economy;
+
         [SetUp]
         public void Init()
         {
-            GMRoot.runner = GMData.Run.Runner.Generate();
+            //GMRoot.runner = GMData.Run.Runner.Generate();
+            economy = new GMData.Run.Economy(GMRoot.define.economy);
+            economy.incomeDetails.ForEach(x => x.Value.OnNext(100));
+            economy.outputDetails.ForEach(x => x.Value.OnNext(200));
         }
 
         [Test()]
         public void Test_Init()
         {
-            Assert.AreEqual(GMRoot.define.economy.curr, Visitor.Get("economy.value"));
+            Assert.AreEqual(GMRoot.define.economy.curr, economy.curr.Value);
 
-            var incomePopTax = GMRoot.runner.economy.incomes.Single(x => x.name == "STATIC_POP_TAX");
+            Assert.AreEqual(GMRoot.define.economy.incomes.Count(), economy.incomeDetails.Count());
+            Assert.AreEqual(economy.incomeDetails.Count() * 100, economy.incomeTotal.Value);
 
-            Assert.AreEqual(GMRoot.define.economy.income_percent_pop_tax, incomePopTax.percent.Value);
-            Assert.AreEqual(GMRoot.runner.departs.Sum(x=>x.tax.Value), incomePopTax.currValue.Value);
+            Assert.AreEqual(GMRoot.define.economy.outputs.Count(), economy.outputDetails.Count());
+            Assert.AreEqual(economy.outputDetails.Count() * 200, economy.outputTotal.Value);
 
-            var outputAdmin = GMRoot.runner.economy.outputs.Single(x => x.name == "STATIC_ADMIN_EXPEND");
+            Assert.AreEqual(economy.incomeTotal.Value - economy.outputTotal.Value, economy.monthSurplus.Value);
 
-            Assert.AreEqual(GMRoot.define.economy.output_percent_admin, outputAdmin.percent.Value);
-            Assert.AreEqual(GMRoot.runner.departs.Sum(x=>x.adminExpend.Value), outputAdmin.currValue.Value);
+            foreach (var income_def in GMRoot.define.economy.incomes)
+            {
+                var incomeObj = economy.incomeAdjusts.SingleOrDefault(x => x.def == income_def);
+                Assert.NotNull(incomeObj);
 
-            var outputChaotingTax = GMRoot.runner.economy.outputs.Single(x => x.name == "STATIC_REPORT_CHAOTING_TAX");
+                Assert.AreEqual(income_def.key, incomeObj.key);
+                Assert.AreEqual(income_def.percent, incomeObj.percent.Value);
 
-            Assert.AreEqual(GMRoot.define.economy.output_percent_chaoting_tax, outputChaotingTax.percent.Value);
-            Assert.AreEqual(GMRoot.runner.chaoting.expectMonthTaxValue.Value, outputChaotingTax.currValue.Value);
+                if(income_def.effect_pop_consume == null)
+                {
+                    Assert.Null(incomeObj.effect_pop_consume);
+                }
+                else
+                {
+                    Assert.AreEqual(income_def.effect_pop_consume * income_def.percent, incomeObj.effect_pop_consume.Value);
+                }
 
-            Assert.AreEqual(GMRoot.runner.economy.incomes.Sum(x=>x.currValue.Value), GMRoot.runner.economy.incomes.total.Value);
-            Assert.AreEqual(GMRoot.runner.economy.outputs.Sum(x => x.currValue.Value), GMRoot.runner.economy.outputs.total.Value);
-            Assert.AreEqual(GMRoot.runner.economy.monthSurplus.Value, GMRoot.runner.economy.incomes.total.Value - GMRoot.runner.economy.outputs.total.Value);
+                if (income_def.effect_pop_tax == null)
+                {
+                    Assert.Null(incomeObj.effect_pop_tax);
+                }
+                else
+                {
+                    Assert.AreEqual(income_def.effect_pop_tax * income_def.percent, incomeObj.effect_pop_tax.Value);
+                }
+            }
+
+            foreach (var output_def in GMRoot.define.economy.outputs)
+            {
+                var outputObj = economy.outputAdjusts.SingleOrDefault(x => x.def == output_def);
+                Assert.NotNull(outputObj);
+
+                Assert.AreEqual(output_def.key, outputObj.key);
+                Assert.AreEqual(output_def.percent, outputObj.percent.Value);
+
+                if (output_def.effect_report_chaoting == null)
+                {
+                    Assert.Null(outputObj.effect_report_chaoting);
+                }
+                else
+                {
+                    Assert.AreEqual(output_def.effect_report_chaoting * output_def.percent, outputObj.effect_report_chaoting.Value);
+                }
+
+                if (output_def.effect_spend_admin == null)
+                {
+                    Assert.Null(outputObj.effect_spend_admin);
+                }
+                else
+                {
+                    Assert.AreEqual(output_def.effect_spend_admin * output_def.percent, outputObj.effect_spend_admin.Value);
+                }
+            }
         }
 
         [Test()]
         public void Test_EconomyDayInc()
         {
+            var date = new GMData.Run.Date(GMRoot.initData.start_date);
             
             var curr = GMRoot.define.economy.curr;
             for (int i=1; i<=360*10; i++)
             {
                 if (i % 30 == 0)
                 {
-                    curr += GMRoot.runner.economy.monthSurplus.Value;
+                    curr += economy.monthSurplus.Value;
                 }
                 
-                GMRoot.runner.economy.DaysInc();
-                GMRoot.runner.date.Inc();
+                economy.DaysInc(date);
+                date.Inc();
 
-                Assert.AreEqual(curr, Visitor.Get("economy.value"));
+                Assert.AreEqual(curr, economy.curr.Value);
             }
         }
 
         [Test()]
         public void Test_Serialize()
         {
-            var json = GMRoot.runner.Serialize();
-            GMRoot.runner = GMData.Run.Runner.Deserialize(json);
+            var json = JsonConvert.SerializeObject(economy, Formatting.Indented);
+            economy = JsonConvert.DeserializeObject<GMData.Run.Economy>(json);
+
+            economy.incomeDetails.ForEach(x => x.Value.OnNext(100));
+            economy.outputDetails.ForEach(x => x.Value.OnNext(200));
 
             Test_Init();
         }

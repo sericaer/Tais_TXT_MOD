@@ -5,7 +5,7 @@ namespace TaisGodot.Scripts
 {
 	public class OutputPanel : HBoxContainer
 	{
-		internal Output gmObj;
+		internal OutputAdjust gmObj;
 
 		HSlider slider;
 
@@ -14,8 +14,8 @@ namespace TaisGodot.Scripts
 		{
 			slider = GetNode<HSlider>("HSlider");
 
-			GetNode<Label>("Label").Text = gmObj.name;
-			GetNode<ReactiveLabel>("Value").Assoc(gmObj.currValue);
+			GetNode<Label>("Label").Text = gmObj.key;
+			//GetNode<ReactiveLabel>("Value").Assoc(gmObj.currValue);
 
 			slider.Value = gmObj.percent.Value;
 
