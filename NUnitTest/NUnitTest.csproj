@@ -54,7 +54,7 @@
     <Compile Include="Parser\Semantic\TestModifier.cs" />
     <Compile Include="Tools\TestRandom.cs" />
     <Compile Include="Parser\Semantic\TestSeleted.cs" />
-    <Compile Include="RunData\TestEconomy.cs" />
+    <Compile Include="RunData\TestAdjustEconomy.cs" />
     <Compile Include="Modder\Define\TestRisk.cs" />
     <Compile Include="RunData\TestRisk.cs" />
     <Compile Include="RunData\TestDate.cs" />
@@ -65,6 +65,7 @@
     <Compile Include="RunData\TestPop.cs" />
     <Compile Include="Modder\Define\TestCommon.cs" />
     <Compile Include="Modder\TestModBase.cs" />
+    <Compile Include="RunData\TestEconomy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

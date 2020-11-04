@@ -158,6 +158,26 @@ namespace GMData.Run
             UpdateValue();
         }
 
+        public void SetBuffer(string key, double? value)
+        {
+            if(value == null)
+            {
+                buffers.Remove(key);
+            }
+            else
+            {
+                if (buffers.Contains(key))
+                {
+                    buffers[key] = value.Value;
+                }
+                else
+                {
+                    buffers.Add(key, value.Value);
+                }
+            }
+
+            UpdateValue();
+        }
 
         private void UpdateValue()
         {

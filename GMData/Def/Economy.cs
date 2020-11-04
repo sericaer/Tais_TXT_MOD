@@ -28,18 +28,33 @@ namespace GMData.Def
     public class IncomeAdjust
     {
         public string key;
-        public double percent;
 
-        public double? effect_pop_tax;
-        public double? effect_pop_consume;
+        public List<Level> levels;
+
+        public int init_level;
+
+        internal bool valid;
+
+        public class Level
+        {
+            internal double percent;
+            internal double? effect_pop_consume;
+        }
     }
 
     public class OutputAdjust
     {
         public string key;
-        public double percent;
 
-        public double? effect_report_chaoting;
-        public double? effect_spend_admin;
+        public List<Level> levels;
+
+        public int init_level;
+
+        internal bool valid;
+
+        public class Level
+        {
+            public double percent;
+        }
     }
 }

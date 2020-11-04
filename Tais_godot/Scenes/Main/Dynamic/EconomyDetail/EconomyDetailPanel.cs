@@ -36,21 +36,21 @@ namespace TaisGodot.Scripts
 			incomeTotal.Assoc(GMRoot.runner.economy.incomeTotal);
 			outputTotal.Assoc(GMRoot.runner.economy.outputTotal);
 
-			foreach (var income in GMRoot.runner.economy.incomeAdjusts)
-			{
-				var incomPanel = (IncomePanel)ResourceLoader.Load<PackedScene>("res://Scenes/Main/Dynamic/EconomyDetail/IncomePanel.tscn").Instance();
-				incomPanel.gmObj = income;
+			//foreach (var income in GMRoot.runner.economy.incomeAdjusts)
+			//{
+			//	var incomPanel = (IncomePanel)ResourceLoader.Load<PackedScene>("res://Scenes/Main/Dynamic/EconomyDetail/IncomePanel.tscn").Instance();
+			//	incomPanel.gmObj = income;
 
-				GetNode<VBoxContainer>("CenterContainer/EconomyDetail/VBoxContainer/HBoxContainer/Income/VBoxContainer/VBoxContainer").AddChild(incomPanel);
-			}
+			//	GetNode<VBoxContainer>("CenterContainer/EconomyDetail/VBoxContainer/HBoxContainer/Income/VBoxContainer/VBoxContainer").AddChild(incomPanel);
+			//}
 
-			foreach (var output in GMRoot.runner.economy.outputAdjusts)
-			{
-				var outputPanel = (OutputPanel)ResourceLoader.Load<PackedScene>("res://Scenes/Main/Dynamic/EconomyDetail/OutputPanel.tscn").Instance();
-				outputPanel.gmObj = output;
+			//foreach (var output in GMRoot.runner.economy.outputAdjusts)
+			//{
+			//	var outputPanel = (OutputPanel)ResourceLoader.Load<PackedScene>("res://Scenes/Main/Dynamic/EconomyDetail/OutputPanel.tscn").Instance();
+			//	outputPanel.gmObj = output;
 
-				GetNode<VBoxContainer>("CenterContainer/EconomyDetail/VBoxContainer/HBoxContainer/Output/VBoxContainer/VBoxContainer").AddChild(outputPanel);
-			}
+			//	GetNode<VBoxContainer>("CenterContainer/EconomyDetail/VBoxContainer/HBoxContainer/Output/VBoxContainer/VBoxContainer").AddChild(outputPanel);
+			//}
 
 			////UpDateTempOutputStatus();
 		}

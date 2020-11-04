@@ -25,45 +25,47 @@ namespace UnitTest.RunData
 
             Assert.AreEqual(GMRoot.define.economy.curr, Visitor.Get("economy.value"));
 
-            foreach (var adjust_def in GMRoot.define.economy.incomes.Where(x => x.effect_pop_tax != null))
+            foreach (var def in GMRoot.define.economy.incomes)
             {
-                foreach(var tax in GMRoot.runner.pops.SelectNotNull(x=>x.tax))
+                var currLevel = def.levels[def.init_level - 1];
+
+                foreach (var consume in GMRoot.runner.pops.SelectNotNull(x => x.consume))
                 {
-                    Assert.True(tax.buffers.Contains(adjust_def.key));
-                    Assert.AreEqual(adjust_def.effect_pop_tax * adjust_def.percent * tax.baseValue.Value, tax.buffers[adjust_def.key]);
-                    Assert.AreEqual(tax.baseValue.Value + tax.buffers.Values.Cast<double>().Sum(), tax.value.Value);
+                    if (currLevel.effect_pop_consume != null)
+                    {
+                        Assert.True(consume.buffers.Contains(def.key));
+                        Assert.AreEqual(currLevel.effect_pop_consume * consume.baseValue.Value * 0.01, consume.buffers[def.key]);
+                    }
                 }
             }
 
-            foreach (var adjust_def in GMRoot.define.economy.outputs)
-            {
-                if(adjust_def.effect_spend_admin != null)
-                {
-                    foreach (var admin in GMRoot.runner.pops.SelectNotNull(x => x.adminExpend))
-                    {
-                        Assert.True(admin.buffers.Contains(adjust_def.key));
-                        Assert.AreEqual(adjust_def.effect_spend_admin * adjust_def.percent * admin.baseValue.Value, admin.buffers[adjust_def.key]);
-                        Assert.AreEqual(admin.baseValue.Value + admin.buffers.Values.Cast<double>().Sum(), admin.value.Value);
-                    }
-                }
-                if(adjust_def.effect_report_chaoting != null)
-                {
-                    //foreach (var report in GMRoot.runner.pops.SelectNotNull(x => x.adminExpend))
-                    //{
-                    //    Assert.True(admin.buffers.Contains(adjust_def.key));
-                    //    Assert.AreEqual(adjust_def.effect_spend_admin * adjust_def.percent * admin.baseValue.Value, admin.buffers[adjust_def.key]);
-                    //    Assert.AreEqual(admin.baseValue.Value + admin.buffers.Values.Cast<double>().Sum(), admin.value.Value);
-                    //}
+            var in_def = GMRoot.define.economy.incomes.Single(x => x.key == "POP_TAX");
+            var in_level = in_def.levels[in_def.init_level - 1];
 
-                }
+            foreach (var tax in GMRoot.runner.pops.SelectNotNull(x => x.tax))
+            {
+                Assert.True(tax.buffers.Contains("POP_TAX"));
+                Assert.AreEqual(in_level.percent * tax.baseValue.Value * 0.01, tax.buffers["POP_TAX"]);
             }
 
             var incomePopTax = GMRoot.runner.economy.incomeDetails.Single(x => x.type == GMData.Run.IncomeDetail.TYPE.POP_TAX);
-            Assert.AreEqual(GMRoot.runner.pops.Sum(x=>x.tax?.value.Value), incomePopTax.Value.Value);
+            Assert.AreEqual(GMRoot.runner.pops.Sum(x => x.tax?.value.Value), incomePopTax.Value.Value);
+
+            var out_def = GMRoot.define.economy.outputs.Single(x => x.key == "ADMIN");
+            var out_level = out_def.levels[out_def.init_level - 1];
+
+            foreach (var admin in GMRoot.runner.pops.SelectNotNull(x => x.adminExpend))
+            {
+                Assert.True(admin.buffers.Contains("ADMIN"));
+                Assert.AreEqual(out_level.percent * admin.baseValue.Value * 0.01, admin.buffers["ADMIN"]);
+            }
 
             var outputPopAdmin = GMRoot.runner.economy.outputDetails.Single(x => x.type == GMData.Run.OutputDetail.TYPE.ADMIN);
             Assert.AreEqual(GMRoot.runner.pops.Sum(x => x.adminExpend?.value.Value), outputPopAdmin.Value.Value);
 
+            out_def = GMRoot.define.economy.outputs.Single(x => x.key == "CHAOTING");
+            var outputChaoting = GMRoot.runner.economy.outputDetails.Single(x => x.type == GMData.Run.OutputDetail.TYPE.CHAOTING);
+            Assert.AreEqual(GMRoot.runner.chaoting.CalcTax(out_def.init_level, GMRoot.runner.chaoting.reportPopNum.Value), outputChaoting.Value.Value);
         }
 
         [Test()]
@@ -78,7 +80,9 @@ namespace UnitTest.RunData
         [Test()]
         public void Test_RiskDaysInc()
         {
+            double? d = null;
 
+            double? s = d * 12;
         }
     }
 }

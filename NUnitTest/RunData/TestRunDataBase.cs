@@ -73,9 +73,49 @@ namespace UnitTest.RunData
                         new IncomeAdjust
                         {
                             key = "POP_TAX",
-                            percent = 0.3,
-                            effect_pop_tax = +2,
-                            effect_pop_consume = -0.5,
+
+                            valid = true,
+
+                            init_level = 3,
+
+                            levels = new List<IncomeAdjust.Level>()
+                            {
+                                new IncomeAdjust.Level()
+                                {
+                                    percent = 0,
+                                    //effect_pop_consume = -2,
+                                },
+                                new IncomeAdjust.Level()
+                                {
+                                    percent = +5,
+                                    effect_pop_consume = -5,
+                                },
+                                new IncomeAdjust.Level()
+                                {
+                                    percent = +10,
+                                    effect_pop_consume = -10,
+                                },
+                                new IncomeAdjust.Level()
+                                {
+                                    percent = +20,
+                                    effect_pop_consume = -15,
+                                },
+                                new IncomeAdjust.Level()
+                                {
+                                    percent = +30,
+                                    effect_pop_consume = -20,
+                                },
+                                new IncomeAdjust.Level()
+                                {
+                                    percent = +40,
+                                    effect_pop_consume = -30,
+                                },
+                                new IncomeAdjust.Level()
+                                {
+                                    percent = +50,
+                                    effect_pop_consume = -40,
+                                }
+                            }
                         }
                     },
 
@@ -84,27 +124,91 @@ namespace UnitTest.RunData
                         new OutputAdjust()
                         {
                             key = "ADMIN",
-                            percent = 0.8,
+
+                            valid = true,
+
+                            init_level = 3,
+
+                            levels = new List<OutputAdjust.Level>()
+                            {
+                                new OutputAdjust.Level()
+                                {
+                                    percent = -50
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = -40
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = -30
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = -20
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = -10
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = 0
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = +10
+                                }
+                            }
                         }, 
                         new OutputAdjust()
                         {
                             key = "CHAOTING",
-                            percent = 1,
-                            effect_report_chaoting = +1,
-                            effect_spend_admin = +1
+
+                            valid = false,
+
+                            init_level = 3,
+
+                            levels = new List<OutputAdjust.Level>()
+                            {
+                                new OutputAdjust.Level()
+                                {
+                                    percent = -100
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = -60
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = -30
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = 0
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = 10
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                    percent = 20
+                                },
+                                new OutputAdjust.Level()
+                                {
+                                   percent = 30
+                                }
+                            }
                         }
                     }
-
-                    //income_percent_pop_tax = 30,
-                    //output_percent_admin = 80,
-                    //output_percent_chaoting_tax = 100
                 },
 
                 chaoting = new Chaoting()
                 {
                     reportPopPercent = 110,
                     powerParty = "TEST_PARTY",
-                    taxPercent = 20,
+                    tax_level = 3,
                 },
 
                 risks = new List<Risk>()

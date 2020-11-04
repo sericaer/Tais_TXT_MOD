@@ -17,6 +17,9 @@ namespace GMData.Run
         [JsonProperty, DataVisitorProperty("economy")]
         public Economy economy;
 
+        [JsonProperty, DataVisitorProperty("adjust_economy")]
+        public AdjustEconomy adjust_economy;
+
         [JsonProperty, DataVisitorProperty("taishou")]
         public Taishou taishou;
 
@@ -66,6 +69,8 @@ namespace GMData.Run
 
             economy = new Economy(GMRoot.define.economy);
 
+            adjust_economy = new AdjustEconomy(GMRoot.define.economy);
+
             risks = new List<Risk>();
             riskMgr = new RiskMgr();
 
@@ -81,32 +86,35 @@ namespace GMData.Run
         [OnDeserialized]
         private void DataReactive(StreamingContext context)
         {
-            economy.incomeAdjusts.ForEach(adjust =>
+            adjust_economy.incomeAdjusts.ForEach(adjust =>
             {
-                adjust.effect_pop_tax?.Subscribe(x =>
+                adjust.effect_pop_consume.Subscribe(x =>
                 {
-                    foreach (var tax in pops.SelectNotNull(p => p.tax))
+                    foreach (var consume in pops.SelectNotNull(p => p.consume))
                     {
-                        tax.SetBuffer(adjust.key, tax.baseValue.Value * x);
+                        consume.SetBuffer(adjust.key, x * consume.baseValue.Value * 0.01);
                     }
                 });
             });
 
-            economy.outputAdjusts.ForEach(adjust =>
+            adjust_economy.incomeAdjusts.Single(x => x.key == "POP_TAX").percent.Subscribe(p =>
             {
-                adjust.effect_spend_admin?.Subscribe(x =>
+                foreach (var tax in pops.SelectNotNull(pop => pop.tax))
                 {
-                    foreach (var admin in pops.SelectNotNull(p => p.adminExpend))
-                    {
-                        admin.SetBuffer(adjust.key, admin.baseValue.Value * x);
-                    }
-                });
-
-                adjust.effect_report_chaoting?.Subscribe(x =>
-                {
-
-                });
+                    tax.SetBuffer("POP_TAX", p * tax.baseValue?.Value * 0.01);
+                }
             });
+
+            adjust_economy.outputAdjusts.Single(x=>x.key == "ADMIN").percent.Subscribe(p=>
+            {
+                foreach (var admin in pops.SelectNotNull(pop => pop.adminExpend))
+                {
+                    admin.SetBuffer("ADMIN", p * admin.baseValue?.Value * 0.01);
+                }
+            });
+
+            Observable.CombineLatest(adjust_economy.outputAdjusts.Single(x => x.key == "CHAOTING").level.obs, chaoting.reportPopNum.obs, chaoting.CalcTax)
+                      .Subscribe(chaoting.monthTaxReqort);
 
 
             pops.SelectNotNull(pop => pop.tax).Select(tax => tax.value)
@@ -124,6 +132,13 @@ namespace GMData.Run
                     economy.outputDetails.Single(x => x.type == OutputDetail.TYPE.ADMIN)
                            .Value.OnNext(admin.Sum());
                 });
+
+            chaoting.monthTaxReqort.Subscribe(real =>
+                {
+                    economy.outputDetails.Single(x => x.type == OutputDetail.TYPE.CHAOTING)
+                    .Value.OnNext(real);
+                });
+            
         }
             //private void InterfaceAssociate()
             //{
