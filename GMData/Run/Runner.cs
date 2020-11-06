@@ -86,24 +86,24 @@ namespace GMData.Run
         [OnDeserialized]
         private void DataReactive(StreamingContext context)
         {
-            adjust_economy.incomeAdjusts.ForEach(adjust =>
-            {
-                adjust.effect_pop_consume.Subscribe(x =>
-                {
-                    foreach (var consume in pops.SelectNotNull(p => p.consume))
-                    {
-                        consume.SetBuffer(adjust.key, x * consume.baseValue.Value * 0.01);
-                    }
-                });
-            });
+            //adjust_economy.incomeAdjusts.ForEach(adjust =>
+            //{
+            //    adjust.effect_pop_consume.Subscribe(x =>
+            //    {
+            //        foreach (var consume in pops.SelectNotNull(p => p.consume))
+            //        {
+            //            consume.SetBuffer(adjust.key, x * consume.baseValue.Value * 0.01);
+            //        }
+            //    });
+            //});
 
-            adjust_economy.incomeAdjusts.Single(x => x.key == "POP_TAX").percent.Subscribe(p =>
-            {
-                foreach (var tax in pops.SelectNotNull(pop => pop.tax))
-                {
-                    tax.SetBuffer("POP_TAX", p * tax.baseValue?.Value * 0.01);
-                }
-            });
+            //adjust_economy.incomeAdjusts.Single(x => x.key == "POP_TAX").percent.Subscribe(p =>
+            //{
+            //    foreach (var tax in pops.SelectNotNull(pop => pop.tax))
+            //    {
+            //        tax.SetBuffer("POP_TAX", p * tax.baseValue?.Value * 0.01);
+            //    }
+            //});
 
             adjust_economy.outputAdjusts.Single(x=>x.key == "ADMIN").percent.Subscribe(p=>
             {
@@ -113,69 +113,32 @@ namespace GMData.Run
                 }
             });
 
-            Observable.CombineLatest(adjust_economy.outputAdjusts.Single(x => x.key == "CHAOTING").level.obs, chaoting.reportPopNum.obs, chaoting.CalcTax)
-                      .Subscribe(chaoting.monthTaxReqort);
+            adjust_economy.outputAdjusts.Single(x => x.key == "CHAOTING").level.obs.Subscribe(chaoting.reportTaxLevel);
 
+            adjust_economy.popTaxLevel.Subscribe(level =>
+                          {
+                              var def = GMRoot.define.economy.adjust_pop_tax.levels[level - 1];
 
-            pops.SelectNotNull(pop => pop.tax).Select(tax => tax.value)
-                .CombineLatest()
-                .Subscribe(taxes =>
-                {
-                    economy.incomeDetails.Single(x => x.type == IncomeDetail.TYPE.POP_TAX)
-                           .Value.OnNext(taxes.Sum());
-                });
+                              foreach (var tax in pops.SelectNotNull(pop => pop.tax))
+                              {
+                                  tax.SetBuffer("POP_TAX", def.percent * tax.baseValue?.Value * 0.01);
+                              }
 
-            pops.SelectNotNull(pop => pop.adminExpend).Select(admin => admin.value)
-                .CombineLatest()
-                .Subscribe(admin =>
-                {
-                    economy.outputDetails.Single(x => x.type == OutputDetail.TYPE.ADMIN)
-                           .Value.OnNext(admin.Sum());
-                });
+                              foreach (var consume in pops.SelectNotNull(pop => pop.consume))
+                              {
+                                  consume.SetBuffer("POP_TAX", def.effect_pop_consume * consume.baseValue?.Value * 0.01);
+                              }
+                          });
 
-            chaoting.monthTaxReqort.Subscribe(real =>
-                {
-                    economy.outputDetails.Single(x => x.type == OutputDetail.TYPE.CHAOTING)
-                    .Value.OnNext(real);
-                });
+            pops.CombineLatestSum(pop => pop.tax?.value)
+                .Subscribe(economy.detail.popTax);
+
+            pops.CombineLatestSum(pop => pop.adminExpend?.value)
+                .Subscribe(economy.detail.adminSpend);
+
+            chaoting.monthTaxReqort.Subscribe(economy.detail.reportChaoting);
             
         }
-            //private void InterfaceAssociate()
-            //{
-            //    Taishou.FuncGetParty = (name) => parties.Find(x => x.name == name);
-
-            //    Pop.funcGetDef = (name) => GMRoot.define.pops.Single(x => x.key == name);
-            //    Pop.funcGetDepart = (departName) => departs.Single(x => x.name == departName);
-
-            //    Depart.funcGetPop = (name) => pops.Where(x => x.depart_name == name);
-            //    Depart.funcGetDef = (name) => GMRoot.define.departs.Single(x => x.key == name);
-
-            //    Chaoting.funcGetParty = (name) => parties.Single(x => x.name == name);
-            //}
-
-            //private void DataAssociate()
-            //{
-            //    date.DataAssociate();
-
-            //    pops.ForEach(pop =>
-            //    {
-            //        pop.DataAssociate(economy.incomes.popTax.pop_tax_effect.obs, economy.incomes.popTax.pop_consume_effect.obs);
-            //    });
-
-            //    departs.ForEach(x => x.DataAssocate());
-
-            //    chaoting.DataAssocate();
-
-            //    economy.incomes.popTax.SetObsCurrValue(Observable.CombineLatest(departs.Select(x => x.tax.obs)).Select(x=>x.Sum()));
-            //    economy.outputs.departAdmin.SetObsCurrValue(Observable.CombineLatest(departs.Select(x => x.adminExpend.obs)).Select(x => x.Sum()));
-            //    economy.outputs.reportChaoting.SetObsCurrValue(Observable.CombineLatest(chaoting.expectMonthTaxValue.obs, 
-            //                                                  economy.outputs.reportChaoting.percent.obs, (x, y)=> x*y/100));
-            //    economy.outputs.reportChaoting.expend = chaoting.ReportMonthTax;
-
-            //    economy.DataAssocate();
-
-            //    registerPopNum = Observable.CombineLatest(departs.Select(x=>x.popNum.obs)).Select(x=>x.Sum()).ToOBSValue();
-            //}
 
         public void DaysInc()
         {

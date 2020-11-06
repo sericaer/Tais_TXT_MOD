@@ -17,18 +17,16 @@ namespace GMData.Run
         [JsonProperty, DataVisitorProperty("value")]
         public SubjectValue<double> curr;
 
-        public List<IncomeDetail> incomeDetails;
-
-        public List<OutputDetail> outputDetails;
-
         [DataVisitorProperty("output_total")]
-        public ObservableValueEx<double> outputTotal;
+        public OBSValue<double> outputTotal;
 
         [DataVisitorProperty("income_total")]
-        public ObservableValueEx<double> incomeTotal;
+        public OBSValue<double> incomeTotal;
 
         [DataVisitorProperty("month_surplus")]
-        public ObservableValueEx<double> monthSurplus;
+        public OBSValue<double> monthSurplus;
+
+        public Detail detail;
 
         internal void DaysInc(Date date)
         {
@@ -41,9 +39,6 @@ namespace GMData.Run
         internal Economy(Def.Economy init) : this()
         {
             curr.Value = init.curr;
-
-
-
             DataReactive(new StreamingContext());
         }
 
@@ -51,70 +46,56 @@ namespace GMData.Run
         private Economy()
         {
             curr = new SubjectValue<double>(0);
+            detail = new Detail();
 
-            incomeDetails = new List<IncomeDetail>();
-            foreach(IncomeDetail.TYPE elem in typeof(IncomeDetail.TYPE).GetEnumValues())
-            {
-                incomeDetails.Add(new IncomeDetail(elem));
-            }
-            
-            outputDetails = new List<OutputDetail>();
-            foreach (OutputDetail.TYPE elem in typeof(OutputDetail.TYPE).GetEnumValues())
-            {
-                outputDetails.Add(new OutputDetail(elem));
-            }
-
-            outputTotal = new ObservableValueEx<double>();
-            incomeTotal = new ObservableValueEx<double>();
-            monthSurplus = new ObservableValueEx<double>();
+            outputTotal = new OBSValue<double>();
+            incomeTotal = new OBSValue<double>();
+            monthSurplus = new OBSValue<double>();
         }
 
         [OnDeserialized]
         private void DataReactive(StreamingContext context)
         {
-            outputDetails.Select(x => x.Value.obs).CombineLatest()
-                   .Subscribe(os=> outputTotal.OnNext(os.Sum()));
+            detail.incomeDetails.CombineLatest(all => all.Sum())
+                   .Subscribe(incomeTotal);
 
-            incomeDetails.Select(x => x.Value.obs).CombineLatest()
-                   .Subscribe(os => incomeTotal.OnNext(os.Sum()));
+            detail.outputDetails.CombineLatest(all => all.Sum())
+                   .Subscribe(outputTotal);
 
-            Observable.CombineLatest(incomeTotal.obs, outputTotal.obs, (i, o) => i - o)
-                      .Subscribe(x=> monthSurplus.OnNext(x));
-        }
-    }
-
-    public class IncomeDetail
-    {
-        public enum TYPE
-        {
-            POP_TAX
+            Observable.CombineLatest(incomeTotal, outputTotal, (i, o) => i - o)
+                      .Subscribe(monthSurplus);
         }
 
-        public TYPE type;
-        public ObservableValueEx<double> Value;
-
-        public IncomeDetail(TYPE elem)
+        public class Detail
         {
-            this.type = elem;
-            this.Value = new ObservableValueEx<double>();
-        }
-    }
+            internal OBSValue<double> popTax;
 
-    public class OutputDetail
-    {
-        public enum TYPE
-        {
-            ADMIN,
-            CHAOTING,
-        }
+            internal OBSValue<double> reportChaoting;
+            internal OBSValue<double> adminSpend;
 
-        public TYPE type;
-        public ObservableValueEx<double> Value;
+            internal IEnumerable<OBSValue<double>> incomeDetails
+            {
+                get
+                {
+                    yield return popTax;
+                }
+            }
 
-        public OutputDetail(TYPE elem)
-        {
-            this.type = elem;
-            this.Value = new ObservableValueEx<double>();
+            internal IEnumerable<OBSValue<double>> outputDetails
+            {
+                get
+                {
+                    yield return reportChaoting;
+                    yield return adminSpend;
+                }
+            }
+
+            internal Detail()
+            {
+                popTax = new OBSValue<double>();
+                reportChaoting = new OBSValue<double>();
+                adminSpend = new OBSValue<double>();
+            }
         }
     }
 }

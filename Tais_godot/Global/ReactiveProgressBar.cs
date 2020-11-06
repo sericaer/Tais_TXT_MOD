@@ -20,7 +20,7 @@ namespace TaisGodot.Scripts
 			reactiveDispose = data.Subscribe(this.SetValue);
 		}
 
-		internal void Assoc<T>(ObservableValueEx<T> data, Func<string, string> adpt = null)
+		internal void Assoc<T>(OBSValue<T> data, Func<string, string> adpt = null)
 		{
 			this.adpt = adpt;
 			reactiveDispose = data.Subscribe(this.SetValue);

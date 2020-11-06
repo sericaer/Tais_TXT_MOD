@@ -9,8 +9,7 @@ namespace GMData.Def
         [SemanticProperty("curr")]
         public double curr;
 
-        [SemanticPropertyArray("income")]
-        public List<IncomeAdjust> incomes;
+        public IncomeAdjust adjust_pop_tax;
 
         [SemanticPropertyArray("output")]
         public List<OutputAdjust> outputs;

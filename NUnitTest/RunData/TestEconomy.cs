@@ -17,8 +17,6 @@ namespace UnitTest.RunData
         public void Init()
         {
             economy = new GMData.Run.Economy(GMRoot.define.economy);
-            economy.incomeDetails.ForEach(x => x.Value.OnNext(100));
-            economy.outputDetails.ForEach(x => x.Value.OnNext(200));
         }
 
         [Test()]
@@ -26,11 +24,13 @@ namespace UnitTest.RunData
         {
             Assert.AreEqual(GMRoot.define.economy.curr, economy.curr.Value);
 
-            Assert.AreEqual(GMRoot.define.economy.incomes.Count(), economy.incomeDetails.Count());
-            Assert.AreEqual(economy.incomeDetails.Count() * 100, economy.incomeTotal.Value);
+            economy.detail.popTax.OnNext(200);
 
-            Assert.AreEqual(GMRoot.define.economy.outputs.Count(), economy.outputDetails.Count());
-            Assert.AreEqual(economy.outputDetails.Count() * 200, economy.outputTotal.Value);
+            economy.detail.reportChaoting.OnNext(10);
+            economy.detail.adminSpend.OnNext(20);
+
+            Assert.AreEqual(economy.detail.popTax.Value, economy.incomeTotal.Value);
+            Assert.AreEqual(economy.detail.reportChaoting.Value + economy.detail.adminSpend.Value, economy.outputTotal.Value);
 
             Assert.AreEqual(economy.incomeTotal.Value - economy.outputTotal.Value, economy.monthSurplus.Value);
         }
@@ -39,7 +39,12 @@ namespace UnitTest.RunData
         public void Test_EconomyDayInc()
         {
             var date = new GMData.Run.Date(GMRoot.initData.start_date);
-            
+
+            economy.detail.popTax.OnNext(200);
+
+            economy.detail.reportChaoting.OnNext(10);
+            economy.detail.adminSpend.OnNext(20);
+
             var curr = GMRoot.define.economy.curr;
             for (int i=1; i<=360*10; i++)
             {
@@ -60,9 +65,6 @@ namespace UnitTest.RunData
         {
             var json = JsonConvert.SerializeObject(economy, Formatting.Indented);
             economy = JsonConvert.DeserializeObject<GMData.Run.Economy>(json);
-
-            economy.incomeDetails.ForEach(x => x.Value.OnNext(100));
-            economy.outputDetails.ForEach(x => x.Value.OnNext(200));
 
             Test_Init();
         }

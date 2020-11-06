@@ -20,10 +20,10 @@ namespace GMData.Run
         [JsonProperty, DataVisitorProperty("crop_grown")]
         public SubjectValue<double> cropGrown;
 
-        public ObservableValueEx<int> popNum;
+        public OBSValue<int> popNum;
 
-        public ObservableValueEx<double> tax;
-        public ObservableValueEx<double> adminExpend;
+        public OBSValue<double> tax;
+        public OBSValue<double> adminExpend;
 
         [JsonProperty]
         public Pop[] pops
@@ -77,24 +77,24 @@ namespace GMData.Run
         private Depart()
         {
             this.cropGrown = new SubjectValue<double>(0);
-            this.tax = new ObservableValueEx<double>();
-            this.adminExpend = new ObservableValueEx<double>();
+
+            this.popNum = new OBSValue<int>();
+            this.tax = new OBSValue<double>();
+            this.adminExpend = new OBSValue<double>();
         }
 
         [OnDeserialized]
         private void DataReactive(StreamingContext context)
         {
-            pops.Where(x => x.def.is_collect_tax).Select(x => x.num.obs)
-                .CombineLatest()
-                .Subscribe(nums => popNum.OnNext((int)nums.Sum()));
+            pops.Where(x => x.def.is_collect_tax).Select(x => x.num.obs).CombineLatest(all => (int)all.Sum())
+                .Subscribe(popNum);
 
-            pops.Where(x => x.tax != null).Select(x => x.tax.value.obs)
-                .CombineLatest()
-                .Subscribe(taxes => tax.OnNext(taxes.Sum()));
+            pops.CombineLatestSum(x => x.tax?.value)
+                .Subscribe(tax);
 
-            pops.Where(x => x.adminExpend != null).Select(x => x.adminExpend.value.obs)
-                .CombineLatest()
-                .Subscribe(adms => adminExpend.OnNext(adms.Sum()));
+            pops.CombineLatestSum(x => x.adminExpend?.value)
+                .Subscribe(adminExpend);
+                
         }
 
         private bool SameColor((int r, int g, int b) p)

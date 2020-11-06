@@ -31,15 +31,20 @@ namespace GMData.Run
         }
     }
 
-    public class ObservableValueEx<T> : RValue<T>, ISubject<T>
+    public class OBSValue<T> : RValue<T>, ISubject<T>
     {
-        internal readonly BehaviorSubject<T> obs;
+        internal readonly ReplaySubject<T> obs;
+        public override T Value => obs.First();
 
-        public override T Value { get { return obs.First(); } }
-
-        public ObservableValueEx()
+        public OBSValue()
         {
-            obs = new BehaviorSubject<T>(default(T));
+            obs = new ReplaySubject<T>(1);
+        }
+
+        public OBSValue(T init)
+        {
+            obs = new ReplaySubject<T>(1);
+            obs.OnNext(init);
         }
 
         public void OnCompleted()
@@ -118,14 +123,14 @@ namespace GMData.Run
     public class ObsBufferedValue
     {
         public SubjectValue<double> baseValue;
-        public ObservableValueEx<double> value;
+        public OBSValue<double> value;
 
         [JsonProperty]
         public OrderedDictionary buffers;
 
         public ObsBufferedValue()
         {
-            value = new ObservableValueEx<double>();
+            value = new OBSValue<double>(0);
 
             buffers = new OrderedDictionary();
         }

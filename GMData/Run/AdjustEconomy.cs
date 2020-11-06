@@ -14,15 +14,20 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class AdjustEconomy
     {
+        public enum Type
+        {
+            POP_TAX,
+        }
+
         [JsonProperty]
-        public List<IncomAdjust> incomeAdjusts;
+        public SubjectValue<int> popTaxLevel;
 
         [JsonProperty]
         public List<OutputAdjust> outputAdjusts;
 
         public AdjustEconomy(GMData.Def.Economy economy)
         {
-            incomeAdjusts = economy.incomes.Select(def => new IncomAdjust(def.key)).ToList();
+            popTaxLevel = new SubjectValue<int>(economy.adjust_pop_tax.init_level);
 
             outputAdjusts = economy.outputs.Select(def => new OutputAdjust(def.key)).ToList();
 
@@ -31,54 +36,6 @@ namespace GMData.Run
         [JsonConstructor]
         private AdjustEconomy()
         {
-        }
-    }
-
-    [JsonObject(MemberSerialization.OptIn)]
-    public class IncomAdjust
-    {
-        [JsonProperty]
-        public string key;
-
-        [JsonProperty]
-        public SubjectValue<bool> valid;
-
-        [JsonProperty]
-        public SubjectValue<int> level;
-
-        public ObservableValueEx<double> percent;
-        public ObservableValueEx<double?> effect_pop_consume;
-
-        internal Def.IncomeAdjust def => GMRoot.define.economy.incomes.Single(x => x.key == key);
-
-        [JsonConstructor]
-        private IncomAdjust()
-        {
-            valid = new SubjectValue<bool>(true);
-            level = new SubjectValue<int>(0);
-
-            percent = new ObservableValueEx<double>();
-            effect_pop_consume = new ObservableValueEx<double?>();
-        }
-
-        public IncomAdjust(string key) : this()
-        {
-            this.key = key;
-
-            this.valid.Value = def.valid;
-            this.level.Value = def.init_level;
-
-            DataReactive(new StreamingContext());
-        }
-
-        [OnDeserialized]
-        private void DataReactive(StreamingContext context)
-        {
-            level.Subscribe(x =>
-            {
-                percent.OnNext(def.levels[x - 1].percent);
-                effect_pop_consume.OnNext(def.levels[x-1].effect_pop_consume);
-            });
         }
     }
 
@@ -94,7 +51,7 @@ namespace GMData.Run
         [JsonProperty]
         public SubjectValue<int> level;
 
-        public ObservableValueEx<double> percent;
+        public OBSValue<double> percent;
         //public ObservableValueEx<double?> effect_report_chaoting;
         //public ObservableValueEx<double?> effect_spend_admin;
 
@@ -106,7 +63,7 @@ namespace GMData.Run
             valid = new SubjectValue<bool>(true);
             level = new SubjectValue<int>(0);
 
-            percent = new ObservableValueEx<double>();
+            percent = new OBSValue<double>();
         }
 
         public OutputAdjust(string key) : this()

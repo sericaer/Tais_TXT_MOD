@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reactive.Linq;
 using GMData;
 using GMData.Run;
 
@@ -34,6 +35,15 @@ namespace GMData
         public static IEnumerable<TResult> SelectNotNull<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             return source.Select(selector).Where(x=>x!= null);
+        }
+
+        public static IObservable<double> CombineLatestSum<TSource>(this IEnumerable<TSource> source, Func<TSource, IObservable<double>> selector)
+        {
+            return source.SelectNotNull(selector).CombineLatest(x => x.Sum());
+        }
+        public static IObservable<int> CombineLatestSum<TSource>(this IEnumerable<TSource> source, Func<TSource, IObservable<int>> selector)
+        {
+            return source.SelectNotNull(selector).CombineLatest(x => x.Sum());
         }
     }
 

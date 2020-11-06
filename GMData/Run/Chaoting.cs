@@ -18,12 +18,14 @@ namespace GMData.Run
         [JsonProperty]
         public SubjectValue<int> requestTaxLevel;
 
+        public OBSValue<int> reportTaxLevel;
+
+        public OBSValue<double> monthTaxRequest;
+
+        public OBSValue<double> monthTaxReqort;
+
         [JsonProperty]
         internal string powerPartyName;
-
-        public ObservableValueEx<double> monthTaxRequest;
-
-        public ObservableValueEx<double> monthTaxReqort;
 
         [DataVisitorProperty("extra_tax")]
         public double extraTax => _extraTax > 0 ? _extraTax : 0;
@@ -40,15 +42,12 @@ namespace GMData.Run
 
         }
 
-        internal Chaoting(Def.Chaoting def, double popNum)
+        internal Chaoting(Def.Chaoting def, double popNum) : this()
         {
             powerPartyName = def.powerParty;
 
             reportPopNum = new SubjectValue<int>((int)(popNum * def.reportPopPercent / 100));
             requestTaxLevel = new SubjectValue<int>(def.tax_level);
-
-            monthTaxRequest = new ObservableValueEx<double>();
-            monthTaxReqort = new ObservableValueEx<double>();
 
             DataReactive(new StreamingContext());
         }
@@ -68,14 +67,17 @@ namespace GMData.Run
         {        
             Observable.CombineLatest(requestTaxLevel.obs, reportPopNum.obs, CalcTax)
                       .Subscribe(monthTaxRequest);
+            Observable.CombineLatest(reportTaxLevel.obs, reportPopNum.obs, CalcTax)
+                      .Subscribe(monthTaxReqort);
         }
 
 
         [JsonConstructor]
         private Chaoting()
         {
-            monthTaxRequest = new ObservableValueEx<double>();
-            monthTaxReqort = new ObservableValueEx<double>();
+            monthTaxRequest = new OBSValue<double>();
+            monthTaxReqort = new OBSValue<double>();
+            reportTaxLevel = new OBSValue<int>();
         }
 
         internal double CalcTax(int level, int num)

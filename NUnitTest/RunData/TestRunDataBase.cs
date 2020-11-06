@@ -68,17 +68,15 @@ namespace UnitTest.RunData
                 {
                     curr = 123,
 
-                    incomes = new List<IncomeAdjust>()
+                    adjust_pop_tax = new IncomeAdjust()
                     {
-                        new IncomeAdjust
-                        {
-                            key = "POP_TAX",
+                        key = "POP_TAX",
 
-                            valid = true,
+                        valid = true,
 
-                            init_level = 3,
+                        init_level = 3,
 
-                            levels = new List<IncomeAdjust.Level>()
+                        levels = new List<IncomeAdjust.Level>()
                             {
                                 new IncomeAdjust.Level()
                                 {
@@ -115,7 +113,6 @@ namespace UnitTest.RunData
                                     percent = +50,
                                     effect_pop_consume = -40,
                                 }
-                            }
                         }
                     },
 
