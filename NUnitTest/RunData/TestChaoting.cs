@@ -26,7 +26,7 @@ namespace UnitTest.RunData
             Assert.AreEqual((int)(GMRoot.define.chaoting.reportPopPercent /100 * 123456), chaoting.reportPopNum.Value);
             Assert.AreEqual(GMRoot.define.chaoting.tax_level, chaoting.requestTaxLevel.Value);
 
-            var levels = GMRoot.define.economy.outputs.Single(x => x.key == "CHAOTING").levels;
+            var levels = GMRoot.define.adjusts.Single(x => x.key == "REPORT_CHAOTING").levels;
             Assert.AreEqual(chaoting.CalcTax(GMRoot.define.chaoting.tax_level, chaoting.reportPopNum.Value), chaoting.monthTaxRequest.Value);
         }
 

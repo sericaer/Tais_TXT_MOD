@@ -1,0 +1,46 @@
+init = 
+{
+    valid = true
+    level = 3
+}
+
+level = 
+{
+    percent = 0
+}
+
+level = 
+{
+    percent = 5,
+    effect_pop_consume = -5,
+}
+
+level = 
+{
+    percent = 10,
+    effect_pop_consume = -10,
+}
+
+level = 
+{
+    percent = 20,
+    effect_pop_consume = -15,
+}
+
+level = 
+{
+    percent = 30,
+    effect_pop_consume = -20,
+}
+
+level = 
+{
+    percent = 40,
+    effect_pop_consume = -30,
+}
+
+level = 
+{
+    percent = 50,
+    effect_pop_consume = -40,
+}

@@ -67,139 +67,145 @@ namespace UnitTest.RunData
                 economy = new Economy()
                 {
                     curr = 123,
+                },
 
-                    adjust_pop_tax = new IncomeAdjust()
+                adjusts = new List<Adjust>()
                     {
-                        key = "POP_TAX",
+                        new Adjust()
+                        {
+                            key = "POP_TAX",
 
-                        valid = true,
-
-                        init_level = 3,
-
-                        levels = new List<IncomeAdjust.Level>()
+                            init = new Adjust.Init()
                             {
-                                new IncomeAdjust.Level()
+                                valid = true,
+                                level = 3,
+                            },
+
+                            levels = new List<Adjust.Level>()
+                            {
+                                new Adjust.Level()
                                 {
                                     percent = 0,
                                     //effect_pop_consume = -2,
                                 },
-                                new IncomeAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = +5,
                                     effect_pop_consume = -5,
                                 },
-                                new IncomeAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = +10,
                                     effect_pop_consume = -10,
                                 },
-                                new IncomeAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = +20,
                                     effect_pop_consume = -15,
                                 },
-                                new IncomeAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = +30,
                                     effect_pop_consume = -20,
                                 },
-                                new IncomeAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = +40,
                                     effect_pop_consume = -30,
                                 },
-                                new IncomeAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = +50,
                                     effect_pop_consume = -40,
                                 }
-                        }
-                    },
-
-                    outputs = new List<OutputAdjust>()
-                    {
-                        new OutputAdjust()
+                            }
+                        },
+                        new Adjust()
                         {
-                            key = "ADMIN",
+                            key = "ADMIN_SPEND",
 
-                            valid = true,
 
-                            init_level = 3,
-
-                            levels = new List<OutputAdjust.Level>()
+                            init = new Adjust.Init()
                             {
-                                new OutputAdjust.Level()
+                                valid = true,
+                                level = 3,
+                            },
+
+                            levels = new List<Adjust.Level>()
+                            {
+                                new Adjust.Level()
                                 {
                                     percent = -50
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = -40
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = -30
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = -20
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = -10
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = 0
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = +10
                                 }
                             }
-                        }, 
-                        new OutputAdjust()
+                        },
+                        new Adjust()
                         {
-                            key = "CHAOTING",
+                            key = "REPORT_CHAOTING",
 
-                            valid = false,
-
-                            init_level = 3,
-
-                            levels = new List<OutputAdjust.Level>()
+                            init = new Adjust.Init()
                             {
-                                new OutputAdjust.Level()
+                                valid = true,
+                                level = 3,
+                            },
+
+                            levels = new List<Adjust.Level>()
+                            {
+                                new Adjust.Level()
                                 {
                                     percent = -100
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = -60
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = -30
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = 0
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = 10
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                     percent = 20
                                 },
-                                new OutputAdjust.Level()
+                                new Adjust.Level()
                                 {
                                    percent = 30
                                 }
                             }
                         }
-                    }
-                },
+                    },
 
                 chaoting = new Chaoting()
                 {

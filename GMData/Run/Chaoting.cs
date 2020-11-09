@@ -82,7 +82,7 @@ namespace GMData.Run
 
         internal double CalcTax(int level, int num)
         {
-            var levels = GMRoot.define.economy.outputs.Single(x => x.key == "CHAOTING").levels;
+            var levels = GMRoot.define.adjusts.Single(x => x.key == "REPORT_CHAOTING").levels;
             return levels[level - 1].percent * 0.01 * num * 0.006;
         }
 

@@ -11,6 +11,8 @@ namespace GMData.Def
         public Economy economy;
         public Chaoting chaoting;
 
+        public List<Adjust> adjusts;
+
         public List<Risk> risks;
         //public Dictionary<string, PopDef> pops;
         public Dictionary<string, PartyDef> partys;

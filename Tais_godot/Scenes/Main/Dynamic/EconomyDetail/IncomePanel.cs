@@ -5,9 +5,9 @@ namespace TaisGodot.Scripts
 {
 	public class IncomePanel : HBoxContainer
 	{
-		internal IncomAdjust gmObj;
+		//internal IncomAdjust gmObj;
 
-		HSlider slider;
+		//HSlider slider;
 
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()

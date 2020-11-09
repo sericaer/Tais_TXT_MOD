@@ -93,7 +93,8 @@
     <Compile Include="Mod\Common.cs" />
     <Compile Include="Mod\GEvent\GEventCommon.cs" />
     <Compile Include="Mod\Warn\WarnCommon.cs" />
-    <Compile Include="Run\AdjustEconomy.cs" />
+    <Compile Include="Run\Adjust.cs" />
+    <Compile Include="Def\Adjust.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

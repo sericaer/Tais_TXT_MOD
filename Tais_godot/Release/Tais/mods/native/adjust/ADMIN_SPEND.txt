@@ -1,0 +1,40 @@
+init = 
+{
+    valid = true
+    level = 3
+}
+
+level = 
+{
+    percent = -50
+}
+
+level = 
+{
+    percent = -40
+}
+
+level = 
+{
+    percent = -30
+}
+
+level = 
+{
+    percent = -20
+}
+
+level = 
+{
+    percent = -10
+}
+
+level = 
+{
+    percent = 0
+}
+
+level = 
+{
+    percent = 10
+}

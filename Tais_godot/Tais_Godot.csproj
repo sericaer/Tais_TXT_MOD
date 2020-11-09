@@ -112,6 +112,7 @@
     <Compile Include="Global\Table\TableContainer.cs" />
     <Compile Include="Global\Table\TableDataElemPanel.cs" />
     <Compile Include="Global\Table\TableColumElemPanel.cs" />
+    <Compile Include="Scenes\Main\Dynamic\EconomyDetail\AdjustPanel.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />

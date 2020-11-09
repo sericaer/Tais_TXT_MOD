@@ -1,6 +1,9 @@
 using Godot;
+
 using GMData;
+
 using System;
+using System.Linq;
 
 namespace TaisGodot.Scripts
 {
@@ -15,6 +18,10 @@ namespace TaisGodot.Scripts
 		ReactiveLabel surplus;
 		ReactiveLabel incomeTotal;
 		ReactiveLabel outputTotal;
+
+		AdjustPanel adjustPopTax;
+		AdjustPanel adjustReportChaoting;
+		AdjustPanel adjustAdminSpend;
 
 		public static EconomyDetailPanel Instance(Node parent)
 		{
@@ -35,6 +42,14 @@ namespace TaisGodot.Scripts
 			surplus.Assoc(GMRoot.runner.economy.monthSurplus);
 			incomeTotal.Assoc(GMRoot.runner.economy.incomeTotal);
 			outputTotal.Assoc(GMRoot.runner.economy.outputTotal);
+
+			adjustPopTax = GetNode<AdjustPanel>("");
+			adjustReportChaoting = GetNode<AdjustPanel>("");
+			adjustAdminSpend = GetNode<AdjustPanel>("");
+
+			adjustPopTax.Init(GMRoot.runner.adjusts.Single(x => x.etype == GMData.Run.Adjust.EType.POP_TAX));
+			adjustReportChaoting.Init(GMRoot.runner.adjusts.Single(x => x.etype == GMData.Run.Adjust.EType.REPORT_CHAOTING));
+			adjustAdminSpend.Init(GMRoot.runner.adjusts.Single(x => x.etype == GMData.Run.Adjust.EType.ADMIN_SPEND));
 
 			//foreach (var income in GMRoot.runner.economy.incomeAdjusts)
 			//{

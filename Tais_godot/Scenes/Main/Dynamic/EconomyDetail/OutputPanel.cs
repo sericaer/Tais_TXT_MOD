@@ -5,9 +5,9 @@ namespace TaisGodot.Scripts
 {
 	public class OutputPanel : HBoxContainer
 	{
-		internal OutputAdjust gmObj;
+		//internal OutputAdjust gmObj;
 
-		HSlider slider;
+		//HSlider slider;
 
 		// Called when the node enters the scene tree for the first time.
 		//public override void _Ready()

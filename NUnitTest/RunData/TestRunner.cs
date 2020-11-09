@@ -29,7 +29,9 @@ namespace UnitTest.RunData
             {
                 Assert.True(tax.buffers.Contains("POP_TAX"));
 
-                var percent = GMRoot.define.economy.adjust_pop_tax.levels[GMRoot.runner.adjust_economy.popTaxLevel.Value - 1].percent;
+                var popTaxAdjustDef = GMRoot.define.adjusts.Single(x => x.key == GMData.Run.Adjust.EType.POP_TAX.ToString());
+                var percent = popTaxAdjustDef.levels[popTaxAdjustDef.init.level - 1].percent;
+
                 Assert.AreEqual(percent, (double)tax.buffers["POP_TAX"] * 100.0/ tax.baseValue.Value);
             }
 

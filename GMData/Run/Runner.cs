@@ -17,9 +17,6 @@ namespace GMData.Run
         [JsonProperty, DataVisitorProperty("economy")]
         public Economy economy;
 
-        [JsonProperty, DataVisitorProperty("adjust_economy")]
-        public AdjustEconomy adjust_economy;
-
         [JsonProperty, DataVisitorProperty("taishou")]
         public Taishou taishou;
 
@@ -42,6 +39,9 @@ namespace GMData.Run
         public RiskMgr riskMgr;
 
         public ObservableValue<int> registerPopNum;
+
+        [JsonProperty]
+        public List<Adjust> adjusts;
 
         public static Runner Generate()
         {
@@ -69,7 +69,7 @@ namespace GMData.Run
 
             economy = new Economy(GMRoot.define.economy);
 
-            adjust_economy = new AdjustEconomy(GMRoot.define.economy);
+            adjusts = Enum.GetValues(typeof(Adjust.EType)).Cast<Adjust.EType>().Select(x => new Adjust(x)).ToList();
 
             risks = new List<Risk>();
             riskMgr = new RiskMgr();
@@ -86,49 +86,33 @@ namespace GMData.Run
         [OnDeserialized]
         private void DataReactive(StreamingContext context)
         {
-            //adjust_economy.incomeAdjusts.ForEach(adjust =>
-            //{
-            //    adjust.effect_pop_consume.Subscribe(x =>
-            //    {
-            //        foreach (var consume in pops.SelectNotNull(p => p.consume))
-            //        {
-            //            consume.SetBuffer(adjust.key, x * consume.baseValue.Value * 0.01);
-            //        }
-            //    });
-            //});
-
-            //adjust_economy.incomeAdjusts.Single(x => x.key == "POP_TAX").percent.Subscribe(p =>
-            //{
-            //    foreach (var tax in pops.SelectNotNull(pop => pop.tax))
-            //    {
-            //        tax.SetBuffer("POP_TAX", p * tax.baseValue?.Value * 0.01);
-            //    }
-            //});
-
-            adjust_economy.outputAdjusts.Single(x=>x.key == "ADMIN").percent.Subscribe(p=>
+            adjusts.ForEach(ad =>
             {
-                foreach (var admin in pops.SelectNotNull(pop => pop.adminExpend))
+                switch (ad.etype)
                 {
-                    admin.SetBuffer("ADMIN", p * admin.baseValue?.Value * 0.01);
+                    case Adjust.EType.POP_TAX:
+                        foreach (var tax in pops.SelectNotNull(pop => pop.tax))
+                        {
+                            tax.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * tax.baseValue?.Value * 0.01);
+                        }
+                        break;
+                    case Adjust.EType.ADMIN_SPEND:
+                        foreach (var admin in pops.SelectNotNull(pop => pop.adminExpend))
+                        {
+                            admin.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * admin.baseValue?.Value * 0.01);
+                        }
+                        break;
                 }
+
+                if(ad.levelDef.effect_pop_consume != null)
+                {
+                    foreach (var consume in pops.SelectNotNull(pop => pop.consume))
+                    {
+                        consume.SetBuffer("POP_TAX", ad.levelDef.effect_pop_consume * consume.baseValue?.Value * 0.01);
+                    }
+                }
+
             });
-
-            adjust_economy.outputAdjusts.Single(x => x.key == "CHAOTING").level.obs.Subscribe(chaoting.reportTaxLevel);
-
-            adjust_economy.popTaxLevel.Subscribe(level =>
-                          {
-                              var def = GMRoot.define.economy.adjust_pop_tax.levels[level - 1];
-
-                              foreach (var tax in pops.SelectNotNull(pop => pop.tax))
-                              {
-                                  tax.SetBuffer("POP_TAX", def.percent * tax.baseValue?.Value * 0.01);
-                              }
-
-                              foreach (var consume in pops.SelectNotNull(pop => pop.consume))
-                              {
-                                  consume.SetBuffer("POP_TAX", def.effect_pop_consume * consume.baseValue?.Value * 0.01);
-                              }
-                          });
 
             pops.CombineLatestSum(pop => pop.tax?.value)
                 .Subscribe(economy.detail.popTax);

@@ -105,6 +105,14 @@ namespace GMData.Mod
             }
         }
 
+        public List<Adjust> adjusts
+        {
+            get
+            {
+                return mods[0].adjusts;
+            }
+        }
+
         private List<Mod> mods;
 
         public Modder(string path)
@@ -125,7 +133,8 @@ namespace GMData.Mod
                 pops = this.pops,
                 economy = this.common.economy,
                 chaoting = this.common.chaoting,
-                risks = this.risks
+                risks = this.risks,
+                adjusts = this.adjusts
             };
         }
 
@@ -144,6 +153,7 @@ namespace GMData.Mod
         internal List<Pop> pops;
         internal List<Warn> warns;
         internal List<Risk> risks;
+        internal List<Adjust> adjusts;
 
         internal PersonName personName;
         internal Common common;
@@ -163,6 +173,7 @@ namespace GMData.Mod
             events = GEvent.Load(name, path + "/event");
             warns = Warn.Load(name, path + "/warn");
             risks = Risk.Load(name, path + "/risk");
+            adjusts = Adjust.Load(name, path + "/adjust");
         }
     }
 }
