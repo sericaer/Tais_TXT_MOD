@@ -21,10 +21,10 @@ namespace GMData.Def
         public class Level
         {
             [SemanticProperty("percent")]
-            internal double percent;
+            public double percent;
 
             [SemanticProperty("effect_pop_consume")]
-            internal double? effect_pop_consume;
+            public double? effect_pop_consume;
         }
 
         internal static List<Adjust> Load(string name, string path)

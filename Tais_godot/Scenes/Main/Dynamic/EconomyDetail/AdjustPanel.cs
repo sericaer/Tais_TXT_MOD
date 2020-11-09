@@ -1,5 +1,7 @@
 using Godot;
 using GMData.Run;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TaisGodot.Scripts
 {
@@ -16,7 +18,6 @@ namespace TaisGodot.Scripts
             levelContainer = GetNode<HBoxContainer>("");
             group = new ButtonGroup();
         }
-
 
         internal void Init(Adjust gmObj)
         {
@@ -60,6 +61,19 @@ namespace TaisGodot.Scripts
         private void _on_LevelButton_Pressed(int level)
         {
             gmObj.level.Value = level;
+        }
+
+        private string GetLevelDesc(GMData.Run.Adjust.EType type, GMData.Def.Adjust.Level levelInfo)
+        {
+            var list = new List<(string desc, double percent)>();
+            list.Add((type.ToString(), levelInfo.percent));
+
+            if(levelInfo.effect_pop_consume != null)
+            {
+                list.Add(("EFFECT_POP_CONSUME", levelInfo.effect_pop_consume.Value));
+            }
+
+            return string.Join("\n", list.Select(x => $"{TranslateServerEx.Translate(x.desc)} {x.percent}%"));
         }
     }
 }
