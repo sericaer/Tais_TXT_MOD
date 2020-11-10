@@ -14,6 +14,9 @@ namespace GMData.Def
         [SemanticProperty("is_collect_tax")]
         public bool is_collect_tax;
 
+        [SemanticProperty("is_family")]
+        public bool is_family;
+
         [SemanticProperty("consume")]
         public double? consume;
 

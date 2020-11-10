@@ -89,7 +89,17 @@ namespace GMData.Def
             return new PersonName(family, given);
         }
 
-        private PersonName(string[] family, string[] given)
+        internal string[] GetRandomFamilyArray(int count)
+        {
+            return family.OrderBy(x => Guid.NewGuid()).Take(count).ToArray();
+        }
+
+        internal string[] GetRandomPersonArray(int count)
+        {
+            return given.OrderBy(x => Guid.NewGuid()).Take(count).ToArray();
+        }
+
+        internal PersonName(string[] family, string[] given)
         {
             this.family = family;
             this.given = given;

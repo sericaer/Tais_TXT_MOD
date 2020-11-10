@@ -26,6 +26,9 @@ namespace GMData.Def
 
             [SemanticProperty("num")]
             public double num;
+
+            [SemanticProperty("party")]
+            public string party;
         }
 
         public class COLOR

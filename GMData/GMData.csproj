@@ -95,6 +95,8 @@
     <Compile Include="Mod\Warn\WarnCommon.cs" />
     <Compile Include="Run\Adjust.cs" />
     <Compile Include="Def\Adjust.cs" />
+    <Compile Include="Run\Family.cs" />
+    <Compile Include="Run\Person.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

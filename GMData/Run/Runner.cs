@@ -29,6 +29,9 @@ namespace GMData.Run
         [DataVisitorPropertyArray("pop")]
         public List<Pop> pops => departs.SelectMany(x => x.pops).ToList();
 
+        [DataVisitorPropertyArray("family")]
+        public List<Family> families => pops.SelectNotNull(x => x.family).ToList();
+
         [JsonProperty, DataVisitorPropertyArray("party")]
         public List<Party> parties;
 
@@ -73,6 +76,12 @@ namespace GMData.Run
 
             risks = new List<Risk>();
             riskMgr = new RiskMgr();
+
+            var names = GMRoot.define.personName.GetRandomFamilyArray(families.Count);
+            for (int i = 0; i < families.Count; i++)
+            {
+                families[i].name = names[i];
+            }
 
             DataReactive(new StreamingContext());
         }

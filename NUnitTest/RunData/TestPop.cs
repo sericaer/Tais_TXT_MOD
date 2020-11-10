@@ -54,6 +54,15 @@ namespace UnitTest.RunData
                 {
                     Assert.AreEqual(pop.def.consume, pop.consume.value.Value);
                 }
+
+                if(popDef.is_family)
+                {
+                    Assert.NotNull(pop.family);
+                }
+                else
+                {
+                    Assert.Null(pop.family);
+                }
             }
         }
 

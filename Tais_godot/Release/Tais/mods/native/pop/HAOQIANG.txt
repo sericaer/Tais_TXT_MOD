@@ -1,2 +1,4 @@
 is_collect_tax = true
+is_family = true
+
 consume = 300

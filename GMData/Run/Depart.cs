@@ -68,7 +68,7 @@ namespace GMData.Run
         {
             this.name = def.key;
 
-            pops = def.pop_init.Select(pop_def => new Pop(this, pop_def.type, pop_def.num)).ToArray();
+            pops = def.pop_init.Select(pop_def => new Pop(this, pop_def.type, pop_def.num, pop_def.party)).ToArray();
 
             DataReactive(new StreamingContext());
         }

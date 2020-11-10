@@ -28,8 +28,28 @@ namespace GMData.Run
         [JsonProperty]
         public ObsBufferedValue consume;
 
+        [JsonProperty]
+        public Family family
+        {
+            get
+            {
+                return _family;
+            }
+            set
+            {
+                _family = value;
+
+                if(_family != null)
+                {
+                    _family.pop = this;
+                }
+            }
+        }
+
         [DataVisitorProperty("depart")]
         internal Depart depart;
+
+        private Family _family;
 
         internal Def.Pop def => GMRoot.define.pops.Single(x=>x.key == name);
 
@@ -38,12 +58,18 @@ namespace GMData.Run
 
         }
 
-        internal Pop(Depart depart, string name, double num)
+        internal Pop(Depart depart, string name, double num, string party)
         {
             this.name = name;
 
             this.depart = depart;
             this.num = new SubjectValue<double>(num);
+
+            if(def.is_family)
+            {
+                var person_num = (int)num / 150;
+                this.family = new Family(person_num > 3 ? person_num : 3, party);
+            }
 
             if(def.is_collect_tax)
             {
