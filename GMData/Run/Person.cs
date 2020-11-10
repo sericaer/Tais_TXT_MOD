@@ -8,6 +8,9 @@ namespace GMData.Run
         [JsonProperty]
         public readonly string givenName;
 
+        [JsonProperty]
+        public ObsBufferedValue relation;
+
         internal Family family;
 
         public string familyName => family.name;
@@ -16,6 +19,13 @@ namespace GMData.Run
         public Person(string name)
         {
             this.givenName = name;
+            this.relation = new ObsBufferedValue();
+        }
+
+        [JsonConstructor]
+        private Person()
+        {
+
         }
     }
 }

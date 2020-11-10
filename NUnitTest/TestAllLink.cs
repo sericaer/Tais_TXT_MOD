@@ -37,7 +37,22 @@ namespace UnitTest.RunData
         }
 
         [Test()]
-        public void Run()
+        public void TestInit()
+        {
+            var persons = GMRoot.runner.persons;
+            Assert.NotZero(persons.Count);
+
+            foreach (var person in persons)
+            {
+                Assert.True(person.relation.buffers.Contains("PARTY_RELATION"));
+
+                var partyDef = GMRoot.define.parties.Single(x => x.key == person.family.partyName);
+                Assert.AreEqual(partyDef.relation.Single(x => x.peer == GMRoot.runner.taishou.partyName).value, person.relation.buffers["PARTY_RELATION"]);
+            }
+        }
+
+        [Test()]
+        public void TestRun()
         {
             for(int i=0; i<360*10; i++)
             {
@@ -62,7 +77,7 @@ namespace UnitTest.RunData
             var json = GMRoot.runner.Serialize();
             GMRoot.runner = GMData.Run.Runner.Deserialize(json);
 
-            Run();
+            TestRun();
         }
     }
 }

@@ -1,0 +1,17 @@
+relation = 
+{
+	peer = SHIZU
+	value = 30
+}
+
+relation = 
+{
+	peer = HUANGUAN
+	value = -30
+}
+
+relation = 
+{
+	peer = JUNGONG
+	value = -5
+}

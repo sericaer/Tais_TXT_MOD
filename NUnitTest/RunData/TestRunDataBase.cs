@@ -30,8 +30,42 @@ namespace UnitTest.RunData
 
             GMRoot.define = new Define()
             {
-                parties = new List<Party>() { new Party("TEST_PARTY1"), new Party("TEST_PARTY2") },
-
+                parties = new List<Party>() {
+                    new Party()
+                    {
+                        key = "TEST_PARTY1",
+                        relation = new List<Party.Relation>()
+                        {
+                            new Party.Relation()
+                            {
+                                peer = "TEST_PARTY2",
+                                value = 100
+                            },
+                            new Party.Relation()
+                            {
+                                peer = "TEST_PARTY1",
+                                value = 30
+                            }
+                        }
+                    },
+                    new Party()
+                    {
+                        key = "TEST_PARTY2",
+                        relation = new List<Party.Relation>()
+                        {
+                            new Party.Relation()
+                            {
+                                peer = "TEST_PARTY2",
+                                value = -10
+                            },
+                            new Party.Relation()
+                            {
+                                peer = "TEST_PARTY1",
+                                value = -40
+                            }
+                        }
+                    }
+                },
                 departs = new List<Depart>()
                 {
                     new Depart()

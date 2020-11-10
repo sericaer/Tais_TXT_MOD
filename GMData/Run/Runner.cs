@@ -32,6 +32,9 @@ namespace GMData.Run
         [DataVisitorPropertyArray("family")]
         public List<Family> families => pops.SelectNotNull(x => x.family).ToList();
 
+        [DataVisitorPropertyArray("person")]
+        public List<Person> persons => families.SelectMany(x => x.persons).ToList();
+
         [JsonProperty, DataVisitorPropertyArray("party")]
         public List<Party> parties;
 
@@ -133,7 +136,12 @@ namespace GMData.Run
                 .Subscribe(economy.detail.adminSpend);
 
             chaoting.monthTaxReqort.Subscribe(economy.detail.reportChaoting);
-            
+
+            persons.ForEach(p =>
+            {
+                var party = parties.Single(x => x.key == p.family.partyName);
+                p.relation.SetBuffer("PARTY_RELATION", party.getRelation(taishou.partyName));
+            });
         }
 
         public void DaysInc()

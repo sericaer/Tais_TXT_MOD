@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GMData.Mod;
 using Parser.Semantic;
 
 namespace GMData.Def
@@ -11,12 +12,8 @@ namespace GMData.Def
         public string key;
         public string file;
 
-
-        public Party(string file)
-        {
-            this.file = file;
-            this.key = Path.GetFileNameWithoutExtension(file);
-        }
+        [SemanticPropertyArray("relation")]
+        public List<Relation> relation;
 
         internal static List<Party> Load(string modname, string path)
         {
@@ -29,10 +26,23 @@ namespace GMData.Def
 
             foreach (var file in Directory.EnumerateFiles(path, "*.txt"))
             {
-                rslt.Add(new Party(file));
+                var party = ModElementLoader.Load<Party>(file, File.ReadAllText(file));
+                party.file = path;
+                party.key = Path.GetFileNameWithoutExtension(file);
+
+                rslt.Add(party);
             }
 
             return rslt;
+        }
+
+        public class Relation
+        {
+            [SemanticProperty("peer")]
+            public string peer;
+
+            [SemanticProperty("value")]
+            public double value;
         }
     }
 }

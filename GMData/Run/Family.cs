@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace GMData.Run
@@ -13,6 +13,9 @@ namespace GMData.Run
 
         [JsonProperty]
         internal string partyName;
+
+        [JsonProperty]
+        public ObsBufferedValue relation;
 
         [JsonProperty]
         public List<Person> persons
@@ -38,6 +41,19 @@ namespace GMData.Run
 
             var names = GMRoot.define.personName.GetRandomPersonArray(person_count);
             persons = names.Select(x => new Person(x)).ToList();
+
+            DataReactive(new StreamingContext());
+        }
+
+        [JsonConstructor]
+        private Family()
+        {
+
+        }
+
+        [OnDeserialized]
+        private void DataReactive(StreamingContext context)
+        {
         }
     }
 }
