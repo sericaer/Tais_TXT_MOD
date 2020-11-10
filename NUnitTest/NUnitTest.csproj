@@ -67,6 +67,7 @@
     <Compile Include="Modder\TestModBase.cs" />
     <Compile Include="RunData\TestEconomy.cs" />
     <Compile Include="Modder\Define\TestAdjust.cs" />
+    <Compile Include="TestAllLink.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

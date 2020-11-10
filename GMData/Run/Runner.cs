@@ -102,6 +102,9 @@ namespace GMData.Run
                             admin.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * admin.baseValue?.Value * 0.01);
                         }
                         break;
+                    case Adjust.EType.REPORT_CHAOTING:
+                        ad.level.Subscribe(chaoting.reportTaxLevel);
+                        break;
                 }
 
                 if(ad.levelDef.effect_pop_consume != null)

@@ -7,6 +7,11 @@ namespace GMData
     {
         static GMRoot()
         {
+            Init();
+        }
+
+        public static void Init()
+        {
             Visitor.InitVisitMap(typeof(Init.InitData));
             Visitor.InitVisitMap(typeof(Run.Runner));
 

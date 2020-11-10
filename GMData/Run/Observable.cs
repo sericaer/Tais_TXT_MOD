@@ -34,7 +34,19 @@ namespace GMData.Run
     public class OBSValue<T> : RValue<T>, ISubject<T>
     {
         internal readonly ReplaySubject<T> obs;
-        public override T Value => obs.First();
+        bool isStart = false;
+        public override T Value
+        {
+            get
+            {
+                if(!isStart)
+                {
+                    throw new Exception("current OBS not start!");
+                }
+
+                return obs.First();
+            }
+        }
 
         public OBSValue()
         {
@@ -44,7 +56,56 @@ namespace GMData.Run
         public OBSValue(T init)
         {
             obs = new ReplaySubject<T>(1);
-            obs.OnNext(init);
+            OnNext(init);
+        }
+
+        public void OnCompleted()
+        {
+            obs.OnCompleted();
+        }
+
+        public void OnError(Exception error)
+        {
+            obs.OnError(error);
+        }
+
+        public void OnNext(T value)
+        {
+            isStart = true;
+            obs.OnNext(value);
+        }
+
+        public IDisposable Subscribe(IObserver<T> observer)
+        {
+            return obs.Subscribe(observer);
+        }
+
+        public IDisposable Subscribe(Action<T> action)
+        {
+            return obs.Subscribe(action);
+        }
+    }
+
+    [JsonConverter(typeof(SubjectValueConverter))]
+    public class SubjectValue<T> : RWValue<T>, ISubject<T>
+    {
+        internal readonly BehaviorSubject<T> obs;
+
+        public override T Value
+        {
+            get
+            {
+                return obs.Value;
+            }
+            set
+            {
+                obs.OnNext(value);
+            }
+        }
+
+        public SubjectValue(T param)
+        {
+            obs = new BehaviorSubject<T>(param);
         }
 
         public void OnCompleted()
@@ -65,34 +126,6 @@ namespace GMData.Run
         public IDisposable Subscribe(IObserver<T> observer)
         {
             return obs.Subscribe(observer);
-        }
-
-        public IDisposable Subscribe(Action<T> action)
-        {
-            return obs.Subscribe(action);
-        }
-    }
-
-    [JsonConverter(typeof(SubjectValueConverter))]
-    public class SubjectValue<T> : RWValue<T>
-    {
-        internal readonly BehaviorSubject<T> obs;
-
-        public override T Value
-        {
-            get
-            {
-                return obs.Value;
-            }
-            set
-            {
-                obs.OnNext(value);
-            }
-        }
-
-        public SubjectValue(T param)
-        {
-            obs = new BehaviorSubject<T>(param);
         }
 
         public IDisposable Subscribe(Action<T> action)
