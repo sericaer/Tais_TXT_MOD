@@ -135,9 +135,9 @@ namespace GMData.Run
         [JsonProperty, DataVisitorProperty("day")]
         public SubjectValue<int> day;
 
-        public ObservableValue<string> desc;
+        public OBSValue<string> desc;
 
-        public ObservableValue<int> total_days;
+        public OBSValue<int> total_days;
 
         //public int total_days
         //{
@@ -147,22 +147,27 @@ namespace GMData.Run
         //    }
         //}
 
-        public Date(Init.Date init)
+        public Date(Init.Date init) : this()
         {
             year = new SubjectValue<int>((int)init.year);
             month = new SubjectValue<int>((int)init.month);
             day = new SubjectValue<int>((int)init.day);
+
+            DataAssociate(new StreamingContext());
         }
 
-        internal void DataAssociate()
+        [OnDeserialized]
+        internal void DataAssociate(StreamingContext context)
         {
-            desc = Observable.CombineLatest(year.obs, month.obs, day.obs, (y, m, d) => $"{y}-{m}-{d}").ToOBSValue();
-            total_days = Observable.CombineLatest(year.obs, month.obs, day.obs, (y, m, d) => d + (m - 1) * 30 + (y - 1) * 360).ToOBSValue();
+            Observable.CombineLatest(year, month, day, (y, m, d) => $"{y}-{m}-{d}").Subscribe(desc);
+            Observable.CombineLatest(year, month, day, (y, m, d) => d + (m - 1) * 30 + (y - 1) * 360).Subscribe(total_days);
         }
 
         [JsonConstructor]
         private Date()
         {
+            desc = new OBSValue<string>();
+            total_days = new OBSValue<int>();
         }
     }
 }

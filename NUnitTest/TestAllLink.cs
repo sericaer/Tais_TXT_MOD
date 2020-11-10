@@ -28,7 +28,7 @@ namespace UnitTest.RunData
                 taishou = new GMData.Init.Taishou()
                 {
                     name = "TEST_NAME",
-                    age = 123,
+                    age = 30,
                     party = GMRoot.modder.parties.First().key
                 }
             };

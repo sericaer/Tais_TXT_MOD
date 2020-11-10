@@ -48,6 +48,9 @@ namespace UnitTest.RunData
                         Assert.AreEqual(m, date.month.Value);
                         Assert.AreEqual(y, date.year.Value);
 
+                        Assert.AreEqual(d + (m - 1) * 30 + (y - 1) * 360, date.total_days.Value);
+                        Assert.AreEqual($"{y}-{m}-{d}", date.desc.Value);
+
                         date.Inc();
                     }
                 }
