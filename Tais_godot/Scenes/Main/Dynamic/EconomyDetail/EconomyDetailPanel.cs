@@ -43,7 +43,7 @@ namespace TaisGodot.Scripts
 
 			adjustContainer = GetNode<VBoxContainer>("");
 			foreach(GMData.Run.Adjust.EType elem in Enum.GetValues(typeof(GMData.Run.Adjust.EType)))
-            {
+			{
 				var adjustPanel = adjustContainer.GetNode<AdjustPanel>(elem.ToString());
 				adjustPanel.Init(GMRoot.runner.adjusts.Single(x => x.etype == elem));
 			}

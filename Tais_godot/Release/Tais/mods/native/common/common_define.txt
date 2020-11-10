@@ -1,14 +1,11 @@
 economy =
 {
-    curr = 123,
-    income_percent_pop_tax = 20,
-    output_percent_admin = 80,
-    output_percent_chaoting_tax = 100
+    curr = 123
 }
 
 chaoting =
 {
     power_party = HUANGUAN
     report_pop_percent = 110
-    tax_percent = 30
+    tax_level = 3
 }
