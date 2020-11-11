@@ -8,11 +8,11 @@ namespace TaisGodot.Scripts
 	{
 		private IDisposable reactiveDispose;
 
-		internal void Assoc<T>(ObservableValue<T> data, Func<string, string> adpt = null)
-		{
-			this.adpt = adpt;
-			reactiveDispose = data.Subscribe(this.SetValue);
-		}
+		//internal void Assoc<T>(ObservableValue<T> data, Func<string, string> adpt = null)
+		//{
+		//	this.adpt = adpt;
+		//	reactiveDispose = data.Subscribe(this.SetValue);
+		//}
 
 		internal void Assoc<T>(SubjectValue<T> data, Func<string, string> adpt = null)
 		{

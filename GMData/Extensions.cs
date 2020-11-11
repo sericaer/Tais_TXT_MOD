@@ -21,10 +21,10 @@ namespace GMData
         //    //return calcExpectTax(pop, Economy.inst.popTaxLevel);
         //}
 
-        public static ObservableValue<T> ToOBSValue<T>(this IObservable<T> obs)
-        {
-            return new ObservableValue<T>(obs);
-        }
+        //public static ObservableValue<T> ToOBSValue<T>(this IObservable<T> obs)
+        //{
+        //    return new ObservableValue<T>(obs);
+        //}
 
         public static void DaysInc(this List<Risk> list)
         {

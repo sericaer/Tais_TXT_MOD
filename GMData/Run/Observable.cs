@@ -11,25 +11,25 @@ using Newtonsoft.Json;
 
 namespace GMData.Run
 {
-    public class ObservableValue<T> : RValue<T>
-    {
-        internal readonly IObservable<T> obs;
-        private T _value;
+    //public class ObservableValue<T> : RValue<T>
+    //{
+    //    internal readonly IObservable<T> obs;
+    //    private T _value;
 
-        public override T Value { get { return _value; } }
+    //    public override T Value { get { return _value; } }
 
-        public ObservableValue(IObservable<T> param)
-        {
-            obs = param;
+    //    public ObservableValue(IObservable<T> param)
+    //    {
+    //        obs = param;
 
-            obs.Subscribe(x => _value = x);
-        }
+    //        obs.Subscribe(x => _value = x);
+    //    }
 
-        public IDisposable Subscribe(Action<T> action)
-        {
-            return obs.Subscribe(action);
-        }
-    }
+    //    public IDisposable Subscribe(Action<T> action)
+    //    {
+    //        return obs.Subscribe(action);
+    //    }
+    //}
 
     public class OBSValue<T> : RValue<T>, ISubject<T>
     {

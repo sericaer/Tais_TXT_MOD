@@ -8,7 +8,7 @@ namespace TaisGodot.Scripts
 	{
 		private IDisposable reactiveDispose;
 
-		internal void Assoc(ObservableValue<double> data)
+		internal void Assoc(OBSValue<double> data)
 		{
 			reactiveDispose = data.Subscribe(this.SetProgressValue);
 		}
