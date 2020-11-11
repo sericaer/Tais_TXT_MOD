@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace GMData.Run
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Adjust
     {
         public enum EType

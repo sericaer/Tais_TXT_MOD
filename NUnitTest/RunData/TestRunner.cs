@@ -27,12 +27,12 @@ namespace UnitTest.RunData
 
             foreach (var tax in GMRoot.runner.pops.SelectNotNull(x => x.tax))
             {
-                Assert.True(tax.buffers.Contains("POP_TAX"));
+                Assert.True(tax.buffers.Keys.Contains("POP_TAX"));
 
                 var popTaxAdjustDef = GMRoot.define.adjusts.Single(x => x.key == GMData.Run.Adjust.EType.POP_TAX.ToString());
                 var percent = popTaxAdjustDef.levels[popTaxAdjustDef.init.level - 1].percent;
 
-                Assert.AreEqual(percent, (double)tax.buffers["POP_TAX"] * 100.0/ tax.baseValue.Value);
+                Assert.AreEqual(percent, (double)tax.buffers.Lookup("POP_TAX").Value.value * 100.0/ tax.baseValue.Value);
             }
 
             //foreach (var def in GMRoot.define.economy.incomes)
