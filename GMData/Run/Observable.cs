@@ -101,7 +101,7 @@ namespace GMData.Run
             }
             set
             {
-                obs.OnNext(value);
+                OnNext(value);
             }
         }
 
@@ -122,6 +122,11 @@ namespace GMData.Run
 
         public void OnNext(T value)
         {
+            if(value == null)
+            {
+                throw new Exception();
+            }
+
             obs.OnNext(value);
         }
 
@@ -143,6 +148,11 @@ namespace GMData.Run
             var genericArgs = objectType.GetGenericArguments();
 
             object param = reader.Value;
+
+            if(param == null)
+            {
+                return null;
+            }
 
             var rslt = Activator.CreateInstance(objectType, new object[] { param.CastToReflected(genericArgs[0]) }) as ReadWriteValue;
             return rslt;
