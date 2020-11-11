@@ -42,12 +42,12 @@ public class EconomyDetailPanel2 : Godot.Panel
 		var adjustEnumTypes = EnumEx.GetValues<RunnerAdjust.EType>();
 		foreach (var elem in adjustEnumTypes.Where(x=>x.HasAttribute<RunnerAdjust.EconomyInput>()))
 		{
-			var adjustPanel = AdjustPanel.Instance(this, GMRoot.runner.adjusts.Single(x => x.etype == elem));
+			var adjustPanel = AdjustPanel.Instance(adjustInputContainer, GMRoot.runner.adjusts.Single(x => x.etype == elem));
 		}
 
 		foreach (var elem in adjustEnumTypes.Where(x => x.HasAttribute<RunnerAdjust.EconomyOutput>()))
 		{
-			var adjustPanel = AdjustPanel.Instance(this, GMRoot.runner.adjusts.Single(x => x.etype == elem));
+			var adjustPanel = AdjustPanel.Instance(adjustOutputContainer, GMRoot.runner.adjusts.Single(x => x.etype == elem));
 		}
 	}
 }
