@@ -102,13 +102,7 @@ namespace GMData.Run
             }
             set
             {
-                if(obs == null)
-                {
-                    obs = new BehaviorSubject<T>(value);
-                    return;
-                }
-
-                obs.OnNext(value);
+                OnNext(value);
             }
         }
 
@@ -129,6 +123,11 @@ namespace GMData.Run
 
         public void OnNext(T value)
         {
+            if(value == null)
+            {
+                throw new Exception();
+            }
+
             obs.OnNext(value);
         }
 
@@ -143,28 +142,29 @@ namespace GMData.Run
         }
     }
 
-    //public class SubjectValueConverter : JsonConverter<ReadWriteValue>
-    //{
-    //    public override ReadWriteValue ReadJson(JsonReader reader, Type objectType, ReadWriteValue existingValue, bool hasExistingValue, JsonSerializer serializer)
-    //    {
-    //        var genericArgs = objectType.GetGenericArguments();
+    public class SubjectValueConverter : JsonConverter<ReadWriteValue>
+    {
+        public override ReadWriteValue ReadJson(JsonReader reader, Type objectType, ReadWriteValue existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+            var genericArgs = objectType.GetGenericArguments();
 
-    //        object param = reader.Value;
+            object param = reader.Value;
 
-    //        var rslt = Activator.CreateInstance(objectType, new object[] { param.CastToReflected(genericArgs[0]) }) as ReadWriteValue;
-    //        return rslt;
-    //    }
+            if (param == null)
+            {
+                return null;
+            }
 
-    //    public override void WriteJson(JsonWriter writer, ReadWriteValue value, JsonSerializer serializer)
-    //    {
-    //        if(value == null)
-    //        {
-    //            return;
-    //        }
+            var rslt = Activator.CreateInstance(objectType, new object[] { param.CastToReflected(genericArgs[0]) }) as ReadWriteValue;
+            return rslt;
+        }
 
-    //        writer.WriteValue(value.getValue());
-    //    }
-    //}
+
+        public override void WriteJson(JsonWriter writer, ReadWriteValue value, JsonSerializer serializer)
+        {
+            writer.WriteValue(value.getValue());
+        }
+    }
 
     public class BufferInfo
     {
