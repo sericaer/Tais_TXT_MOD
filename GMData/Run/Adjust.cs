@@ -16,8 +16,13 @@ namespace GMData.Run
     {
         public enum EType
         {
+            [EconomyInput]
             POP_TAX,
+
+            [EconomyOutput]
             REPORT_CHAOTING,
+
+            [EconomyOutput]
             ADMIN_SPEND
         }
 
@@ -59,5 +64,12 @@ namespace GMData.Run
             }
         }
 
+        public class EconomyInput : Attribute
+        {
+        }
+
+        public class EconomyOutput : Attribute
+        {
+        }
     }
 }

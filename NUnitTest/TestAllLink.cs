@@ -44,10 +44,10 @@ namespace UnitTest.RunData
 
             foreach (var person in persons)
             {
-                Assert.True(person.relation.buffers.Contains("PARTY_RELATION"));
+                Assert.True(person.relation.buffers.Keys.Contains("PARTY_RELATION"));
 
                 var partyDef = GMRoot.define.parties.Single(x => x.key == person.family.partyName);
-                Assert.AreEqual(partyDef.relation.Single(x => x.peer == GMRoot.runner.taishou.partyName).value, person.relation.buffers["PARTY_RELATION"]);
+                Assert.AreEqual(partyDef.relation.Single(x => x.peer == GMRoot.runner.taishou.partyName).value, person.relation.buffers.Lookup("PARTY_RELATION").Value.value);
             }
         }
 

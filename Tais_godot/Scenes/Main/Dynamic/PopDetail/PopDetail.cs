@@ -16,6 +16,7 @@ namespace TaisGodot.Scripts
 		Node tax;
 		Node farm;
 		Node consume;
+		Node adminSpend;
 
 		internal static void Instance(Node parent, GMData.Run.Pop gmObj)
 		{
@@ -28,19 +29,31 @@ namespace TaisGodot.Scripts
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
 		{
-			name = GetNode<Label>("");
+			name = GetNode<Label>("CenterContainer/PanelContainer/VBoxContainer/Name");
 
-			num = GetNode("");
-			tax = GetNode("");
-			farm = GetNode("");
-			consume = GetNode("");
+			num = GetNode("CenterContainer/PanelContainer/VBoxContainer/StatisticContainer/GridContainer/PopNum");
+			tax = GetNode("CenterContainer/PanelContainer/VBoxContainer/StatisticContainer/GridContainer/Tax");
+			farm = GetNode("CenterContainer/PanelContainer/VBoxContainer/StatisticContainer/GridContainer/Farm");
+			consume = GetNode("CenterContainer/PanelContainer/VBoxContainer/StatisticContainer/GridContainer/Consume");
+			adminSpend = GetNode("CenterContainer/PanelContainer/VBoxContainer/StatisticContainer/GridContainer/Admin");
 
 			name.Text = gmObj.name;
 
 			num.GetNode<ReactiveLabel>("Value").Assoc(gmObj.num);
-			tax.GetNode<ReactiveLabel>("Value").Assoc(gmObj.tax.value);
-			//farm.GetNode<ReactiveLabel>("Value").Assoc(gmObj.farm);
-			consume.GetNode<ReactiveLabel>("Value").Assoc(gmObj.consume.value);
+
+			if (gmObj.tax != null)
+			{
+				tax.GetNode<ReactiveLabel>("Value").Assoc(gmObj.tax.value);
+			}
+			if (gmObj.consume != null)
+			{
+				consume.GetNode<ReactiveLabel>("Value").Assoc(gmObj.consume.value);
+			}
+			if (gmObj.adminExpend != null)
+			{
+				adminSpend.GetNode<ReactiveLabel>("Value").Assoc(gmObj.adminExpend.value);
+			}
+			//farm.GetNode<ReactiveLabel>("Value").Assoc(gmObj.farm);     
 
 		}
 	}

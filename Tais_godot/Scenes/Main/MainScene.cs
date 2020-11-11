@@ -99,7 +99,7 @@ namespace TaisGodot.Scripts
 
 		private void _on_Button_Economy_pressed()
 		{
-			EconomyDetailPanel.Instance(this);
+			EconomyDetailPanel2.Instance(this);
 		}
 		
 		private void _on_ButtonChaoting_pressed()

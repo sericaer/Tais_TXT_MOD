@@ -63,6 +63,7 @@
     <Compile Include="Scenes\Main\Dynamic\ChaotingDetail\ChaotingDetail.cs" />
     <Compile Include="Scenes\Main\Dynamic\ChaotingDetail\PartyContainer.cs" />
     <Compile Include="Scenes\Main\Dynamic\EconomyDetail\EconomyDetailPanel.cs" />
+    <Compile Include="Scenes\Main\Dynamic\EconomyDetail\EconomyDetailPanel2.cs" />
     <Compile Include="Scenes\Main\Dynamic\TaishouDetail\TaishouDetail.cs" />
     <Compile Include="Scenes\Main\Imp\ImpContainer.cs" />
     <Compile Include="Scenes\Main\Task\Task.cs" />
@@ -123,8 +124,6 @@
       <Name>GMData</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scenes\Main\Dynamic\PopDetail\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

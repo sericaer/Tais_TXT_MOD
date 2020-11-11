@@ -16,16 +16,16 @@ namespace GMData.Run
         public string familyName => family.name;
         public string fullName => family.name + givenName;
 
-        public Person(string name)
+        public Person(string name) : this()
         {
             this.givenName = name;
-            this.relation = new ObsBufferedValue();
+            
         }
 
         [JsonConstructor]
         private Person()
         {
-
+            this.relation = new ObsBufferedValue();
         }
     }
 }

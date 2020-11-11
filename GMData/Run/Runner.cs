@@ -44,7 +44,7 @@ namespace GMData.Run
         [DataVisitorProperty("risk")]
         public RiskMgr riskMgr;
 
-        public ObservableValue<int> registerPopNum;
+        public OBSValue<int> registerPopNum;
 
         [JsonProperty]
         public List<Adjust> adjusts;
@@ -93,6 +93,8 @@ namespace GMData.Run
         private Runner()
         {
             Visitor.SetVisitData(this);
+
+            registerPopNum = new OBSValue<int>();
         }
 
         [OnDeserialized]
@@ -100,33 +102,35 @@ namespace GMData.Run
         {
             adjusts.ForEach(ad =>
             {
-                switch (ad.etype)
+                ad.level.Subscribe(level =>
                 {
-                    case Adjust.EType.POP_TAX:
-                        foreach (var tax in pops.SelectNotNull(pop => pop.tax))
-                        {
-                            tax.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * tax.baseValue?.Value * 0.01);
-                        }
-                        break;
-                    case Adjust.EType.ADMIN_SPEND:
-                        foreach (var admin in pops.SelectNotNull(pop => pop.adminExpend))
-                        {
-                            admin.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * admin.baseValue?.Value * 0.01);
-                        }
-                        break;
-                    case Adjust.EType.REPORT_CHAOTING:
-                        ad.level.Subscribe(chaoting.reportTaxLevel);
-                        break;
-                }
-
-                if(ad.levelDef.effect_pop_consume != null)
-                {
-                    foreach (var consume in pops.SelectNotNull(pop => pop.consume))
+                    switch (ad.etype)
                     {
-                        consume.SetBuffer("POP_TAX", ad.levelDef.effect_pop_consume * consume.baseValue?.Value * 0.01);
+                        case Adjust.EType.POP_TAX:
+                            foreach (var tax in pops.SelectNotNull(pop => pop.tax))
+                            {
+                                tax.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * tax.baseValue?.Value * 0.01);
+                            }
+                            break;
+                        case Adjust.EType.ADMIN_SPEND:
+                            foreach (var admin in pops.SelectNotNull(pop => pop.adminExpend))
+                            {
+                                admin.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * admin.baseValue?.Value * 0.01);
+                            }
+                            break;
+                        case Adjust.EType.REPORT_CHAOTING:
+                            chaoting.reportTaxLevel.OnNext(level);
+                            break;
                     }
-                }
 
+                    if (ad.levelDef.effect_pop_consume != null)
+                    {
+                        foreach (var consume in pops.SelectNotNull(pop => pop.consume))
+                        {
+                            consume.SetBuffer("POP_TAX", ad.levelDef.effect_pop_consume * consume.baseValue?.Value * 0.01);
+                        }
+                    }
+                });
             });
 
             pops.CombineLatestSum(pop => pop.tax?.value)
@@ -134,6 +138,9 @@ namespace GMData.Run
 
             pops.CombineLatestSum(pop => pop.adminExpend?.value)
                 .Subscribe(economy.detail.adminSpend);
+
+            departs.CombineLatestSum(depart => depart.popNum)
+                .Subscribe(registerPopNum);
 
             chaoting.monthTaxReqort.Subscribe(economy.detail.reportChaoting);
 

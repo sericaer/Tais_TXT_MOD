@@ -21,10 +21,10 @@ namespace GMData
         //    //return calcExpectTax(pop, Economy.inst.popTaxLevel);
         //}
 
-        public static ObservableValue<T> ToOBSValue<T>(this IObservable<T> obs)
-        {
-            return new ObservableValue<T>(obs);
-        }
+        //public static ObservableValue<T> ToOBSValue<T>(this IObservable<T> obs)
+        //{
+        //    return new ObservableValue<T>(obs);
+        //}
 
         public static void DaysInc(this List<Risk> list)
         {
@@ -45,6 +45,15 @@ namespace GMData
         {
             return source.SelectNotNull(selector).CombineLatest(x => x.Sum());
         }
+
+        public static bool HasAttribute<T>(this Enum value) where T : Attribute
+        {
+            FieldInfo field = value.GetType().GetField(value.ToString());
+
+            T attribute = Attribute.GetCustomAttribute(field, typeof(T)) as T;
+
+            return attribute != null;
+        }
     }
 
     public static class ObjectExtensions
@@ -61,6 +70,14 @@ namespace GMData
             var genericArguments = new[] { type };
             var genericMethodInfo = methodInfo?.MakeGenericMethod(genericArguments);
             return genericMethodInfo?.Invoke(null, new[] { o });
+        }
+    }
+
+    public static class EnumEx
+    {
+        public static IEnumerable<T> GetValues<T>() where T : Enum
+        {
+            return Enum.GetValues(typeof(T)).OfType<T>();
         }
     }
 }
