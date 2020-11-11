@@ -74,7 +74,6 @@ namespace GMData.Run
             risks = new List<Risk>();
             riskMgr = new RiskMgr();
 
-            registerPopNum = new OBSValue<int>();
 
             DataReactive(new StreamingContext());
         }
@@ -83,6 +82,8 @@ namespace GMData.Run
         private Runner()
         {
             Visitor.SetVisitData(this);
+
+            registerPopNum = new OBSValue<int>();
         }
 
         [OnDeserialized]

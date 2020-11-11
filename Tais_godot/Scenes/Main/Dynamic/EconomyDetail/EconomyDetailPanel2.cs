@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using TaisGodot.Scripts;
 
+using  RunnerAdjust = GMData.Run.Adjust;
+
 public class EconomyDetailPanel2 : Godot.Panel
 {
 	public const string path = "res://Scenes/Main/Dynamic/EconomyDetail/EconomyDetailPanel2.tscn";
@@ -13,6 +15,7 @@ public class EconomyDetailPanel2 : Godot.Panel
 	ReactiveLabel outputTotal;
 
 	VBoxContainer adjustInputContainer;
+	VBoxContainer adjustOutputContainer;
 
 	public static EconomyDetailPanel2 Instance(Node parent)
 	{
@@ -34,25 +37,17 @@ public class EconomyDetailPanel2 : Godot.Panel
 		outputTotal.Assoc(GMRoot.runner.economy.outputTotal);
 
 		adjustInputContainer = GetNode<VBoxContainer>("CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer/VBoxContainer");
+		adjustOutputContainer = GetNode<VBoxContainer>("CenterContainer/PanelContainer/AdjustContainer/AdjustOutputContainer/MarginContainer/HBoxContainer/VBoxContainer");
 
-		foreach (GMData.Run.Adjust.EType elem in Enum.GetValues(typeof(GMData.Run.Adjust.EType)))
+		var adjustEnumTypes = EnumEx.GetValues<RunnerAdjust.EType>();
+		foreach (var elem in adjustEnumTypes.Where(x=>x.HasAttribute<RunnerAdjust.EconomyInput>()))
 		{
-			if(elem != GMData.Run.Adjust.EType.POP_TAX)
-			{
-				continue;
-			}
-
-			var adjustPanel = adjustInputContainer.GetNode<AdjustPanel>(elem.ToString());
-			adjustPanel.Init(GMRoot.runner.adjusts.Single(x => x.etype == elem));
+			var adjustPanel = AdjustPanel.Instance(this, GMRoot.runner.adjusts.Single(x => x.etype == elem));
 		}
 
+		foreach (var elem in adjustEnumTypes.Where(x => x.HasAttribute<RunnerAdjust.EconomyOutput>()))
+		{
+			var adjustPanel = AdjustPanel.Instance(this, GMRoot.runner.adjusts.Single(x => x.etype == elem));
+		}
 	}
-
-
-
-	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-	//  public override void _Process(float delta)
-	//  {
-	//      
-	//  }
 }

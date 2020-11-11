@@ -8,27 +8,24 @@ namespace TaisGodot.Scripts
 {
 	public class AdjustPanel : PanelContainer
 	{
-		private static AdjustPanel inst;
+		public const string path = "res://Scenes/Main/Dynamic/EconomyDetail/AdjustPanel.tscn";
 
-		private Adjust gmObj;
+		internal Adjust gmObj;
 
-		private ButtonGroup group;
+		private ButtonGroup group = new ButtonGroup();
 
-		// Called when the node enters the scene tree for the first time.
-		public override void _Ready()
+		internal static AdjustPanel Instance(Node parent, Adjust gmObj)
 		{
-			group = new ButtonGroup();
+			var panel = (AdjustPanel)ResourceLoader.Load<PackedScene>(path).Instance();
+			panel.gmObj = gmObj;
+
+			parent.AddChild(panel);
+
+			return panel;
 		}
 
-		public override void _EnterTree()
-		{
-			inst = this;
-		}
-
-		internal void Init(Adjust gmObj)
-		{
-			this.gmObj = gmObj;
-
+        public override void _Ready()
+        {
 			var levelContainer = GetNode<HBoxContainer>("HBoxContainer");
 			var btn = levelContainer.GetNode<Button>("LEVEL1");
 
@@ -41,12 +38,19 @@ namespace TaisGodot.Scripts
 				}
 				btn.Text = $"STATIC_LEVEL{i + 1}";
 				btn.Group = group;
-				btn.HintTooltip = gmObj.def.levels[i].ToString();
+				btn.HintTooltip = GetLevelDesc(gmObj.etype, gmObj.def.levels[i]);
 				btn.Connect("pressed", this, nameof(_on_LevelButton_Pressed), new Godot.Collections.Array() { i + 1 });
 
 			}
 
-			gmObj.level.Subscribe(_on_LevelValue_Changed);
+			gmObj.level.Subscribe(x=>
+			{
+				var currBtn = GetNode<HBoxContainer>("HBoxContainer").GetChild<Button>(x);
+				if (!currBtn.Pressed)
+				{
+					currBtn.Pressed = true;
+				}
+			});
 
 			gmObj.valid.Subscribe(x =>
 			{
@@ -55,17 +59,6 @@ namespace TaisGodot.Scripts
 					elem.Disabled = !x;
 				}
 			});
-		}
-
-		private void _on_LevelValue_Changed(int level)
-		{
-			GD.Print(level);
-			GD.Print(inst);
-			var currBtn = inst.GetNode<HBoxContainer>("HBoxContainer").GetChild<Button>(level);
-			if (!currBtn.Pressed)
-			{
-				currBtn.Pressed = true;
-			}
 		}
 
 		private void _on_LevelButton_Pressed(int level)
@@ -86,7 +79,7 @@ namespace TaisGodot.Scripts
 
 			return string.Join("\n", list.Select(x => $"{TranslateServerEx.Translate(x.desc)} {x.percent}%"));
 		}
-	}
+    }
 }
 
 

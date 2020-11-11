@@ -20,6 +20,16 @@ namespace UnitTest.RunData
         }
 
         [Test()]
+        public void Test_Enum()
+        {
+            Assert.True(GMData.Run.Adjust.EType.POP_TAX.HasAttribute<GMData.Run.Adjust.EconomyInput>());
+
+            Assert.True(GMData.Run.Adjust.EType.ADMIN_SPEND.HasAttribute<GMData.Run.Adjust.EconomyOutput>());
+            Assert.True(GMData.Run.Adjust.EType.REPORT_CHAOTING.HasAttribute<GMData.Run.Adjust.EconomyOutput>());
+
+        }
+
+        [Test()]
         public void Test_Init()
         {
             var popTaxAdjust = GMRoot.define.adjusts.Single(x => x.key == GMData.Run.Adjust.EType.POP_TAX.ToString());
