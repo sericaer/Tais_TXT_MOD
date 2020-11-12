@@ -1,26 +1,15 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="D:/MyProject/GitHub/UIDesignToolDemo/resources/fonts/NSimSun/NSimSun-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/Main/Dynamic/EconomyDetail/EconomyDetailPanel2.cs" type="Script" id=2]
 [ext_resource path="res://Global/ReactiveLabel.cs" type="Script" id=3]
-[ext_resource path="res://Scenes/Main/Dynamic/EconomyDetail/AdjustPanel.cs" type="Script" id=4]
 [ext_resource path="res://Global/ClickFreeMask.cs" type="Script" id=5]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0.313726 )
 
-[sub_resource type="DynamicFont" id=4]
-size = 24
-use_filter = true
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=1]
-size = 18
-use_filter = true
-font_data = ExtResource( 1 )
-
 [sub_resource type="DynamicFont" id=2]
-size = 18
+size = 24
 use_filter = true
 font_data = ExtResource( 1 )
 
@@ -30,6 +19,16 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
+
+[sub_resource type="DynamicFont" id=3]
+size = 18
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 18
+use_filter = true
+font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
@@ -42,7 +41,7 @@ border_width_bottom = 1
 self_modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -100,9 +99,9 @@ custom_constants/separation = 2
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer/VBoxContainer"]
-margin_top = 92.0
+margin_top = 112.0
 margin_right = 432.0
-margin_bottom = 117.0
+margin_bottom = 137.0
 alignment = 1
 
 [node name="Label" type="Label" parent="CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
@@ -110,7 +109,7 @@ margin_left = 178.0
 margin_right = 226.0
 margin_bottom = 25.0
 size_flags_vertical = 5
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 2 )
 text = "收入"
 align = 1
 
@@ -119,41 +118,10 @@ margin_left = 230.0
 margin_right = 254.0
 margin_bottom = 25.0
 size_flags_vertical = 5
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 2 )
 text = "--"
 align = 1
 script = ExtResource( 3 )
-
-[node name="POP_TAX" type="PanelContainer" parent="CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer/VBoxContainer"]
-margin_top = 119.0
-margin_right = 432.0
-margin_bottom = 158.0
-script = ExtResource( 4 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer/VBoxContainer/POP_TAX"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 425.0
-margin_bottom = 32.0
-custom_constants/separation = 2
-
-[node name="Label" type="Label" parent="CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer/VBoxContainer/POP_TAX/HBoxContainer"]
-margin_top = 3.0
-margin_right = 100.0
-margin_bottom = 22.0
-rect_min_size = Vector2( 100, 0 )
-custom_fonts/font = SubResource( 1 )
-text = "人口税"
-align = 1
-valign = 1
-
-[node name="LEVEL1" type="Button" parent="CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer/VBoxContainer/POP_TAX/HBoxContainer"]
-margin_left = 102.0
-margin_right = 150.0
-margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
-toggle_mode = true
-text = "一级"
 
 [node name="Panel" type="Panel" parent="CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer"]
 margin_left = 468.0
@@ -195,7 +163,7 @@ alignment = 1
 margin_left = 194.0
 margin_right = 242.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 2 )
 text = "支出"
 align = 1
 
@@ -203,7 +171,7 @@ align = 1
 margin_left = 246.0
 margin_right = 270.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 2 )
 text = "--"
 align = 1
 script = ExtResource( 3 )
@@ -225,7 +193,7 @@ margin_top = 3.0
 margin_right = 100.0
 margin_bottom = 22.0
 rect_min_size = Vector2( 100, 0 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 text = "上缴国税"
 align = 1
 valign = 1
@@ -234,7 +202,7 @@ valign = 1
 margin_left = 102.0
 margin_right = 150.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "一级"
 
@@ -242,7 +210,7 @@ text = "一级"
 margin_left = 152.0
 margin_right = 200.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "二级"
 
@@ -250,7 +218,7 @@ text = "二级"
 margin_left = 202.0
 margin_right = 250.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "三级"
 
@@ -258,7 +226,7 @@ text = "三级"
 margin_left = 252.0
 margin_right = 300.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "四级"
 
@@ -266,7 +234,7 @@ text = "四级"
 margin_left = 302.0
 margin_right = 350.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "五级"
 
@@ -274,7 +242,7 @@ text = "五级"
 margin_left = 352.0
 margin_right = 400.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "六级"
 
@@ -282,7 +250,7 @@ text = "六级"
 margin_left = 402.0
 margin_right = 450.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "七级"
 
@@ -303,7 +271,7 @@ margin_top = 3.0
 margin_right = 100.0
 margin_bottom = 22.0
 rect_min_size = Vector2( 100, 0 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 text = "行政开支"
 align = 1
 valign = 1
@@ -312,7 +280,7 @@ valign = 1
 margin_left = 102.0
 margin_right = 150.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "一级"
 
@@ -320,7 +288,7 @@ text = "一级"
 margin_left = 152.0
 margin_right = 200.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "二级"
 
@@ -328,7 +296,7 @@ text = "二级"
 margin_left = 202.0
 margin_right = 250.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "三级"
 
@@ -336,7 +304,7 @@ text = "三级"
 margin_left = 252.0
 margin_right = 300.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "四级"
 
@@ -344,7 +312,7 @@ text = "四级"
 margin_left = 302.0
 margin_right = 350.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "五级"
 
@@ -352,7 +320,7 @@ text = "五级"
 margin_left = 352.0
 margin_right = 400.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "六级"
 
@@ -360,7 +328,7 @@ text = "六级"
 margin_left = 402.0
 margin_right = 450.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "七级"
 
@@ -381,7 +349,7 @@ margin_top = 3.0
 margin_right = 100.0
 margin_bottom = 22.0
 rect_min_size = Vector2( 100, 0 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 text = "军事开支"
 align = 1
 valign = 1
@@ -390,7 +358,7 @@ valign = 1
 margin_left = 102.0
 margin_right = 150.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "一级"
 
@@ -398,7 +366,7 @@ text = "一级"
 margin_left = 152.0
 margin_right = 200.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "二级"
 
@@ -406,7 +374,7 @@ text = "二级"
 margin_left = 202.0
 margin_right = 250.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "三级"
 
@@ -414,7 +382,7 @@ text = "三级"
 margin_left = 252.0
 margin_right = 300.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "四级"
 
@@ -422,7 +390,7 @@ text = "四级"
 margin_left = 302.0
 margin_right = 350.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "五级"
 
@@ -430,7 +398,7 @@ text = "五级"
 margin_left = 352.0
 margin_right = 400.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "六级"
 
@@ -438,7 +406,7 @@ text = "六级"
 margin_left = 402.0
 margin_right = 450.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "七级"
 
@@ -459,7 +427,7 @@ margin_top = 3.0
 margin_right = 100.0
 margin_bottom = 22.0
 rect_min_size = Vector2( 100, 0 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 text = "维护开支"
 align = 1
 valign = 1
@@ -468,7 +436,7 @@ valign = 1
 margin_left = 102.0
 margin_right = 150.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "一级"
 
@@ -476,7 +444,7 @@ text = "一级"
 margin_left = 152.0
 margin_right = 200.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "二级"
 
@@ -484,7 +452,7 @@ text = "二级"
 margin_left = 202.0
 margin_right = 250.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "三级"
 
@@ -492,7 +460,7 @@ text = "三级"
 margin_left = 252.0
 margin_right = 300.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "四级"
 
@@ -500,7 +468,7 @@ text = "四级"
 margin_left = 302.0
 margin_right = 350.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "五级"
 
@@ -508,7 +476,7 @@ text = "五级"
 margin_left = 352.0
 margin_right = 400.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "六级"
 
@@ -516,7 +484,7 @@ text = "六级"
 margin_left = 402.0
 margin_right = 450.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "七级"
 
@@ -554,7 +522,7 @@ alignment = 1
 margin_left = 196.0
 margin_right = 244.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 2 )
 text = "盈余"
 align = 1
 
@@ -562,7 +530,7 @@ align = 1
 margin_left = 248.0
 margin_right = 272.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 2 )
 text = "--"
 align = 1
 script = ExtResource( 3 )

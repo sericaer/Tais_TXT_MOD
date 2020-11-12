@@ -24,10 +24,13 @@ namespace TaisGodot.Scripts
 			return panel;
 		}
 
-        public override void _Ready()
-        {
+		public override void _Ready()
+		{
 			var levelContainer = GetNode<HBoxContainer>("HBoxContainer");
 			var btn = levelContainer.GetNode<Button>("LEVEL1");
+			var label = levelContainer.GetNode<Label>("Label");
+
+			label.Text = "STATIC_" + gmObj.etype.ToString();
 
 			for (int i = 0; i < gmObj.def.levels.Count; i++)
 			{
@@ -45,12 +48,13 @@ namespace TaisGodot.Scripts
 
 			gmObj.level.Subscribe(x=>
 			{
+				GD.Print(x);
 				var currBtn = GetNode<HBoxContainer>("HBoxContainer").GetChild<Button>(x);
 				if (!currBtn.Pressed)
 				{
 					currBtn.Pressed = true;
 				}
-			});
+			}).EndWith(this);
 
 			gmObj.valid.Subscribe(x =>
 			{
@@ -58,12 +62,11 @@ namespace TaisGodot.Scripts
 				{
 					elem.Disabled = !x;
 				}
-			});
+			}).EndWith(this);
 		}
 
 		private void _on_LevelButton_Pressed(int level)
 		{
-			GD.Print(level);
 			gmObj.level.Value = level;
 		}
 
@@ -79,7 +82,7 @@ namespace TaisGodot.Scripts
 
 			return string.Join("\n", list.Select(x => $"{TranslateServerEx.Translate(x.desc)} {x.percent}%"));
 		}
-    }
+	}
 }
 
 

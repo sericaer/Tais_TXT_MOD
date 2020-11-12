@@ -15,7 +15,7 @@ namespace UnitTest.RunData
         public void Init()
         {
             GMRoot.Init();
-            GMRoot.modder = new GMData.Mod.Modder("../../../Tais_godot/Release/Tais/mods/");
+            GMRoot.modder = new GMData.Mod.Modder(TestContext.CurrentContext.TestDirectory + "/../../../Tais_godot/Release/Tais/mods/");
             GMRoot.initData = new GMData.Init.InitData()
             {
                 start_date = new GMData.Init.Date()
