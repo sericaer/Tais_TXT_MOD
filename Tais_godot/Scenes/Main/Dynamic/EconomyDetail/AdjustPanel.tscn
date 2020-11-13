@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="D:/MyProject/GitHub/UIDesignToolDemo/resources/fonts/NSimSun/NSimSun-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/Main/Dynamic/EconomyDetail/AdjustPanel.cs" type="Script" id=2]
+[ext_resource path="res://Resources/theme/toggleButton_theme.tres" type="Theme" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 18
@@ -9,7 +10,7 @@ use_filter = true
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=2]
-size = 18
+size = 14
 use_filter = true
 font_data = ExtResource( 1 )
 
@@ -39,11 +40,22 @@ text = "--"
 align = 1
 valign = 1
 
-[node name="LEVEL1" type="Button" parent="HBoxContainer"]
+[node name="LEVEL1" type="CheckButton" parent="HBoxContainer"]
 margin_left = 102.0
 margin_right = 152.0
 margin_bottom = 30.0
-rect_min_size = Vector2( 50, 30 )
+theme = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/LEVEL1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 custom_fonts/font = SubResource( 2 )
-toggle_mode = true
-text = "-"
+text = "--"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

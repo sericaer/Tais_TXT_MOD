@@ -27,7 +27,7 @@ namespace TaisGodot.Scripts
 		public override void _Ready()
 		{
 			var levelContainer = GetNode<HBoxContainer>("HBoxContainer");
-			var btn = levelContainer.GetNode<Button>("LEVEL1");
+			var select = levelContainer.GetNode<Button>("LEVEL1");
 			var label = levelContainer.GetNode<Label>("Label");
 
 			label.Text = "STATIC_" + gmObj.etype.ToString();
@@ -36,13 +36,13 @@ namespace TaisGodot.Scripts
 			{
 				if (i > 0)
 				{
-					btn = btn.Duplicate() as Button;
-					GetNode<HBoxContainer>("HBoxContainer").AddChild(btn);
+					select = select.Duplicate() as Button;
+					GetNode<HBoxContainer>("HBoxContainer").AddChild(select);
 				}
-				btn.Text = $"STATIC_LEVEL{i + 1}";
-				btn.Group = group;
-				btn.HintTooltip = GetLevelDesc(gmObj.etype, gmObj.def.levels[i]);
-				btn.Connect("pressed", this, nameof(_on_LevelButton_Pressed), new Godot.Collections.Array() { i + 1 });
+				select.GetNode<Label>("Label").Text = $"STATIC_LEVEL{i + 1}";
+				select.Group = group;
+				select.HintTooltip = GetLevelDesc(gmObj.etype, gmObj.def.levels[i]);
+				select.Connect("pressed", this, nameof(_on_LevelButton_Pressed), new Godot.Collections.Array() { i + 1 });
 
 			}
 
