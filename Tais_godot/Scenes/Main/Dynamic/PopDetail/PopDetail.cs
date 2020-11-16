@@ -43,15 +43,15 @@ namespace TaisGodot.Scripts
 
 			if (gmObj.tax != null)
 			{
-				tax.GetNode<ReactiveLabel>("Value").Assoc(gmObj.tax.value);
+				tax.GetNode<ReactiveLabel>("Value").Assoc(gmObj.tax.OBSProperty(z => z.value));
 			}
 			if (gmObj.consume != null)
 			{
-				consume.GetNode<ReactiveLabel>("Value").Assoc(gmObj.consume.value);
+				consume.GetNode<ReactiveLabel>("Value").Assoc(gmObj.consume.OBSProperty(z => z.value));
 			}
 			if (gmObj.adminExpend != null)
 			{
-				adminSpend.GetNode<ReactiveLabel>("Value").Assoc(gmObj.adminExpend.value);
+				adminSpend.GetNode<ReactiveLabel>("Value").Assoc(gmObj.adminExpend.OBSProperty(z => z.value));
 			}
 			//farm.GetNode<ReactiveLabel>("Value").Assoc(gmObj.farm);     
 

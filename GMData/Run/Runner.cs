@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Runtime.Serialization;
 using DataVisit;
 using Newtonsoft.Json;
+using ReactiveMarbles.PropertyChanged;
 
 namespace GMData.Run
 {
@@ -109,13 +110,13 @@ namespace GMData.Run
                         case Adjust.EType.POP_TAX:
                             foreach (var tax in pops.SelectNotNull(pop => pop.tax))
                             {
-                                tax.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * tax.baseValue?.Value * 0.01);
+                                tax.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * tax.baseValue * 0.01);
                             }
                             break;
                         case Adjust.EType.ADMIN_SPEND:
                             foreach (var admin in pops.SelectNotNull(pop => pop.adminExpend))
                             {
-                                admin.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * admin.baseValue?.Value * 0.01);
+                                admin.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * admin.baseValue * 0.01);
                             }
                             break;
                         case Adjust.EType.REPORT_CHAOTING:
@@ -127,16 +128,16 @@ namespace GMData.Run
                     {
                         foreach (var consume in pops.SelectNotNull(pop => pop.consume))
                         {
-                            consume.SetBuffer("POP_TAX", ad.levelDef.effect_pop_consume * consume.baseValue?.Value * 0.01);
+                            consume.SetBuffer("POP_TAX", ad.levelDef.effect_pop_consume * consume.baseValue * 0.01);
                         }
                     }
                 });
             });
 
-            pops.CombineLatestSum(pop => pop.tax?.value)
+            pops.CombineLatestSum(pop => pop.tax?.WhenPropertyValueChanges(z=>z.value))
                 .Subscribe(economy.detail.popTax);
 
-            pops.CombineLatestSum(pop => pop.adminExpend?.value)
+            pops.CombineLatestSum(pop => pop.adminExpend?.WhenPropertyValueChanges(z => z.value))
                 .Subscribe(economy.detail.adminSpend);
 
             departs.CombineLatestSum(depart => depart.popNum)

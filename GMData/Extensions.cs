@@ -5,6 +5,9 @@ using System.Reflection;
 using System.Reactive.Linq;
 using GMData;
 using GMData.Run;
+using System.Linq.Expressions;
+using System.ComponentModel;
+using ReactiveMarbles.PropertyChanged;
 
 namespace GMData
 {
@@ -53,6 +56,13 @@ namespace GMData
             T attribute = Attribute.GetCustomAttribute(field, typeof(T)) as T;
 
             return attribute != null;
+        }
+
+        public static IObservable<TReturn> OBSProperty<TObj, TReturn>(this TObj objectToMonitor,
+            Expression<Func<TObj, TReturn>> propertyExpression)
+            where TObj : class, INotifyPropertyChanged
+        {
+            return objectToMonitor.WhenPropertyValueChanges(propertyExpression);
         }
     }
 

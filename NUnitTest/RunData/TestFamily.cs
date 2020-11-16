@@ -36,7 +36,15 @@ namespace UnitTest.RunData
                 Assert.AreEqual(pop, family.pop);
 
                 var personNum = pop.num.Value / 150;
-                Assert.AreEqual(personNum > 3? personNum: 3, family.persons.Count);
+                Assert.AreEqual(personNum > 3? personNum: 3, family.persons.Count());
+
+                foreach(var p in family.persons)
+                {
+                    var buff = family.relation.buffers.Items.Single(x => x.key == p.fullName);
+                    Assert.AreEqual(p.relation.value, buff.value);
+                }
+
+                family.relation.value = family.relation.buffers.Items.Sum(x=>x.value) / family.relation.buffers.Items.Count();
             }
         }
 

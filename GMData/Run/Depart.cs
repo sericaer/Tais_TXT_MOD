@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DataVisit;
 using Newtonsoft.Json;
+using DynamicData;
+using ReactiveMarbles.PropertyChanged;
 
 namespace GMData.Run
 {
@@ -89,10 +91,11 @@ namespace GMData.Run
             pops.Where(x => x.def.is_collect_tax).Select(x => x.num.obs).CombineLatest(all => (int)all.Sum())
                 .Subscribe(popNum);
 
-            pops.CombineLatestSum(x => x.tax?.value)
+
+            pops.CombineLatestSum(x => x.tax?.WhenPropertyValueChanges(z=>z.value))
                 .Subscribe(tax);
 
-            pops.CombineLatestSum(x => x.adminExpend?.value)
+            pops.CombineLatestSum(x => x.adminExpend?.WhenPropertyValueChanges(z => z.value))
                 .Subscribe(adminExpend);
                 
         }

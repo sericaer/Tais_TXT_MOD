@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using DynamicData;
 using Newtonsoft.Json;
+using System;
+using System.Reactive.Linq;
+
 
 namespace GMData.Run
 {
@@ -15,32 +19,39 @@ namespace GMData.Run
         internal string partyName;
 
         [JsonProperty]
-        public ObsBufferedValue relation;
+        internal ObsBufferedValue relation { get; set; }
 
         [JsonProperty]
-        public List<Person> persons
+        public Person[] persons
         {
             get
             {
-                return _persons;
+                return _persons.Items.ToArray();
             }
             set
             {
-                _persons = value;
-                _persons.ForEach(x => x.family = this);
+                foreach(var elem in value)
+                {
+                    elem.family = this;
+                }
+
+                _persons.Edit(list =>
+                {
+                    list.Clear();
+                    list.AddRange(value);
+                });
             }
         }
 
         public Pop pop;
 
-        private List<Person> _persons;
+        private SourceList<Person> _persons;
 
-        public Family(int person_count, string partyName)
+        public Family(int person_count, string partyName) : this()
         {
             this.partyName = partyName;
-
-            var names = GMRoot.define.personName.GetRandomPersonArray(person_count);
-            persons = names.Select(x => new Person(x)).ToList();
+            this.relation = new ObsBufferedValue((_, buffs)=> buffs.Sum() / buffs.Count());
+            this.persons = GMRoot.define.personName.GetRandomPersonArray(person_count).Select(x => new Person(x)).ToArray();
 
             DataReactive(new StreamingContext());
         }
@@ -48,12 +59,16 @@ namespace GMData.Run
         [JsonConstructor]
         private Family()
         {
-
+            this._persons = new SourceList<Person>();
         }
 
         [OnDeserialized]
         private void DataReactive(StreamingContext context)
         {
+            _persons.Connect().WhenPropertyChanged(p => p.relation.value).Subscribe(x =>
+            {
+                this.relation.SetBuffer(x.Sender.fullName, x.Value);
+            });
         }
     }
 }

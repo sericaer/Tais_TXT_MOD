@@ -37,8 +37,8 @@ namespace UnitTest.RunData
 
                 if (pop.def.is_collect_tax)
                 {
-                    Assert.AreEqual(pop.num.Value * 0.01, pop.tax.value.Value);
-                    Assert.AreEqual(pop.num.Value * 0.0005, pop.adminExpend.value.Value);
+                    Assert.AreEqual(pop.num.Value * 0.01, pop.tax.value);
+                    Assert.AreEqual(pop.num.Value * 0.0005, pop.adminExpend.value);
                 }
                 else
                 {
@@ -52,7 +52,7 @@ namespace UnitTest.RunData
                 }
                 else
                 {
-                    Assert.AreEqual(pop.def.consume, pop.consume.value.Value);
+                    Assert.AreEqual(pop.def.consume, pop.consume.value);
                 }
 
                 if(popDef.is_family)
