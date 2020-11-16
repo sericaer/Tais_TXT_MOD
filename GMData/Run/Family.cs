@@ -50,7 +50,6 @@ namespace GMData.Run
         public Family(int person_count, string partyName) : this()
         {
             this.partyName = partyName;
-            this.relation = new ObsBufferedValue((_, buffs)=> buffs.Sum() / buffs.Count());
             this.persons = GMRoot.define.personName.GetRandomPersonArray(person_count).Select(x => new Person(x)).ToArray();
 
             DataReactive(new StreamingContext());
@@ -59,6 +58,7 @@ namespace GMData.Run
         [JsonConstructor]
         private Family()
         {
+            this.relation = new ObsBufferedValue((_, buffs) => buffs.Sum() / buffs.Count());
             this._persons = new SourceList<Person>();
         }
 
@@ -69,6 +69,15 @@ namespace GMData.Run
             {
                 this.relation.SetBuffer(x.Sender.fullName, x.Value);
             });
+        }
+
+        internal Person GeneratePerson()
+        {
+            var person = new Person(GMRoot.define.personName.given.First(x=>persons.All(p=>p.givenName != x)));
+            person.family = this;
+
+            _persons.Add(person);
+            return person;
         }
     }
 }

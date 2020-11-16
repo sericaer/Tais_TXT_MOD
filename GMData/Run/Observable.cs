@@ -161,7 +161,7 @@ namespace GMData.Run
 
         public SourceCache<BufferInfo, string> buffers;
 
-        public double value { get; set; }
+        public double value { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -191,9 +191,13 @@ namespace GMData.Run
         }
 
         
-        public ObsBufferedValue(Func<double, IEnumerable<double>, double> CalcValue = null)
+        public ObsBufferedValue(Func<double?, IEnumerable<double>, double> CalcValue = null)
         {
             buffers = new SourceCache<BufferInfo, string>(x=>x.key);
+            if(CalcValue != null)
+            {
+                this.CalcValue = CalcValue;
+            }
 
             OnDeserialized(new StreamingContext());
         }

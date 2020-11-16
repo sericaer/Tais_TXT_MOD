@@ -105,7 +105,7 @@ namespace GMData.Def
             this.given = given;
         }
 
-        private string[] family;
-        private string[] given;
+        internal string[] family;
+        internal string[] given;
     }
 }

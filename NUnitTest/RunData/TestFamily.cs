@@ -44,8 +44,24 @@ namespace UnitTest.RunData
                     Assert.AreEqual(p.relation.value, buff.value);
                 }
 
-                family.relation.value = family.relation.buffers.Items.Sum(x=>x.value) / family.relation.buffers.Items.Count();
+                Assert.AreEqual(family.relation.value, family.relation.buffers.Items.Sum(x=>x.value) / family.relation.buffers.Items.Count());
             }
+        }
+
+        [Test()]
+        public void Test_AddPerson()
+        {
+            var family = depart.pops.SelectNotNull(x => x.family).First();
+
+            var person = family.GeneratePerson();
+            Assert.True(family.persons.Contains(person));
+
+            person.relation.SetBuffer("TEST_R", 11);
+
+            var buff = family.relation.buffers.Items.Single(x => x.key == person.fullName);
+            Assert.AreEqual(person.relation.value, buff.value);
+
+            Assert.AreEqual(family.relation.value, family.relation.buffers.Items.Sum(x => x.value) / family.relation.buffers.Items.Count());
         }
 
         [Test()]
