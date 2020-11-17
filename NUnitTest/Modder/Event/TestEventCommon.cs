@@ -21,7 +21,7 @@ namespace UnitTest.Modder.Event
 
             date = every_day
 
-            occur = 1
+            occur = 100
 
             option =
             {
@@ -67,7 +67,7 @@ namespace UnitTest.Modder.Event
 
             date = every_day
 
-            occur = 1
+            occur = 100
 
             option =
             {
@@ -100,7 +100,7 @@ namespace UnitTest.Modder.Event
 
             date = {day = 22}
 
-            occur = 1
+            occur = 100
 
             option =
             {
@@ -136,7 +136,7 @@ namespace UnitTest.Modder.Event
 	            equal = {item1.data1, 55}
             }
 
-            occur = 1
+            occur = 100
 
             option =
             {
@@ -172,7 +172,7 @@ namespace UnitTest.Modder.Event
 	            less = {item1.data1, 55}
             }
 
-            occur = 1
+            occur = 100
 
             option =
             {
@@ -208,7 +208,7 @@ namespace UnitTest.Modder.Event
 	            equal = {1, 1}
             }
 
-            occur = 1
+            occur = 100
 
             option =
             {
@@ -241,7 +241,7 @@ namespace UnitTest.Modder.Event
 	            equal = {1, 1}
             }
 
-            occur = 1
+            occur = 100
 
             option =
             {

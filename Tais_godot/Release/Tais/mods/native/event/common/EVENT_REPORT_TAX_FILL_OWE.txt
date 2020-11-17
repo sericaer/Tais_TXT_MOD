@@ -1,0 +1,27 @@
+trigger = 
+{
+    greater = {chaoting.owe_tax, 0}
+}
+
+date = {month=9, day=30}
+
+occur = 100
+
+option =
+{
+    desc = { EVENT_REPORT_TAX_FILL_OWE_OPTION_1_DESC, chaoting.owe_tax }
+	select = 
+	{
+	    reduce = {economy.value, chaoting.owe_tax}
+	    add = {chaoting.report_tax_plus, chaoting.owe_tax}
+	}
+}
+
+option =
+{
+	desc = EVENT_REPORT_TAX_FILL_OWE_OPTION_2_DESC
+	select = 
+	{
+	    assign = {taishou.is_revoke, true}
+	}
+}

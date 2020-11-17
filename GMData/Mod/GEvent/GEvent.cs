@@ -44,7 +44,7 @@ namespace GMData.Mod
                 return false;
             }
 
-            if(!Tools.GRandom.isOccur(100 / parse.occur.Value))
+            if(!Tools.GRandom.isOccur(parse.occur.Value))
             {
                 return false;
             }
