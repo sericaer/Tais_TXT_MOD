@@ -1,4 +1,5 @@
 using Godot;
+using GMData;
 using GMData.Run;
 using System;
 
@@ -22,7 +23,7 @@ namespace TaisGodot.Scripts
 		public override void _Ready()
 		{
 			GetNode<Label>("VBoxContainer/Label").Text = gmObj.key;
-			GetNode<ReactiveProgressBar>("VBoxContainer/ProgressBar").Assoc(gmObj.percent);
+			GetNode<ReactiveProgressBar>("VBoxContainer/ProgressBar").Assoc(gmObj.OBSProperty(x=>x.percent));
 		}
 
 

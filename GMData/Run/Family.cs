@@ -69,6 +69,7 @@ namespace GMData.Run
             {
                 this.relation.SetBuffer(x.Sender.fullName, x.Value);
             });
+
         }
 
         internal Person GeneratePerson()

@@ -25,7 +25,7 @@ namespace UnitTest.RunData
         public void Test_Init()
         {
 
-            Assert.AreEqual(def_depart.pop_init.Count(), depart.pops.Length);
+            Assert.AreEqual(def_depart.pop_init.Count(), depart.pops.Count());
 
             foreach (var pop_init in def_depart.pop_init.Where(x=> GMRoot.define.pops.Single(y=>y.key == x.type).is_family))
             {

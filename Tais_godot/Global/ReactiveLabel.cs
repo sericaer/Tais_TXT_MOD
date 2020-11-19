@@ -8,12 +8,7 @@ namespace TaisGodot.Scripts
 	{
 		private IDisposable reactiveDispose;
 
-		internal void Assoc(OBSValue<double> data)
-		{
-			reactiveDispose = data.Subscribe(this.SetProgressValue);
-		}
-
-		internal void Assoc(SubjectValue<double> data)
+		internal void Assoc(IObservable<decimal>  data)
 		{
 			reactiveDispose = data.Subscribe(this.SetProgressValue);
 		}
@@ -25,9 +20,9 @@ namespace TaisGodot.Scripts
 		}
 
 
-		private void SetProgressValue(double value)
+		private void SetProgressValue(decimal value)
 		{
-			Value = value;
+			Value = (double)value;
 		}
 	}
 }

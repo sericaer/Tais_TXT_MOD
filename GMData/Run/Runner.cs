@@ -45,7 +45,7 @@ namespace GMData.Run
         [DataVisitorProperty("risk")]
         public RiskMgr riskMgr;
 
-        public OBSValue<int> registerPopNum;
+        public IObservable<decimal> registerPopNum;
 
         [JsonProperty]
         public List<Adjust> adjusts;
@@ -94,8 +94,6 @@ namespace GMData.Run
         private Runner()
         {
             Visitor.SetVisitData(this);
-
-            registerPopNum = new OBSValue<int>();
         }
 
         [OnDeserialized]
@@ -103,7 +101,7 @@ namespace GMData.Run
         {
             adjusts.ForEach(ad =>
             {
-                ad.level.Subscribe(level =>
+                ad.OBSProperty(x=>x.level).Subscribe(level =>
                 {
                     switch (ad.etype)
                     {
@@ -120,7 +118,7 @@ namespace GMData.Run
                             }
                             break;
                         case Adjust.EType.REPORT_CHAOTING:
-                            chaoting.reportTaxLevel.OnNext(level);
+                            chaoting.reportTaxLevel= level;
                             break;
                     }
 
@@ -135,15 +133,14 @@ namespace GMData.Run
             });
 
             pops.CombineLatestSum(pop => pop.tax?.WhenPropertyValueChanges(z=>z.value))
-                .Subscribe(economy.detail.popTax);
+                .Subscribe(x=>economy.detail.popTax = x);
 
             pops.CombineLatestSum(pop => pop.adminExpend?.WhenPropertyValueChanges(z => z.value))
-                .Subscribe(economy.detail.adminSpend);
+                .Subscribe(x=> economy.detail.adminSpend = x);
 
-            departs.CombineLatestSum(depart => depart.popNum)
-                .Subscribe(registerPopNum);
+            registerPopNum = departs.CombineLatestSum(depart => depart.OBSProperty(x => x.popNum));
 
-            chaoting.monthTaxReqort.Subscribe(economy.detail.reportChaoting);
+            chaoting.OBSProperty(x=>x.monthTaxReqort).Subscribe(x=> economy.detail.reportChaoting = x);
 
             persons.ForEach(p =>
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.Serialization;
@@ -12,19 +13,21 @@ using Newtonsoft.Json;
 namespace GMData.Run
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Economy
+    public class Economy : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [JsonProperty, DataVisitorProperty("value")]
-        public SubjectValue<decimal> curr;
+        public decimal curr { get; set; }
 
         [DataVisitorProperty("output_total")]
-        public OBSValue<decimal> outputTotal;
+        public decimal outputTotal { get; set; }
 
         [DataVisitorProperty("income_total")]
-        public OBSValue<decimal> incomeTotal;
+        public decimal incomeTotal { get; set; }
 
         [DataVisitorProperty("month_surplus")]
-        public OBSValue<decimal> monthSurplus;
+        public decimal monthSurplus { get; set; }
 
         public Detail detail;
 
@@ -32,69 +35,63 @@ namespace GMData.Run
         {
             if (date == (null, null, 30))
             {
-                curr.Value += monthSurplus.Value;
+                curr += monthSurplus;
             }
         }
 
         internal Economy(Def.Economy init) : this()
         {
-            curr.Value = (decimal)init.curr;
+            curr = (decimal)init.curr;
             DataReactive(new StreamingContext());
         }
 
         [JsonConstructor]
         private Economy()
         {
-            curr = new SubjectValue<decimal>(0);
             detail = new Detail();
-
-            outputTotal = new OBSValue<decimal>();
-            incomeTotal = new OBSValue<decimal>();
-            monthSurplus = new OBSValue<decimal>();
         }
 
         [OnDeserialized]
         private void DataReactive(StreamingContext context)
         {
             detail.incomeDetails.CombineLatest(all => all.Sum())
-                   .Subscribe(incomeTotal);
+                   .Subscribe(x=> incomeTotal = x);
 
             detail.outputDetails.CombineLatest(all => all.Sum())
-                   .Subscribe(outputTotal);
+                   .Subscribe(x=> outputTotal = x);
 
-            Observable.CombineLatest(incomeTotal, outputTotal, (i, o) => i - o)
-                      .Subscribe(monthSurplus);
+            Observable.CombineLatest(this.OBSProperty(x=>x.incomeTotal), this.OBSProperty(x=>x.outputTotal), (i, o) => i - o)
+                      .Subscribe(x=> monthSurplus = x);
         }
 
-        public class Detail
+        public class Detail : INotifyPropertyChanged
         {
-            internal OBSValue<decimal> popTax;
+            public event PropertyChangedEventHandler PropertyChanged;
 
-            internal OBSValue<decimal> reportChaoting;
-            internal OBSValue<decimal> adminSpend;
+            public decimal popTax { get; set; }
 
-            internal IEnumerable<OBSValue<decimal>> incomeDetails
+            public decimal reportChaoting { get; set; }
+            public decimal adminSpend { get; set; }
+
+            public IEnumerable<IObservable<decimal>> incomeDetails
             {
                 get
                 {
-                    yield return popTax;
+                    yield return this.OBSProperty(x=>x.popTax);
                 }
             }
 
-            internal IEnumerable<OBSValue<decimal>> outputDetails
+            public IEnumerable<IObservable<decimal>> outputDetails
             {
                 get
                 {
-                    yield return reportChaoting;
-                    yield return adminSpend;
+                    yield return this.OBSProperty(x => x.reportChaoting);
+                    yield return this.OBSProperty(x => x.adminSpend);
                 }
             }
 
-            internal Detail()
+            public Detail()
             {
-                popTax = new OBSValue<decimal>();
-                reportChaoting = new OBSValue<decimal>();
-                adminSpend = new OBSValue<decimal>();
             }
         }
     }

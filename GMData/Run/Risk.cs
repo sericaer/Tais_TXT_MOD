@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using DataVisit;
 using Newtonsoft.Json;
@@ -19,15 +20,17 @@ namespace GMData.Run
     }
 
     [JsonObject(MemberSerialization.OptIn)]
-    public class Risk
+    public class Risk : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [JsonProperty]
         public string key;
 
         [JsonProperty]
-        public SubjectValue<double> percent;
+        public decimal percent { get; set; }
 
-        public bool isEnd => percent.Value > 100 || Math.Abs(percent.Value - 100) < 0.0001;
+        public bool isEnd => percent >= 100;
 
         public string endEvent => def.endEvent;
 
@@ -36,12 +39,12 @@ namespace GMData.Run
         public Risk(string key)
         {
             this.key = key;
-            this.percent = new SubjectValue<double>(0.0);
+            this.percent = 0.0M;
         }
 
         internal void DaysInc()
         {
-            percent.Value += 100 / def.cost_days;
+            percent += 100 / (decimal)def.cost_days;
         }
     }
 }

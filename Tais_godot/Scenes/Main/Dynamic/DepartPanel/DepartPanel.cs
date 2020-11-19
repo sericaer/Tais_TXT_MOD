@@ -1,6 +1,7 @@
 using Godot;
 using GMData.Run;
 using System;
+using GMData;
 
 namespace TaisGodot.Scripts
 {
@@ -25,8 +26,8 @@ namespace TaisGodot.Scripts
 
 			GetNode<Label>("CenterContainer/PanelContainer/VBoxContainer/Name").Text = gmObj.name;
 
-			GetNode<ReactiveLabel>("CenterContainer/PanelContainer/VBoxContainer/StatisticContainer/GridContainer/PopNum/Value").Assoc(gmObj.popNum);
-			GetNode<ReactiveLabel>("CenterContainer/PanelContainer/VBoxContainer/StatisticContainer/GridContainer/CropGrown/Value").Assoc(gmObj.cropGrown);
+			GetNode<ReactiveLabel>("CenterContainer/PanelContainer/VBoxContainer/StatisticContainer/GridContainer/PopNum/Value").Assoc(gmObj.OBSProperty(x=>x.popNum));
+			GetNode<ReactiveLabel>("CenterContainer/PanelContainer/VBoxContainer/StatisticContainer/GridContainer/CropGrown/Value").Assoc(gmObj.OBSProperty(x=>x.cropGrown));
 
 			GetNode<PopContainer>("CenterContainer/PanelContainer/VBoxContainer/PopContainer").SetPops(gmObj.pops);
 		}

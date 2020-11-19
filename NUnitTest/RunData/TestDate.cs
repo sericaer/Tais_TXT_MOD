@@ -44,12 +44,12 @@ namespace UnitTest.RunData
                 {
                     for (int d = 1; d <= 30; d++)
                     {
-                        Assert.AreEqual(d, date.day.Value);
-                        Assert.AreEqual(m, date.month.Value);
-                        Assert.AreEqual(y, date.year.Value);
+                        Assert.AreEqual(d, date.day);
+                        Assert.AreEqual(m, date.month);
+                        Assert.AreEqual(y, date.year);
 
-                        Assert.AreEqual(d + (m - 1) * 30 + (y - 1) * 360, date.total_days.Value);
-                        Assert.AreEqual($"{y}-{m}-{d}", date.desc.Value);
+                        Assert.AreEqual(d + (m - 1) * 30 + (y - 1) * 360, date.total_days);
+                        Assert.AreEqual($"{y}-{m}-{d}", date.desc);
 
                         date.Inc();
                     }
@@ -60,9 +60,9 @@ namespace UnitTest.RunData
         [Test()]
         public void TestCompare()
         {
-            date.year.Value = 2;
-            date.month.Value = 2;
-            date.day.Value = 2;
+            date.year = 2;
+            date.month = 2;
+            date.day = 2;
 
             Assert.True(date == (2, null, null));
             Assert.True(date == (null, 2, null));

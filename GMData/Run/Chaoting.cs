@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
@@ -10,19 +11,21 @@ using Newtonsoft.Json;
 namespace GMData.Run
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Chaoting
+    public class Chaoting : INotifyPropertyChanged
     {
-        [JsonProperty]
-        public SubjectValue<int> reportPopNum;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [JsonProperty]
-        public SubjectValue<int> requestTaxLevel;
+        public int reportPopNum { get; set; }
 
-        public OBSValue<int> reportTaxLevel;
+        [JsonProperty]
+        public int requestTaxLevel { get; set; }
 
-        public OBSValue<decimal> monthTaxRequest;
+        public int reportTaxLevel { get; set; }
 
-        public OBSValue<decimal> monthTaxReqort;
+        public decimal monthTaxRequest { get; private set; }
+
+        public decimal monthTaxReqort { get; private set; }
 
         [JsonProperty]
         internal string powerPartyName;
@@ -36,7 +39,6 @@ namespace GMData.Run
         [JsonProperty]
         private decimal _extraTax;
 
-
         internal static void DaysInc()
         {
 
@@ -45,15 +47,15 @@ namespace GMData.Run
         internal Chaoting(Def.Chaoting def, decimal popNum) : this()
         {
             powerPartyName = def.powerParty;
-            reportPopNum = new SubjectValue<int>((int)(popNum * (decimal)def.reportPopPercent / 100));
-            requestTaxLevel = new SubjectValue<int>(def.tax_level);
+            reportPopNum = (int)(popNum * (decimal)def.reportPopPercent / 100);
+            requestTaxLevel = def.tax_level;
 
             DataReactive(new StreamingContext());
         }
 
         internal void ReportMonthTax(decimal value)
         {
-            _extraTax += value - monthTaxRequest.Value;
+            _extraTax += value - monthTaxRequest;
         }
 
         internal void ReportTaxPlus(decimal value)
@@ -64,23 +66,25 @@ namespace GMData.Run
         [OnDeserialized]
         internal void DataReactive(StreamingContext context)
         {        
-            Observable.CombineLatest(requestTaxLevel.obs, reportPopNum.obs, CalcTax)
-                      .Subscribe(monthTaxRequest);
-            Observable.CombineLatest(reportTaxLevel.obs, reportPopNum.obs, CalcTax)
-                      .Subscribe(monthTaxReqort);
+            Observable.CombineLatest(this.OBSProperty(x=>x.requestTaxLevel), this.OBSProperty(x => x.reportPopNum), CalcTax)
+                      .Subscribe(sum=> monthTaxRequest = sum);
+            Observable.CombineLatest(this.OBSProperty(x => x.reportTaxLevel), this.OBSProperty(x => x.reportPopNum), CalcTax)
+                      .Subscribe(sum => monthTaxReqort = sum);
         }
 
 
         [JsonConstructor]
         private Chaoting()
         {
-            monthTaxRequest = new OBSValue<decimal>();
-            monthTaxReqort = new OBSValue<decimal>();
-            reportTaxLevel = new OBSValue<int>();
         }
 
         internal decimal CalcTax(int level, int num)
         {
+            if(level == 0)
+            {
+                return 0;
+            }
+
             var levels = GMRoot.define.adjusts.Single(x => x.key == "REPORT_CHAOTING").levels;
             return (decimal)levels[level - 1].percent * 0.01M * num * 0.006M;
         }

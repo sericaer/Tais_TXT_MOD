@@ -35,8 +35,8 @@ namespace TaisGodot.Scripts
 			sliderReportLast = GetNode<Slider>("CenterContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/LastReport/HSlider");
 			sliderReportCurr = GetNode<Slider>("CenterContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/CurrLastReport/HSlider");
 
-			labelReal.Text = GMRoot.runner.departs.Sum(x => x.popNum.Value).ToString();
-			labelReportLast.Text = GMRoot.runner.chaoting.reportPopNum.Value.ToString();
+			labelReal.Text = GMRoot.runner.departs.Sum(x => x.popNum).ToString();
+			labelReportLast.Text = GMRoot.runner.chaoting.reportPopNum.ToString();
 			labelReportCurr.Text = labelReportLast.Text;
 
 			sliderReportLast.MinValue = 0;
@@ -53,13 +53,13 @@ namespace TaisGodot.Scripts
 
 		private void _on_SliderReportCurr_ValueChanged(double value)
 		{
-			var newReport = GMRoot.runner.chaoting.reportPopNum.Value + GMRoot.runner.chaoting.reportPopNum.Value * (sliderReportCurr.Value - 5) / 100;
+			var newReport = GMRoot.runner.chaoting.reportPopNum + GMRoot.runner.chaoting.reportPopNum * (sliderReportCurr.Value - 5) / 100;
 			labelReportCurr.Text = ((int)newReport).ToString();
 		}
 
 		private void _on_ButtonConfrim_Pressed()
 		{
-			GMRoot.runner.chaoting.reportPopNum.Value = int.Parse(labelReportCurr.Text);
+			GMRoot.runner.chaoting.reportPopNum = int.Parse(labelReportCurr.Text);
 			QueueFree();
 		}
 	}

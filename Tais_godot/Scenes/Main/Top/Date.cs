@@ -8,7 +8,7 @@ namespace TaisGodot.Scripts
 	{
 		public override void _Ready()
 		{
-			GetNode<ReactiveLabel>("Value").Assoc(GMRoot.runner.date.desc, 
+			GetNode<ReactiveLabel>("Value").Assoc(GMRoot.runner.date.OBSProperty(x=>x.desc), 
 												 (desc)=> TranslateServerEx.Translate("STATIC_DATE_VALUE", desc.Split('-')));
 		}
 	}

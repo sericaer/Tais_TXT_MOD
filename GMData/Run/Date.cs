@@ -1,47 +1,49 @@
 using DataVisit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMData.Run
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Date
+    public class Date : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void Inc()
         {
-            if (day.Value != 30)
+            if (day != 30)
             {
-                day.Value++;
+                day++;
             }
-            else if (month.Value != 12)
+            else if (month != 12)
             {
-                day.Value = 1;
-                month.Value++;
+                day = 1;
+                month++;
                 return;
             }
             else
             {
-                month.Value = 1;
-                day.Value = 1;
-                year.Value++;
+                month = 1;
+                day = 1;
+                year++;
             }
         }
 
         public static bool operator ==(Date l, (int? year, int? month, int? day) r)
         {
-            if (r.year != null && l.year.Value != r.year.Value)
+            if (r.year != null && l.year != r.year.Value)
             {
                 return false;
             }
-            if (r.month != null && l.month.Value != r.month.Value)
+            if (r.month != null && l.month != r.month.Value)
             {
                 return false;
             }
-            if (r.day != null && l.day.Value != r.day.Value)
+            if (r.day != null && l.day != r.day.Value)
             {
                 return false;
             }
@@ -53,23 +55,23 @@ namespace GMData.Run
         {
             if (r.year != null)
             {
-                if (l.year.Value > r.year.Value)
+                if (l.year > r.year.Value)
                     return true;
-                if (l.year.Value < r.year.Value)
+                if (l.year < r.year.Value)
                     return false;
             }
             if (r.month != null)
             {
-                if (l.month.Value > r.month.Value)
+                if (l.month > r.month.Value)
                     return true;
-                if (l.month.Value < r.month.Value)
+                if (l.month < r.month.Value)
                     return false;
             }
             if (r.day != null)
             {
-                if (l.day.Value > r.day.Value)
+                if (l.day > r.day.Value)
                     return true;
-                if (l.day.Value < r.day.Value)
+                if (l.day < r.day.Value)
                     return false;
             }
 
@@ -98,7 +100,7 @@ namespace GMData.Run
 
         public static bool operator ==(Date l, Date r)
         {
-            return l == (r.year.Value, r.month.Value, r.day.Value);
+            return l == (r.year, r.month, r.day);
         }
 
         public static bool operator !=(Date l, Date r)
@@ -108,7 +110,7 @@ namespace GMData.Run
 
         public static bool operator >(Date l, Date r)
         {
-            return l > (r.year.Value, r.month.Value, r.day.Value);
+            return l > (r.year, r.month, r.day);
         }
 
         public static bool operator <(Date l, Date r)
@@ -127,17 +129,17 @@ namespace GMData.Run
         }
 
         [JsonProperty, DataVisitorProperty("year")]
-        public SubjectValue<int> year;
+        public int year { get; set; }
 
         [JsonProperty, DataVisitorProperty("month")]
-        public SubjectValue<int> month;
+        public int month { get; set; }
 
         [JsonProperty, DataVisitorProperty("day")]
-        public SubjectValue<int> day;
+        public int day { get; set; }
 
-        public OBSValue<string> desc;
+        public string desc { get; private set; }
 
-        public OBSValue<int> total_days;
+        public int total_days { get; private set; }
 
         //public int total_days
         //{
@@ -149,9 +151,9 @@ namespace GMData.Run
 
         public Date(Init.Date init) : this()
         {
-            year = new SubjectValue<int>((int)init.year);
-            month = new SubjectValue<int>((int)init.month);
-            day = new SubjectValue<int>((int)init.day);
+            year = (int)init.year;
+            month = (int)init.month;
+            day = (int)init.day;
 
             DataAssociate(new StreamingContext());
         }
@@ -159,15 +161,19 @@ namespace GMData.Run
         [OnDeserialized]
         internal void DataAssociate(StreamingContext context)
         {
-            Observable.CombineLatest(year, month, day, (y, m, d) => $"{y}-{m}-{d}").Subscribe(desc);
-            Observable.CombineLatest(year, month, day, (y, m, d) => d + (m - 1) * 30 + (y - 1) * 360).Subscribe(total_days);
+            Observable.Merge(this.OBSProperty(x => x.year), 
+                           this.OBSProperty(x => x.month), 
+                           this.OBSProperty(x => x.day))
+                .Subscribe(_ =>
+                {
+                    desc = $"{year}-{month}-{day}";
+                    total_days = day + (month - 1) * 30 + (year - 1) * 360;
+                });
         }
 
         [JsonConstructor]
         private Date()
         {
-            desc = new OBSValue<string>();
-            total_days = new OBSValue<int>();
         }
     }
 }

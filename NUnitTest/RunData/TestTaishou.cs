@@ -22,7 +22,7 @@ namespace UnitTest.RunData
         public void Test_Init()
         {
             Assert.AreEqual(GMRoot.initData.taishou.name, taishou.name);
-            Assert.AreEqual(GMRoot.initData.taishou.age, taishou.age.Value);
+            Assert.AreEqual(GMRoot.initData.taishou.age, taishou.age);
             Assert.AreEqual(GMRoot.initData.taishou.party, taishou.partyName);
         }
 

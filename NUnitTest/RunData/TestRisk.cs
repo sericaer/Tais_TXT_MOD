@@ -23,7 +23,7 @@ namespace UnitTest.RunData
         [Test()]
         public void Test_Init()
         {
-            Assert.AreEqual(0, risk.percent.Value);
+            Assert.AreEqual(0, risk.percent);
             Assert.AreEqual(def.key, risk.key);
         }
 
@@ -40,14 +40,14 @@ namespace UnitTest.RunData
         public void Test_RiskDaysInc()
         {
             double percent = 0.0;
-            Assert.AreEqual(percent, risk.percent.Value);
+            Assert.AreEqual(percent, risk.percent);
 
             for (int i = 1; i <= def.cost_days; i++)
             {
                 risk.DaysInc();
 
                 percent += (100 / def.cost_days);
-                Assert.AreEqual(percent, risk.percent.Value);
+                Assert.AreEqual(percent, risk.percent);
             }
         }
     }

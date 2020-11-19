@@ -33,8 +33,8 @@ namespace UnitTest.RunData
         public void Test_Init()
         {
             var popTaxAdjust = GMRoot.define.adjusts.Single(x => x.key == GMData.Run.Adjust.EType.POP_TAX.ToString());
-            Assert.AreEqual(popTaxAdjust.init.level, adjust.level.Value);
-            Assert.AreEqual(popTaxAdjust.init.valid, adjust.valid.Value);
+            Assert.AreEqual(popTaxAdjust.init.level, adjust.level);
+            Assert.AreEqual(popTaxAdjust.init.valid, adjust.valid);
             Assert.AreEqual(popTaxAdjust, adjust.def);
             Assert.AreEqual(popTaxAdjust.levels[popTaxAdjust.init.level-1], adjust.levelDef);
         }
@@ -42,12 +42,12 @@ namespace UnitTest.RunData
         [Test()]
         public void Test_Serialize()
         {
-            adjust.level.Value = 5;
+            adjust.level = 5;
 
             var json = JsonConvert.SerializeObject(adjust, Formatting.Indented);
             adjust = JsonConvert.DeserializeObject<GMData.Run.Adjust>(json);
 
-            Assert.AreEqual(5, adjust.level.Value);
+            Assert.AreEqual(5, adjust.level);
         }
     }
 }

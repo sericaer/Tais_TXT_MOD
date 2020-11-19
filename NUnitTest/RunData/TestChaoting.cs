@@ -23,11 +23,11 @@ namespace UnitTest.RunData
         public void Test_Init()
         {
             Assert.AreEqual(GMRoot.define.chaoting.powerParty, chaoting.powerPartyName);
-            Assert.AreEqual((int)(GMRoot.define.chaoting.reportPopPercent /100 * 123456), chaoting.reportPopNum.Value);
-            Assert.AreEqual(GMRoot.define.chaoting.tax_level, chaoting.requestTaxLevel.Value);
+            Assert.AreEqual((int)(GMRoot.define.chaoting.reportPopPercent /100 * 123456), chaoting.reportPopNum);
+            Assert.AreEqual(GMRoot.define.chaoting.tax_level, chaoting.requestTaxLevel);
 
             var levels = GMRoot.define.adjusts.Single(x => x.key == "REPORT_CHAOTING").levels;
-            Assert.AreEqual(chaoting.CalcTax(GMRoot.define.chaoting.tax_level, chaoting.reportPopNum.Value), chaoting.monthTaxRequest.Value);
+            Assert.AreEqual(chaoting.CalcTax(GMRoot.define.chaoting.tax_level, chaoting.reportPopNum), chaoting.monthTaxRequest);
         }
 
         [Test()]
@@ -45,7 +45,7 @@ namespace UnitTest.RunData
             Assert.AreEqual(0, chaoting.extraTax);
 
             var extraTax = 100.0M;
-            chaoting.ReportMonthTax(chaoting.monthTaxRequest.Value + extraTax);
+            chaoting.ReportMonthTax(chaoting.monthTaxRequest + extraTax);
 
             Assert.AreEqual(extraTax, chaoting.extraTax);
             
@@ -57,7 +57,7 @@ namespace UnitTest.RunData
             Assert.AreEqual(0, chaoting.oweTax);
 
             var oweTax = 100.0M;
-            chaoting.ReportMonthTax(chaoting.monthTaxRequest.Value - oweTax);
+            chaoting.ReportMonthTax(chaoting.monthTaxRequest - oweTax);
 
             Assert.AreEqual(oweTax, chaoting.oweTax);
 

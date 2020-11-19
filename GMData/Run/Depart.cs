@@ -10,38 +10,41 @@ using DataVisit;
 using Newtonsoft.Json;
 using DynamicData;
 using ReactiveMarbles.PropertyChanged;
+using System.ComponentModel;
 
 namespace GMData.Run
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Depart
+    public class Depart : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [JsonProperty, DataVisitorProperty("name")]
         public string name;
 
         [JsonProperty, DataVisitorProperty("crop_grown")]
-        public SubjectValue<double> cropGrown;
+        public decimal cropGrown { get; set; }
 
-        public OBSValue<int> popNum;
+        public decimal popNum { get; set; }
 
-        public OBSValue<decimal> tax;
-        public OBSValue<decimal> adminExpend;
+        public decimal tax { get; set; }
+        public decimal adminExpend { get; set; }
 
         [JsonProperty]
-        public Pop[] pops
+        public IEnumerable<Pop> pops
         {
             get
             {
-                return _pops.ToArray();
+                return _pops.Items;
             }
             set
             {
                 _pops.AddRange(value);
-                _pops.ForEach(x=>x.depart = this);
+                _pops.Items.ToList().ForEach(x=>x.depart = this);
             }
         }
 
-        private List<Pop> _pops = new List<Pop>();
+        private SourceList<Pop> _pops = new SourceList<Pop>();
 
         internal Def.Depart def => GMRoot.define.departs.Single(x=>x.key == name);
 
@@ -78,25 +81,20 @@ namespace GMData.Run
         [JsonConstructor]
         private Depart()
         {
-            this.cropGrown = new SubjectValue<double>(0);
 
-            this.popNum = new OBSValue<int>();
-            this.tax = new OBSValue<decimal>();
-            this.adminExpend = new OBSValue<decimal>();
         }
 
         [OnDeserialized]
         private void DataReactive(StreamingContext context)
         {
             pops.Where(x => x.def.is_collect_tax).Select(x => x.OBSProperty(y=>y.num)).CombineLatest(all => (int)all.Sum())
-                .Subscribe(popNum);
-
+                .Subscribe(x=>popNum=x);
 
             pops.CombineLatestSum(x => x.tax?.OBSProperty(z=>z.value))
-                .Subscribe(tax);
+                .Subscribe(x=>tax=x);
 
             pops.CombineLatestSum(x => x.adminExpend?.OBSProperty(z => z.value))
-                .Subscribe(adminExpend);
+                .Subscribe(x=>adminExpend =x);
                 
         }
 

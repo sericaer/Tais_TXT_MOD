@@ -378,7 +378,7 @@ namespace UnitTest.Modder.Event
             var eventobjs = modder.events.ToArray();
             Assert.AreEqual(0, eventobjs.Count());
 
-            Demon.inst.date.day.Value = 22;
+            Demon.inst.date.day = 22;
 
             eventobjs = modder.events.ToArray();
             Assert.AreEqual(1, eventobjs.Count());
@@ -402,8 +402,8 @@ namespace UnitTest.Modder.Event
 
 
             Demon.inst.item1.data1 = 55;
-            Demon.inst.date.month.Value = 4;
-            Demon.inst.date.day.Value = 22;
+            Demon.inst.date.month = 4;
+            Demon.inst.date.day = 22;
 
             eventobjs = modder.events.ToArray();
 

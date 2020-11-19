@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.Serialization;
@@ -12,8 +13,10 @@ using Newtonsoft.Json;
 namespace GMData.Run
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Adjust
+    public class Adjust : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public enum EType
         {
             [EconomyInput]
@@ -30,16 +33,16 @@ namespace GMData.Run
         public EType etype;
 
         [JsonProperty]
-        public SubjectValue<int> level;
+        public int level { get; set; }
 
         [JsonProperty]
-        public SubjectValue<bool> valid;
+        public bool valid { get; set; }
 
         public Adjust(EType eType)
         {
             this.etype = eType;
-            this.level = new SubjectValue<int>(def.init.level);
-            this.valid = new SubjectValue<bool>(def.init.valid);
+            this.level = def.init.level;
+            this.valid = def.init.valid;
         }
 
         [JsonConstructor]
@@ -52,7 +55,7 @@ namespace GMData.Run
         {
             get
             {
-                return def.levels[level.Value-1];
+                return def.levels[level-1];
             }
         }
 

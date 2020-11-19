@@ -1,4 +1,5 @@
 using Godot;
+using GMData;
 using GMData.Run;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace TaisGodot.Scripts
 
 			}
 
-			gmObj.level.Subscribe(x=>
+			gmObj.OBSProperty(x=>x.level).Subscribe(x=>
 			{
 				GD.Print(x);
 				var currBtn = GetNode<HBoxContainer>("HBoxContainer").GetChild<Button>(x);
@@ -56,7 +57,7 @@ namespace TaisGodot.Scripts
 				}
 			}).EndWith(this);
 
-			gmObj.valid.Subscribe(x =>
+			gmObj.OBSProperty(x => x.valid).Subscribe(x =>
 			{
 				foreach (Button elem in group.GetButtons())
 				{
@@ -67,7 +68,7 @@ namespace TaisGodot.Scripts
 
 		private void _on_LevelButton_Pressed(int level)
 		{
-			gmObj.level.Value = level;
+			gmObj.level = level;
 		}
 
 		private string GetLevelDesc(GMData.Run.Adjust.EType type, GMData.Def.Adjust.Level levelInfo)

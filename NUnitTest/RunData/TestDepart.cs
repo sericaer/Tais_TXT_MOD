@@ -32,8 +32,8 @@ namespace UnitTest.RunData
                 Assert.AreEqual(pop_init.num, pop.num);
             }
 
-            Assert.AreEqual(depart.pops.Sum(x => x.tax?.value), depart.tax.Value);
-            Assert.AreEqual(depart.pops.Sum(x => x.adminExpend?.value), depart.adminExpend.Value);
+            Assert.AreEqual(depart.pops.Sum(x => x.tax?.value), depart.tax);
+            Assert.AreEqual(depart.pops.Sum(x => x.adminExpend?.value), depart.adminExpend);
         }
 
         //[Test()]

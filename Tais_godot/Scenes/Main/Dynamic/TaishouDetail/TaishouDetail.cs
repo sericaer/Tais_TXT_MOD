@@ -27,7 +27,7 @@ namespace TaisGodot.Scripts
 
 			Name.Text = GMRoot.runner.taishou.name;
 			Party.Text = GMRoot.runner.taishou.partyName;
-			Age.Assoc(GMRoot.runner.taishou.age);
+			Age.Assoc(GMRoot.runner.taishou.OBSProperty(x=>x.age));
 		}
 
 		//  // Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -32,9 +32,9 @@ public class EconomyDetailPanel2 : Godot.Panel
 		incomeTotal = GetNode<ReactiveLabel>("CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Value");
 		outputTotal = GetNode<ReactiveLabel>("CenterContainer/PanelContainer/AdjustContainer/AdjustOutputContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Value");
 
-		surplus.Assoc(GMRoot.runner.economy.monthSurplus);
-		incomeTotal.Assoc(GMRoot.runner.economy.incomeTotal);
-		outputTotal.Assoc(GMRoot.runner.economy.outputTotal);
+		surplus.Assoc(GMRoot.runner.economy.OBSProperty(x=>x.monthSurplus));
+		incomeTotal.Assoc(GMRoot.runner.economy.OBSProperty(x => x.incomeTotal));
+		outputTotal.Assoc(GMRoot.runner.economy.OBSProperty(x => x.outputTotal));
 
 		adjustInputContainer = GetNode<VBoxContainer>("CenterContainer/PanelContainer/AdjustContainer/AdjustInputContainer/MarginContainer/HBoxContainer/VBoxContainer");
 		adjustOutputContainer = GetNode<VBoxContainer>("CenterContainer/PanelContainer/AdjustContainer/AdjustOutputContainer/MarginContainer/HBoxContainer/VBoxContainer");

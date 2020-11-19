@@ -22,17 +22,17 @@ namespace UnitTest.RunData
         [Test()]
         public void Test_Init()
         {
-            Assert.AreEqual(GMRoot.define.economy.curr, economy.curr.Value);
+            Assert.AreEqual(GMRoot.define.economy.curr, economy.curr);
 
-            economy.detail.popTax.OnNext(200);
+            economy.detail.popTax = 200;
 
-            economy.detail.reportChaoting.OnNext(10);
-            economy.detail.adminSpend.OnNext(20);
+            economy.detail.reportChaoting = 10;
+            economy.detail.adminSpend = 20;
 
-            Assert.AreEqual(economy.detail.popTax.Value, economy.incomeTotal.Value);
-            Assert.AreEqual(economy.detail.reportChaoting.Value + economy.detail.adminSpend.Value, economy.outputTotal.Value);
+            Assert.AreEqual(economy.detail.popTax, economy.incomeTotal);
+            Assert.AreEqual(economy.detail.reportChaoting + economy.detail.adminSpend, economy.outputTotal);
 
-            Assert.AreEqual(economy.incomeTotal.Value - economy.outputTotal.Value, economy.monthSurplus.Value);
+            Assert.AreEqual(economy.incomeTotal - economy.outputTotal, economy.monthSurplus);
         }
 
         [Test()]
@@ -40,23 +40,23 @@ namespace UnitTest.RunData
         {
             var date = new GMData.Run.Date(GMRoot.initData.start_date);
 
-            economy.detail.popTax.OnNext(200);
+            economy.detail.popTax = 200;
 
-            economy.detail.reportChaoting.OnNext(10);
-            economy.detail.adminSpend.OnNext(20);
+            economy.detail.reportChaoting = 10;
+            economy.detail.adminSpend = 20;
 
             var curr = (decimal)GMRoot.define.economy.curr;
             for (int i=1; i<=360*10; i++)
             {
                 if (i % 30 == 0)
                 {
-                    curr += economy.monthSurplus.Value;
+                    curr += economy.monthSurplus;
                 }
                 
                 economy.DaysInc(date);
                 date.Inc();
 
-                Assert.AreEqual(curr, economy.curr.Value);
+                Assert.AreEqual(curr, economy.curr);
             }
         }
 
