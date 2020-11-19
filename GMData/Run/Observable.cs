@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -13,26 +14,6 @@ using Newtonsoft.Json.Linq;
 
 namespace GMData.Run
 {
-    //public class ObservableValue<T> : RValue<T>
-    //{
-    //    internal readonly IObservable<T> obs;
-    //    private T _value;
-
-    //    public override T Value { get { return _value; } }
-
-    //    public ObservableValue(IObservable<T> param)
-    //    {
-    //        obs = param;
-
-    //        obs.Subscribe(x => _value = x);
-    //    }
-
-    //    public IDisposable Subscribe(Action<T> action)
-    //    {
-    //        return obs.Subscribe(action);
-    //    }
-    //}
-
     public class OBSValue<T> : RValue<T>, ISubject<T>
     {
         internal readonly ReplaySubject<T> obs;
@@ -88,11 +69,12 @@ namespace GMData.Run
         }
     }
 
-    [JsonConverter(typeof(SubjectValueConverter))]
+    [JsonObject(MemberSerialization.OptIn)]
     public class SubjectValue<T> : RWValue<T>, ISubject<T>
     {
-        internal readonly BehaviorSubject<T> obs;
+        internal BehaviorSubject<T> obs;
 
+        [JsonProperty]
         public override T Value
         {
             get
@@ -101,7 +83,7 @@ namespace GMData.Run
             }
             set
             {
-                obs.OnNext(value);
+                OnNext(value);
             }
         }
 
@@ -122,6 +104,11 @@ namespace GMData.Run
 
         public void OnNext(T value)
         {
+            if(value == null)
+            {
+                throw new Exception();
+            }
+
             obs.OnNext(value);
         }
 
@@ -144,9 +131,15 @@ namespace GMData.Run
 
             object param = reader.Value;
 
+            if (param == null)
+            {
+                return null;
+            }
+
             var rslt = Activator.CreateInstance(objectType, new object[] { param.CastToReflected(genericArgs[0]) }) as ReadWriteValue;
             return rslt;
         }
+
 
         public override void WriteJson(JsonWriter writer, ReadWriteValue value, JsonSerializer serializer)
         {
@@ -161,14 +154,28 @@ namespace GMData.Run
     }
 
     [JsonObject(MemberSerialization.OptIn)]
-    public class ObsBufferedValue
+    public class ObsBufferedValue : INotifyPropertyChanged
     {
         [JsonProperty]
-        public SubjectValue<double> baseValue;
+        public double? baseValue { get; set; }
 
         public SourceCache<BufferInfo, string> buffers;
 
-        public OBSValue<double> value;
+        public double value { get; private set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Func<double?, IEnumerable<double>, double> CalcValue = (baseValue, buffs) =>
+        {
+            double rslt = 0;
+            foreach (double elem in buffs)
+            {
+                rslt += elem;
+            }
+            rslt += baseValue == null ? 0 : baseValue.Value;
+
+            return rslt;
+        };
 
         [JsonProperty]
         private List<BufferInfo> _buffers
@@ -183,27 +190,21 @@ namespace GMData.Run
             }
         }
 
-        public ObsBufferedValue()
+        
+        public ObsBufferedValue(Func<double?, IEnumerable<double>, double> CalcValue = null)
         {
-            value = new OBSValue<double>(0);
-
             buffers = new SourceCache<BufferInfo, string>(x=>x.key);
+            if(CalcValue != null)
+            {
+                this.CalcValue = CalcValue;
+            }
 
             OnDeserialized(new StreamingContext());
         }
 
         public void SetBaseValue(double value)
         {
-            if (this.baseValue == null)
-            {
-                this.baseValue = new SubjectValue<double>(value);
-
-                baseValue.Subscribe(x => this.value.OnNext(CalcValue()));
-            }
-            else
-            {
-                this.baseValue.Value = value;
-            }
+            this.baseValue = value;
 
         }
 
@@ -223,58 +224,13 @@ namespace GMData.Run
             }
         }
 
-        private double CalcValue()
-        {
-            double rslt = 0;
-            foreach (double elem in buffers.Items.Select(x=>x.value))
-            {
-                rslt += elem;
-            }
-            rslt += baseValue == null ? 0 : baseValue.Value;
-
-            return rslt;
-        }
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            buffers.Connect().Subscribe(x => value.OnNext(CalcValue()));
+            buffers.Connect().Subscribe(x => value  = CalcValue(baseValue, buffers.Items.Select(b=>b.value)));
 
-            if (this.baseValue != null)
-            {
-                baseValue.Subscribe(x => this.value.OnNext(CalcValue()));
-            }
-        }
-    }
-
-    internal class SourceCacheBufferConverter : JsonConverter<SourceCache<BufferInfo, string>>
-    {
-        //public override ReadWriteValue ReadJson(JsonReader reader, Type objectType, ReadWriteValue existingValue, bool hasExistingValue, JsonSerializer serializer)
-        //{
-        //    var genericArgs = objectType.GetGenericArguments();
-
-        //    object param = reader.Value;
-
-        //    var rslt = Activator.CreateInstance(objectType, new object[] { param.CastToReflected(genericArgs[0]) }) as ReadWriteValue;
-        //    return rslt;
-        //}
-
-        //public override void WriteJson(JsonWriter writer, ReadWriteValue value, JsonSerializer serializer)
-        //{
-        //    writer.WriteValue(value.getValue());
-        //}
-        public override SourceCache<BufferInfo, string> ReadJson(JsonReader reader, Type objectType, SourceCache<BufferInfo, string> existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            //var test = reader.Value;
-            //var rslt = new SourceCache<BufferInfo, string>(x => x.key);
-            return existingValue;
-
-        }
-
-        public override void WriteJson(JsonWriter writer, SourceCache<BufferInfo, string> value, JsonSerializer serializer)
-        {
-            //JArray date = JArray.FromObject(value.Items);
-            //date.WriteTo(writer);
+            this.OBSProperty(x => x.baseValue).Subscribe(_ => value = CalcValue(baseValue, buffers.Items.Select(b => b.value)));
         }
     }
 }

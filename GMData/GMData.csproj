@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\Tais_godot\packages\PropertyChanged.Fody.3.3.1\build\PropertyChanged.Fody.props" Condition="Exists('..\Tais_godot\packages\PropertyChanged.Fody.3.3.1\build\PropertyChanged.Fody.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -52,6 +53,12 @@
     <Reference Include="DynamicData">
       <HintPath>..\Tais_godot\packages\DynamicData.6.17.14\lib\net461\DynamicData.dll</HintPath>
     </Reference>
+    <Reference Include="ReactiveMarbles.PropertyChanged">
+      <HintPath>..\Tais_godot\packages\ReactiveMarbles.PropertyChanged.1.2.1\lib\net461\ReactiveMarbles.PropertyChanged.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyChanged">
+      <HintPath>..\Tais_godot\packages\PropertyChanged.Fody.3.3.1\lib\net40\PropertyChanged.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Def\Define.cs" />
@@ -99,6 +106,8 @@
     <Compile Include="Mod\Warn\WarnCommon.cs" />
     <Compile Include="Run\Adjust.cs" />
     <Compile Include="Def\Adjust.cs" />
+    <Compile Include="Run\Family.cs" />
+    <Compile Include="Run\Person.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -112,4 +121,5 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Tais_godot\packages\Fody.6.3.0\build\Fody.targets" Condition="Exists('..\Tais_godot\packages\Fody.6.3.0\build\Fody.targets')" />
 </Project>

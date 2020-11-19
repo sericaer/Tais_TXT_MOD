@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Runtime.Serialization;
 using DataVisit;
 using Newtonsoft.Json;
+using ReactiveMarbles.PropertyChanged;
 
 namespace GMData.Run
 {
@@ -28,6 +29,12 @@ namespace GMData.Run
 
         [DataVisitorPropertyArray("pop")]
         public List<Pop> pops => departs.SelectMany(x => x.pops).ToList();
+
+        [DataVisitorPropertyArray("family")]
+        public List<Family> families => pops.SelectNotNull(x => x.family).ToList();
+
+        [DataVisitorPropertyArray("person")]
+        public List<Person> persons => families.SelectMany(x => x.persons).ToList();
 
         [JsonProperty, DataVisitorPropertyArray("party")]
         public List<Party> parties;
@@ -74,6 +81,11 @@ namespace GMData.Run
             risks = new List<Risk>();
             riskMgr = new RiskMgr();
 
+            var names = GMRoot.define.personName.GetRandomFamilyArray(families.Count);
+            for (int i = 0; i < families.Count; i++)
+            {
+                families[i].name = names[i];
+            }
 
             DataReactive(new StreamingContext());
         }
@@ -98,13 +110,13 @@ namespace GMData.Run
                         case Adjust.EType.POP_TAX:
                             foreach (var tax in pops.SelectNotNull(pop => pop.tax))
                             {
-                                tax.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * tax.baseValue?.Value * 0.01);
+                                tax.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * tax.baseValue * 0.01);
                             }
                             break;
                         case Adjust.EType.ADMIN_SPEND:
                             foreach (var admin in pops.SelectNotNull(pop => pop.adminExpend))
                             {
-                                admin.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * admin.baseValue?.Value * 0.01);
+                                admin.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * admin.baseValue * 0.01);
                             }
                             break;
                         case Adjust.EType.REPORT_CHAOTING:
@@ -116,23 +128,28 @@ namespace GMData.Run
                     {
                         foreach (var consume in pops.SelectNotNull(pop => pop.consume))
                         {
-                            consume.SetBuffer("POP_TAX", ad.levelDef.effect_pop_consume * consume.baseValue?.Value * 0.01);
+                            consume.SetBuffer("POP_TAX", ad.levelDef.effect_pop_consume * consume.baseValue * 0.01);
                         }
                     }
                 });
             });
 
-            pops.CombineLatestSum(pop => pop.tax?.value)
+            pops.CombineLatestSum(pop => pop.tax?.WhenPropertyValueChanges(z=>z.value))
                 .Subscribe(economy.detail.popTax);
 
-            pops.CombineLatestSum(pop => pop.adminExpend?.value)
+            pops.CombineLatestSum(pop => pop.adminExpend?.WhenPropertyValueChanges(z => z.value))
                 .Subscribe(economy.detail.adminSpend);
 
             departs.CombineLatestSum(depart => depart.popNum)
                 .Subscribe(registerPopNum);
 
             chaoting.monthTaxReqort.Subscribe(economy.detail.reportChaoting);
-            
+
+            persons.ForEach(p =>
+            {
+                var party = parties.Single(x => x.key == p.family.partyName);
+                p.relation.SetBuffer("PARTY_RELATION", party.getRelation(taishou.partyName));
+            });
         }
 
         public void DaysInc()

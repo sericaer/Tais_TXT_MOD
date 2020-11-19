@@ -24,44 +24,78 @@ namespace UnitTest.RunData
                 {
                     name = "TEST_NAME",
                     age = 123,
-                    party = "TEST_PARTY"
+                    party = "TEST_PARTY1"
                 }
             };
 
             GMRoot.define = new Define()
             {
-                parties = new List<Party>() { new Party("TEST_PARTY") },
-
+                parties = new List<Party>() {
+                    new Party()
+                    {
+                        key = "TEST_PARTY1",
+                        relation = new List<Party.Relation>()
+                        {
+                            new Party.Relation()
+                            {
+                                peer = "TEST_PARTY2",
+                                value = 100
+                            },
+                            new Party.Relation()
+                            {
+                                peer = "TEST_PARTY1",
+                                value = 30
+                            }
+                        }
+                    },
+                    new Party()
+                    {
+                        key = "TEST_PARTY2",
+                        relation = new List<Party.Relation>()
+                        {
+                            new Party.Relation()
+                            {
+                                peer = "TEST_PARTY2",
+                                value = -10
+                            },
+                            new Party.Relation()
+                            {
+                                peer = "TEST_PARTY1",
+                                value = -40
+                            }
+                        }
+                    }
+                },
                 departs = new List<Depart>()
                 {
                     new Depart()
                     {
                         key = "DEPART1",
-                        color = new Depart.COLOR(){ r=1, g=1, b=1},
+                        color = new Depart.COLOR() { r = 1, g = 1, b = 1 },
                         pop_init = new List<Depart.POP_INIT>()
                         {
-                            new Depart.POP_INIT(){type = "POP_1", num = 12345},
-                            new Depart.POP_INIT(){type = "POP_2", num = 67890}
+                            new Depart.POP_INIT() { type = "POP_1", num = 321, party = "TEST_PARTY1" },
+                            new Depart.POP_INIT() { type = "POP_2", num = 67890 }
                         }
                     },
                     new Depart()
                     {
                         key = "DEPART2",
-                        color = new Depart.COLOR(){ r=2, g=2, b=2},
+                        color = new Depart.COLOR() { r = 2, g = 2, b = 2 },
                         pop_init = new List<Depart.POP_INIT>()
                         {
-                            new Depart.POP_INIT(){type = "POP_1", num = 1234},
-                            new Depart.POP_INIT(){type = "POP_2", num = 6789},
-                            new Depart.POP_INIT(){type = "POP_3", num = 200}
+                            new Depart.POP_INIT() { type = "POP_1", num = 1234, party ="TEST_PARTY2" },
+                            new Depart.POP_INIT() { type = "POP_2", num = 6789 },
+                            new Depart.POP_INIT() { type = "POP_3", num = 200 }
                         }
                     }
                 },
 
                 pops = new List<Pop>()
                 {
-                    new Pop() {key = "POP_1", is_collect_tax = true },
-                    new Pop() {key = "POP_2", is_collect_tax = true, consume = 100} ,
-                    new Pop() {key = "POP_3", is_collect_tax = false },
+                    new Pop() { key = "POP_1", is_collect_tax = true, is_family = true },
+                    new Pop() { key = "POP_2", is_collect_tax = true, consume = 100 },
+                    new Pop() { key = "POP_3", is_collect_tax = false },
                 },
 
                 economy = new Economy()
@@ -70,142 +104,142 @@ namespace UnitTest.RunData
                 },
 
                 adjusts = new List<Adjust>()
+                {
+                    new Adjust()
                     {
-                        new Adjust()
+                        key = "POP_TAX",
+
+                        init = new Adjust.Init()
                         {
-                            key = "POP_TAX",
-
-                            init = new Adjust.Init()
-                            {
-                                valid = true,
-                                level = 3,
-                            },
-
-                            levels = new List<Adjust.Level>()
-                            {
-                                new Adjust.Level()
-                                {
-                                    percent = 0,
-                                    //effect_pop_consume = -2,
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = +5,
-                                    effect_pop_consume = -5,
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = +10,
-                                    effect_pop_consume = -10,
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = +20,
-                                    effect_pop_consume = -15,
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = +30,
-                                    effect_pop_consume = -20,
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = +40,
-                                    effect_pop_consume = -30,
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = +50,
-                                    effect_pop_consume = -40,
-                                }
-                            }
+                            valid = true,
+                            level = 3,
                         },
-                        new Adjust()
+
+                        levels = new List<Adjust.Level>()
                         {
-                            key = "ADMIN_SPEND",
-
-
-                            init = new Adjust.Init()
+                            new Adjust.Level()
                             {
-                                valid = true,
-                                level = 3,
+                                percent = 0,
+                                //effect_pop_consume = -2,
                             },
-
-                            levels = new List<Adjust.Level>()
+                            new Adjust.Level()
                             {
-                                new Adjust.Level()
-                                {
-                                    percent = -50
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = -40
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = -30
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = -20
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = -10
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = 0
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = +10
-                                }
-                            }
-                        },
-                        new Adjust()
-                        {
-                            key = "REPORT_CHAOTING",
-
-                            init = new Adjust.Init()
-                            {
-                                valid = true,
-                                level = 3,
+                                percent = +5,
+                                effect_pop_consume = -5,
                             },
-
-                            levels = new List<Adjust.Level>()
+                            new Adjust.Level()
                             {
-                                new Adjust.Level()
-                                {
-                                    percent = -100
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = -60
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = -30
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = 0
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = 10
-                                },
-                                new Adjust.Level()
-                                {
-                                    percent = 20
-                                },
-                                new Adjust.Level()
-                                {
-                                   percent = 30
-                                }
+                                percent = +10,
+                                effect_pop_consume = -10,
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = +20,
+                                effect_pop_consume = -15,
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = +30,
+                                effect_pop_consume = -20,
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = +40,
+                                effect_pop_consume = -30,
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = +50,
+                                effect_pop_consume = -40,
                             }
                         }
                     },
+                    new Adjust()
+                    {
+                        key = "ADMIN_SPEND",
+
+
+                        init = new Adjust.Init()
+                        {
+                            valid = true,
+                            level = 3,
+                        },
+
+                        levels = new List<Adjust.Level>()
+                        {
+                            new Adjust.Level()
+                            {
+                                percent = -50
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = -40
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = -30
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = -20
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = -10
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = 0
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = +10
+                            }
+                        }
+                    },
+                    new Adjust()
+                    {
+                        key = "REPORT_CHAOTING",
+
+                        init = new Adjust.Init()
+                        {
+                            valid = true,
+                            level = 3,
+                        },
+
+                        levels = new List<Adjust.Level>()
+                        {
+                            new Adjust.Level()
+                            {
+                                percent = -100
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = -60
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = -30
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = 0
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = 10
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = 20
+                            },
+                            new Adjust.Level()
+                            {
+                                percent = 30
+                            }
+                        }
+                    }
+                },
 
                 chaoting = new Chaoting()
                 {
@@ -216,8 +250,11 @@ namespace UnitTest.RunData
 
                 risks = new List<Risk>()
                 {
-                    new Risk(){ key = "TEST_RISK_0", cost_days = 100}
-                }
+                    new Risk() { key = "TEST_RISK_0", cost_days = 100 }
+                },
+
+                personName = new PersonName(new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" },
+                                           new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" })
             };
         }
     }

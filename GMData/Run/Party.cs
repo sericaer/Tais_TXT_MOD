@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DataVisit;
 using Newtonsoft.Json;
 
 namespace GMData.Run
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Party
     {
-        [DataVisitorProperty("type")]
-        public string name;
+        [JsonProperty, DataVisitorProperty("type")]
+        public string key;
+
+        public Def.Party def => GMRoot.define.parties.Single(x => x.key == key);
 
         public Party(Def.Party def)
         {
-            this.name = def.key;
+            this.key = def.key;
         }
 
         [JsonConstructor]
         private Party()
         {
+        }
+
+        internal double getRelation(string partyName)
+        {
+            return def.relation.Single(x => x.peer == partyName).value;
         }
     }
 }

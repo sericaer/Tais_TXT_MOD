@@ -88,6 +88,8 @@
     <Compile Include="RunData\TestEconomy.cs" />
     <Compile Include="Modder\Define\TestAdjust.cs" />
     <Compile Include="TestAllLink.cs" />
+    <Compile Include="RunData\TestFamily.cs" />
+    <Compile Include="RunData\TestPerson.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

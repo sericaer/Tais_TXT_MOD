@@ -1,5 +1,5 @@
 color = {r=63, g=72, b=204}
 
-pop = {type = HAOQIANG, num = 1000}
+pop = {type = HAOQIANG, num = 1000, party=SHIZU}
 pop = {type = MINHU, num = 60000}
 pop = {type = YINHU, num = 20000}
