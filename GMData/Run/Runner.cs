@@ -72,7 +72,7 @@ namespace GMData.Run
 
             departs = GMRoot.define.departs.Select(def => new Depart(def)).ToList();
 
-            chaoting = new Chaoting(GMRoot.define.chaoting, pops.Where(x => x.def.is_collect_tax).Sum(x => x.num.Value));
+            chaoting = new Chaoting(GMRoot.define.chaoting, pops.Where(x => x.def.is_collect_tax).Sum(x => x.num));
 
             economy = new Economy(GMRoot.define.economy);
 
@@ -110,13 +110,13 @@ namespace GMData.Run
                         case Adjust.EType.POP_TAX:
                             foreach (var tax in pops.SelectNotNull(pop => pop.tax))
                             {
-                                tax.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * tax.baseValue * 0.01);
+                                tax.SetBuffer(ad.etype.ToString(), (decimal)ad.levelDef.percent * tax.baseValue * 0.01M);
                             }
                             break;
                         case Adjust.EType.ADMIN_SPEND:
                             foreach (var admin in pops.SelectNotNull(pop => pop.adminExpend))
                             {
-                                admin.SetBuffer(ad.etype.ToString(), ad.levelDef.percent * admin.baseValue * 0.01);
+                                admin.SetBuffer(ad.etype.ToString(), (decimal)ad.levelDef.percent * admin.baseValue * 0.01M);
                             }
                             break;
                         case Adjust.EType.REPORT_CHAOTING:
@@ -128,7 +128,7 @@ namespace GMData.Run
                     {
                         foreach (var consume in pops.SelectNotNull(pop => pop.consume))
                         {
-                            consume.SetBuffer("POP_TAX", ad.levelDef.effect_pop_consume * consume.baseValue * 0.01);
+                            consume.SetBuffer("POP_TAX", (decimal)ad.levelDef.effect_pop_consume * consume.baseValue * 0.01M);
                         }
                     }
                 });

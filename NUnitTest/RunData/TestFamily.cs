@@ -35,7 +35,7 @@ namespace UnitTest.RunData
                 Assert.NotNull(family);
                 Assert.AreEqual(pop, family.pop);
 
-                var personNum = pop.num.Value / 150;
+                var personNum = pop.num / 150;
                 Assert.AreEqual(personNum > 3? personNum: 3, family.persons.Count());
 
                 foreach(var p in family.persons)

@@ -151,7 +151,7 @@ namespace NUnitTest.ParserT.SemanticT
     public class TestDataSub
     {
         [DataVisitorProperty("a")]
-        public double a;
+        public decimal a;
     }
 
     public class Risk

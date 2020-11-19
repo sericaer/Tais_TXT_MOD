@@ -24,8 +24,8 @@ namespace GMData.Run
 
         public OBSValue<int> popNum;
 
-        public OBSValue<double> tax;
-        public OBSValue<double> adminExpend;
+        public OBSValue<decimal> tax;
+        public OBSValue<decimal> adminExpend;
 
         [JsonProperty]
         public Pop[] pops
@@ -81,21 +81,21 @@ namespace GMData.Run
             this.cropGrown = new SubjectValue<double>(0);
 
             this.popNum = new OBSValue<int>();
-            this.tax = new OBSValue<double>();
-            this.adminExpend = new OBSValue<double>();
+            this.tax = new OBSValue<decimal>();
+            this.adminExpend = new OBSValue<decimal>();
         }
 
         [OnDeserialized]
         private void DataReactive(StreamingContext context)
         {
-            pops.Where(x => x.def.is_collect_tax).Select(x => x.num.obs).CombineLatest(all => (int)all.Sum())
+            pops.Where(x => x.def.is_collect_tax).Select(x => x.OBSProperty(y=>y.num)).CombineLatest(all => (int)all.Sum())
                 .Subscribe(popNum);
 
 
-            pops.CombineLatestSum(x => x.tax?.WhenPropertyValueChanges(z=>z.value))
+            pops.CombineLatestSum(x => x.tax?.OBSProperty(z=>z.value))
                 .Subscribe(tax);
 
-            pops.CombineLatestSum(x => x.adminExpend?.WhenPropertyValueChanges(z => z.value))
+            pops.CombineLatestSum(x => x.adminExpend?.OBSProperty(z => z.value))
                 .Subscribe(adminExpend);
                 
         }

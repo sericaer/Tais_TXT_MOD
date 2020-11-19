@@ -75,9 +75,9 @@ namespace Parser.Syntax
                             values = new List<Value>();
                             var substr = raw.Substring(start, end - start);
 
-                            double dbValue;
+                            decimal dbValue;
                             bool bValue;
-                            if (double.TryParse(substr, out dbValue))
+                            if (decimal.TryParse(substr, out dbValue))
                             {
                                 values.Add(new DigitValue() { digit = dbValue});
                             }
@@ -183,7 +183,7 @@ namespace Parser.Syntax
 
     public class DigitValue : SingleValue
     {
-        public double digit;
+        public decimal digit;
     }
 
     public class BoolValue : SingleValue

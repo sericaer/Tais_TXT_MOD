@@ -150,25 +150,25 @@ namespace GMData.Run
     public class BufferInfo
     {
         public string key;
-        public double value; 
+        public decimal value; 
     }
 
     [JsonObject(MemberSerialization.OptIn)]
     public class ObsBufferedValue : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [JsonProperty]
-        public double? baseValue { get; set; }
+        public decimal? baseValue { get; set; }
 
         public SourceCache<BufferInfo, string> buffers;
 
-        public double value { get; private set; }
+        public decimal value { get; private set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private Func<double?, IEnumerable<double>, double> CalcValue = (baseValue, buffs) =>
+        private Func<decimal?, IEnumerable<decimal>, decimal> CalcValue = (baseValue, buffs) =>
         {
-            double rslt = 0;
-            foreach (double elem in buffs)
+            decimal rslt = 0;
+            foreach (decimal elem in buffs)
             {
                 rslt += elem;
             }
@@ -191,7 +191,7 @@ namespace GMData.Run
         }
 
         
-        public ObsBufferedValue(Func<double?, IEnumerable<double>, double> CalcValue = null)
+        public ObsBufferedValue(Func<decimal?, IEnumerable<decimal>, decimal> CalcValue = null)
         {
             buffers = new SourceCache<BufferInfo, string>(x=>x.key);
             if(CalcValue != null)
@@ -202,13 +202,13 @@ namespace GMData.Run
             OnDeserialized(new StreamingContext());
         }
 
-        public void SetBaseValue(double value)
+        public void SetBaseValue(decimal value)
         {
             this.baseValue = value;
 
         }
 
-        public void SetBuffer(string key, double? value)
+        public void SetBuffer(string key, decimal? value)
         {
             if (value == null)
             {

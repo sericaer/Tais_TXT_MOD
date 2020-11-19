@@ -32,7 +32,7 @@ namespace UnitTest.RunData
                 var popTaxAdjustDef = GMRoot.define.adjusts.Single(x => x.key == GMData.Run.Adjust.EType.POP_TAX.ToString());
                 var percent = popTaxAdjustDef.levels[popTaxAdjustDef.init.level - 1].percent;
 
-                Assert.AreEqual(percent, (double)tax.buffers.Lookup("POP_TAX").Value.value * 100.0/ tax.baseValue.Value);
+                Assert.AreEqual(percent, tax.buffers.Lookup("POP_TAX").Value.value * 100.0M/ tax.baseValue.Value);
             }
 
             //foreach (var def in GMRoot.define.economy.incomes)

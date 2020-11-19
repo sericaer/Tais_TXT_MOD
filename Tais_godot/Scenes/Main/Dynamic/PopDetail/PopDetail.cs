@@ -39,7 +39,7 @@ namespace TaisGodot.Scripts
 
 			name.Text = gmObj.name;
 
-			num.GetNode<ReactiveLabel>("Value").Assoc(gmObj.num);
+			num.GetNode<ReactiveLabel>("Value").Assoc(gmObj.OBSProperty(x=>x.num));
 
 			if (gmObj.tax != null)
 			{

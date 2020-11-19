@@ -15,16 +15,16 @@ namespace GMData.Run
     public class Economy
     {
         [JsonProperty, DataVisitorProperty("value")]
-        public SubjectValue<double> curr;
+        public SubjectValue<decimal> curr;
 
         [DataVisitorProperty("output_total")]
-        public OBSValue<double> outputTotal;
+        public OBSValue<decimal> outputTotal;
 
         [DataVisitorProperty("income_total")]
-        public OBSValue<double> incomeTotal;
+        public OBSValue<decimal> incomeTotal;
 
         [DataVisitorProperty("month_surplus")]
-        public OBSValue<double> monthSurplus;
+        public OBSValue<decimal> monthSurplus;
 
         public Detail detail;
 
@@ -38,19 +38,19 @@ namespace GMData.Run
 
         internal Economy(Def.Economy init) : this()
         {
-            curr.Value = init.curr;
+            curr.Value = (decimal)init.curr;
             DataReactive(new StreamingContext());
         }
 
         [JsonConstructor]
         private Economy()
         {
-            curr = new SubjectValue<double>(0);
+            curr = new SubjectValue<decimal>(0);
             detail = new Detail();
 
-            outputTotal = new OBSValue<double>();
-            incomeTotal = new OBSValue<double>();
-            monthSurplus = new OBSValue<double>();
+            outputTotal = new OBSValue<decimal>();
+            incomeTotal = new OBSValue<decimal>();
+            monthSurplus = new OBSValue<decimal>();
         }
 
         [OnDeserialized]
@@ -68,12 +68,12 @@ namespace GMData.Run
 
         public class Detail
         {
-            internal OBSValue<double> popTax;
+            internal OBSValue<decimal> popTax;
 
-            internal OBSValue<double> reportChaoting;
-            internal OBSValue<double> adminSpend;
+            internal OBSValue<decimal> reportChaoting;
+            internal OBSValue<decimal> adminSpend;
 
-            internal IEnumerable<OBSValue<double>> incomeDetails
+            internal IEnumerable<OBSValue<decimal>> incomeDetails
             {
                 get
                 {
@@ -81,7 +81,7 @@ namespace GMData.Run
                 }
             }
 
-            internal IEnumerable<OBSValue<double>> outputDetails
+            internal IEnumerable<OBSValue<decimal>> outputDetails
             {
                 get
                 {
@@ -92,9 +92,9 @@ namespace GMData.Run
 
             internal Detail()
             {
-                popTax = new OBSValue<double>();
-                reportChaoting = new OBSValue<double>();
-                adminSpend = new OBSValue<double>();
+                popTax = new OBSValue<decimal>();
+                reportChaoting = new OBSValue<decimal>();
+                adminSpend = new OBSValue<decimal>();
             }
         }
     }

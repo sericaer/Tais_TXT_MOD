@@ -40,7 +40,7 @@ namespace GMData
             return source.Select(selector).Where(x=>x!= null);
         }
 
-        public static IObservable<double> CombineLatestSum<TSource>(this IEnumerable<TSource> source, Func<TSource, IObservable<double>> selector)
+        public static IObservable<decimal> CombineLatestSum<TSource>(this IEnumerable<TSource> source, Func<TSource, IObservable<decimal>> selector)
         {
             return source.SelectNotNull(selector).CombineLatest(x => x.Sum());
         }

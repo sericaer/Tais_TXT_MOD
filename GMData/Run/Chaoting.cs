@@ -20,21 +20,21 @@ namespace GMData.Run
 
         public OBSValue<int> reportTaxLevel;
 
-        public OBSValue<double> monthTaxRequest;
+        public OBSValue<decimal> monthTaxRequest;
 
-        public OBSValue<double> monthTaxReqort;
+        public OBSValue<decimal> monthTaxReqort;
 
         [JsonProperty]
         internal string powerPartyName;
 
         [DataVisitorProperty("extra_tax")]
-        public double extraTax => _extraTax > 0 ? _extraTax : 0;
+        public decimal extraTax => _extraTax > 0 ? _extraTax : 0;
 
         [DataVisitorProperty("owe_tax")]
-        public double oweTax => _extraTax < 0 ? _extraTax * -1 : 0;
+        public decimal oweTax => _extraTax < 0 ? _extraTax * -1 : 0;
 
         [JsonProperty]
-        private double _extraTax;
+        private decimal _extraTax;
 
 
         internal static void DaysInc()
@@ -42,22 +42,21 @@ namespace GMData.Run
 
         }
 
-        internal Chaoting(Def.Chaoting def, double popNum) : this()
+        internal Chaoting(Def.Chaoting def, decimal popNum) : this()
         {
             powerPartyName = def.powerParty;
-
-            reportPopNum = new SubjectValue<int>((int)(popNum * def.reportPopPercent / 100));
+            reportPopNum = new SubjectValue<int>((int)(popNum * (decimal)def.reportPopPercent / 100));
             requestTaxLevel = new SubjectValue<int>(def.tax_level);
 
             DataReactive(new StreamingContext());
         }
 
-        internal void ReportMonthTax(double value)
+        internal void ReportMonthTax(decimal value)
         {
             _extraTax += value - monthTaxRequest.Value;
         }
 
-        internal void ReportTaxPlus(double value)
+        internal void ReportTaxPlus(decimal value)
         {
             _extraTax += value;
         }
@@ -75,15 +74,15 @@ namespace GMData.Run
         [JsonConstructor]
         private Chaoting()
         {
-            monthTaxRequest = new OBSValue<double>();
-            monthTaxReqort = new OBSValue<double>();
+            monthTaxRequest = new OBSValue<decimal>();
+            monthTaxReqort = new OBSValue<decimal>();
             reportTaxLevel = new OBSValue<int>();
         }
 
-        internal double CalcTax(int level, int num)
+        internal decimal CalcTax(int level, int num)
         {
             var levels = GMRoot.define.adjusts.Single(x => x.key == "REPORT_CHAOTING").levels;
-            return levels[level - 1].percent * 0.01 * num * 0.006;
+            return (decimal)levels[level - 1].percent * 0.01M * num * 0.006M;
         }
 
     }

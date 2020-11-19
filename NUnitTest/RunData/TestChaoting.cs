@@ -44,7 +44,7 @@ namespace UnitTest.RunData
         {
             Assert.AreEqual(0, chaoting.extraTax);
 
-            var extraTax = 100.0;
+            var extraTax = 100.0M;
             chaoting.ReportMonthTax(chaoting.monthTaxRequest.Value + extraTax);
 
             Assert.AreEqual(extraTax, chaoting.extraTax);
@@ -56,12 +56,12 @@ namespace UnitTest.RunData
         {
             Assert.AreEqual(0, chaoting.oweTax);
 
-            var oweTax = 100.0;
+            var oweTax = 100.0M;
             chaoting.ReportMonthTax(chaoting.monthTaxRequest.Value - oweTax);
 
             Assert.AreEqual(oweTax, chaoting.oweTax);
 
-            var plusTax = 120.0;
+            var plusTax = 120.0M;
             chaoting.ReportTaxPlus(plusTax);
 
             Assert.AreEqual(0, chaoting.oweTax);

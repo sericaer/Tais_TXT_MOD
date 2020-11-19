@@ -58,7 +58,7 @@ namespace GMData.Run
         [JsonConstructor]
         private Family()
         {
-            this.relation = new ObsBufferedValue((_, buffs) => buffs.Sum() / buffs.Count());
+            this.relation = new ObsBufferedValue((_, buffs) => buffs.Count() == 0 ? 0 : buffs.Sum() / buffs.Count());
             this._persons = new SourceList<Person>();
         }
 

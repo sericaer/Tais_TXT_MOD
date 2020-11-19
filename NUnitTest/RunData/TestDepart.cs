@@ -29,7 +29,7 @@ namespace UnitTest.RunData
                 var pop = depart.pops.SingleOrDefault(x => x.name == pop_init.type);
                 Assert.NotNull(pop);
 
-                Assert.AreEqual(pop_init.num, pop.num.Value);
+                Assert.AreEqual(pop_init.num, pop.num);
             }
 
             Assert.AreEqual(depart.pops.Sum(x => x.tax?.value), depart.tax.Value);

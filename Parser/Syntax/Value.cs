@@ -38,9 +38,9 @@ namespace Parser.Syntax
                         {
                             var substr = raw.Substring(start, end - start);
 
-                            double dbValue;
+                            decimal dbValue;
                             bool bValue;
-                            if (double.TryParse(substr, out dbValue))
+                            if (decimal.TryParse(substr, out dbValue))
                             {
                                 rslt.Add(new DigitValue() { digit = dbValue });
                             }

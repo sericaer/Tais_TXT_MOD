@@ -24,9 +24,9 @@ namespace GMData.Run
         {
         }
 
-        internal double getRelation(string partyName)
+        internal decimal getRelation(string partyName)
         {
-            return def.relation.Single(x => x.peer == partyName).value;
+            return (decimal)def.relation.Single(x => x.peer == partyName).value;
         }
     }
 }

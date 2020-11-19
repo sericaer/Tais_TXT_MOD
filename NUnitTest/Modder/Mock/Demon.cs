@@ -36,10 +36,10 @@ namespace UnitTest.Modder.Mock
     public class Item1
     {
         [DataVisitorProperty("data1")]
-        public double data1;
+        public decimal data1;
 
         [DataVisitorProperty("data2")]
-        public double data2;
+        public decimal data2;
 
 
         [DataVisitorProperty("data3")]
@@ -52,9 +52,9 @@ namespace UnitTest.Modder.Mock
         public string name;
 
         [DataVisitorProperty("data1")]
-        public double data1;
+        public decimal data1;
 
         [DataVisitorProperty("data2")]
-        public double data2;
+        public decimal data2;
     }
 }

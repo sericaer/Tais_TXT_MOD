@@ -7,17 +7,20 @@ using Newtonsoft.Json;
 using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace GMData.Run
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Pop
+    public class Pop : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [JsonProperty]
         public string name;
 
         [JsonProperty]
-        public SubjectValue<double> num;
+        public decimal num { get; set; }
 
         [JsonProperty]
         public ObsBufferedValue adminExpend;
@@ -63,7 +66,7 @@ namespace GMData.Run
             this.name = name;
 
             this.depart = depart;
-            this.num = new SubjectValue<double>(num);
+            this.num = (decimal)num;
 
             if(def.is_family)
             {
@@ -96,17 +99,17 @@ namespace GMData.Run
         {
             if (adminExpend != null)
             {
-                num.Subscribe(x => adminExpend.SetBaseValue(x * 0.0005));
+                this.OBSProperty(x=>x.num).Subscribe(x => adminExpend.SetBaseValue(x * 0.0005M));
             }
 
             if (tax != null)
             {
-                num.Subscribe(x => tax.SetBaseValue(x * 0.01));
+                this.OBSProperty(x => x.num).Subscribe(x => tax.SetBaseValue(x * 0.01M));
             }
 
             if (consume != null)
             {
-                this.consume.SetBaseValue(def.consume.Value);
+                this.consume.SetBaseValue((decimal)def.consume.Value);
             }
         }
     }

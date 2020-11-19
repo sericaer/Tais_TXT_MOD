@@ -30,15 +30,15 @@ namespace UnitTest.RunData
             foreach (var pop_init in def_depart.pop_init)
             {
                 var pop = depart.pops.SingleOrDefault(x => (x.name == pop_init.type && x.depart.name == def_depart.key));
-                Assert.AreEqual(pop_init.num, pop.num.Value);
+                Assert.AreEqual(pop_init.num, pop.num);
 
                 var popDef = GMRoot.define.pops.SingleOrDefault(x => x.key == pop.name);
                 Assert.AreEqual(popDef, pop.def);
 
                 if (pop.def.is_collect_tax)
                 {
-                    Assert.AreEqual(pop.num.Value * 0.01, pop.tax.value);
-                    Assert.AreEqual(pop.num.Value * 0.0005, pop.adminExpend.value);
+                    Assert.AreEqual(pop.num * 0.01M, pop.tax.value);
+                    Assert.AreEqual(pop.num * 0.0005M, pop.adminExpend.value);
                 }
                 else
                 {

@@ -45,7 +45,7 @@ namespace UnitTest.RunData
             economy.detail.reportChaoting.OnNext(10);
             economy.detail.adminSpend.OnNext(20);
 
-            var curr = GMRoot.define.economy.curr;
+            var curr = (decimal)GMRoot.define.economy.curr;
             for (int i=1; i<=360*10; i++)
             {
                 if (i % 30 == 0)

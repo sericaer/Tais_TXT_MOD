@@ -1,4 +1,5 @@
 using Godot;
+using GMData;
 using GMData.Run;
 
 namespace TaisGodot.Scripts
@@ -11,7 +12,7 @@ namespace TaisGodot.Scripts
 		{
 			GetNode<Label>("Type").Text = gmObj.name;
 			GetNode<Button>("Button").Connect("pressed", this, nameof(_on_Button_Pressed));
-			GetNode<ReactiveLabel>("Num").Assoc(gmObj.num);
+			GetNode<ReactiveLabel>("Num").Assoc(gmObj.OBSProperty(x=>x.num));
 		}
 
 		private void _on_Button_Pressed()
