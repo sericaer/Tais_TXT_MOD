@@ -132,11 +132,11 @@ namespace GMData.Run
                 });
             });
 
-            pops.CombineLatestSum(pop => pop.tax?.WhenPropertyValueChanges(z=>z.value))
-                .Subscribe(x=>economy.detail.popTax = x);
+            pops.SelectNotNull(pop => pop.tax).ToOBSPropertyList(tax => tax.value)
+                .Subscribe(all => economy.detail.popTax = all.Sum());
 
-            pops.CombineLatestSum(pop => pop.adminExpend?.WhenPropertyValueChanges(z => z.value))
-                .Subscribe(x=> economy.detail.adminSpend = x);
+            pops.SelectNotNull(pop => pop.adminExpend).ToOBSPropertyList(adm => adm.value)
+                .Subscribe(all => economy.detail.adminSpend = all.Sum());
 
             registerPopNum = departs.CombineLatestSum(depart => depart.OBSProperty(x => x.popNum));
 

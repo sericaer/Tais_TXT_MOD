@@ -8,6 +8,8 @@ using GMData.Run;
 using System.Linq.Expressions;
 using System.ComponentModel;
 using ReactiveMarbles.PropertyChanged;
+using DynamicData;
+using DynamicData.Binding;
 
 namespace GMData
 {
@@ -63,6 +65,17 @@ namespace GMData
             where TObj : class, INotifyPropertyChanged
         {
             return objectToMonitor.WhenPropertyValueChanges(propertyExpression);
+        }
+
+        public static IObservable<IEnumerable<TValue>> ToOBSPropertyList<TObject, TValue>(this ISourceList<TObject> source, 
+            Expression<Func<TObject, TValue>> propertyAccessor) where TObject : INotifyPropertyChanged
+        {
+            return source.Connect().WhenValueChanged(propertyAccessor).Select(_ => source.Items.Select(propertyAccessor.Compile()));
+        }
+
+        public static IObservable<IList<TValue>> ToOBSPropertyList<TObject, TValue>(this IEnumerable<TObject> source, Expression<Func<TObject, TValue>> propertyAccessor) where TObject : INotifyPropertyChanged
+        {
+            return Observable.CombineLatest(source.Select(x => x.WhenValueChanged(propertyAccessor)));
         }
     }
 

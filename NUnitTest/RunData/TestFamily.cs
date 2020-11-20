@@ -40,11 +40,11 @@ namespace UnitTest.RunData
 
                 foreach(var p in family.persons)
                 {
-                    var buff = family.relation.buffers.Items.Single(x => x.key == p.fullName);
+                    var buff = family.relation.buffers.Single(x => x.key == p.fullName);
                     Assert.AreEqual(p.relation.value, buff.value);
                 }
 
-                Assert.AreEqual(family.relation.value, family.relation.buffers.Items.Sum(x=>x.value) / family.relation.buffers.Items.Count());
+                Assert.AreEqual(family.relation.value, family.relation.buffers.Sum(x=>x.value) / family.relation.buffers.Count());
             }
         }
 
@@ -58,10 +58,10 @@ namespace UnitTest.RunData
 
             person.relation.SetBuffer("TEST_R", 11);
 
-            var buff = family.relation.buffers.Items.Single(x => x.key == person.fullName);
+            var buff = family.relation.buffers.Single(x => x.key == person.fullName);
             Assert.AreEqual(person.relation.value, buff.value);
 
-            Assert.AreEqual(family.relation.value, family.relation.buffers.Items.Sum(x => x.value) / family.relation.buffers.Items.Count());
+            Assert.AreEqual(family.relation.value, family.relation.buffers.Sum(x => x.value) / family.relation.buffers.Count());
         }
 
         [Test()]
