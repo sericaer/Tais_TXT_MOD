@@ -26,10 +26,10 @@ namespace Parser.Semantic
         }
 
         [SemanticProperty("base")]
-        double? baseValue;
+        double? baseValue = null;
 
         [SemanticPropertyArray("modifier")]
-        List<Modifier> modifiers;
+        List<Modifier> modifiers = null;
     }
 
     internal class Modifier

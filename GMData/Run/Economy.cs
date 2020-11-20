@@ -15,7 +15,9 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Economy : INotifyPropertyChanged
     {
+#pragma warning disable 0067
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 0067
 
         [JsonProperty, DataVisitorProperty("value")]
         public decimal curr { get; set; }
@@ -66,7 +68,9 @@ namespace GMData.Run
 
         public class Detail : INotifyPropertyChanged
         {
+#pragma warning disable 0067
             public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 0067
 
             public decimal popTax { get; set; }
 

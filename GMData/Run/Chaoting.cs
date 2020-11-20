@@ -13,7 +13,9 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Chaoting : INotifyPropertyChanged
     {
+#pragma warning disable 0067
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 0067
 
         [JsonProperty]
         public int reportPopNum { get; set; }

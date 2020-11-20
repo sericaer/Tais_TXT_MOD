@@ -15,7 +15,9 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Adjust : INotifyPropertyChanged
     {
+#pragma warning disable 0067
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 0067
 
         public enum EType
         {

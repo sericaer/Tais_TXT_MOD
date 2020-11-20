@@ -11,7 +11,9 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Date : INotifyPropertyChanged
     {
+#pragma warning disable 0067
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 0067
 
         public void Inc()
         {
@@ -156,6 +158,16 @@ namespace GMData.Run
             day = (int)init.day;
 
             DataAssociate(new StreamingContext());
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         [OnDeserialized]

@@ -12,7 +12,6 @@ namespace TaisGodot.Scripts
 		internal Action<string> actTriggerLoad;
 		internal Action<string> actTriggerDelete;
 
-		internal bool enableLoad;
 		internal Button buttonLoad;
 		internal Button buttonDelete;
 

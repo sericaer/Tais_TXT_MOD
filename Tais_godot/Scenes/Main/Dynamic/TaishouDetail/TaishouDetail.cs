@@ -8,7 +8,7 @@ namespace TaisGodot.Scripts
 	public class TaishouDetail : Panel
 	{
 		public const string path = "res://Scenes/Main/Dynamic/TaishouDetail/TaishouDetail.tscn";
-		Label Name;
+		new Label Name;
 		Label Party;
 		ReactiveLabel Age;
 

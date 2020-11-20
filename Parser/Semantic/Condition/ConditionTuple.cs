@@ -11,7 +11,7 @@ namespace Parser.Semantic
     {
         internal ConditionTuple(SyntaxItem item)
         {
-            if(item == null && this is ConditionDefault)
+            if(item == null)
             {
                 return;
             }

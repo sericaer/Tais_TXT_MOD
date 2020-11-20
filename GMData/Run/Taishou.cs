@@ -13,7 +13,9 @@ namespace GMData.Run
     [JsonObject(MemberSerialization.OptIn)]
     public class Taishou : INotifyPropertyChanged
     {
+#pragma warning disable 0067
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 0067
 
         [DataVisitorProperty("is_revoke")]
         public bool isRevoke;
