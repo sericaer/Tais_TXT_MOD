@@ -31,12 +31,6 @@ namespace GMData
         //    return new ObservableValue<T>(obs);
         //}
 
-        public static void DaysInc(this List<Risk> list)
-        {
-            list.RemoveAll(x => x.isEnd);
-            list.ForEach(x => x.DaysInc());
-        }
-
         public static IEnumerable<TResult> SelectNotNull<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             return source.Select(selector).Where(x=>x!= null);

@@ -2,6 +2,7 @@ using System;
 using GMData;
 using Godot;
 
+
 namespace TaisGodot.Scripts
 {
 	public class MainScene : Panel
@@ -29,8 +30,6 @@ namespace TaisGodot.Scripts
 
 		private async void _on_DaysInc()
 		{
-			GMRoot.runner.DaysInc();
-
 			foreach (var spevent in SpecialEventDialog.Process())
 			{
 				await ToSignal(ShowSpecialDialog(spevent), "tree_exited");
@@ -41,8 +40,9 @@ namespace TaisGodot.Scripts
 				await ToSignal(ShowDialog(eventobj), "tree_exited");
 			}
 
-			foreach (var eventobj in riskContainer.Refresh())
+			foreach (var eventDef in GMRoot.runner.DaysInc())
 			{
+				var eventobj =  GMRoot.modder.FindEvent(eventDef.Item1);
 				await ToSignal(ShowDialog(eventobj), "tree_exited");
 			}
 

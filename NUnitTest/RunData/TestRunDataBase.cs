@@ -250,7 +250,8 @@ namespace UnitTest.RunData
 
                 risks = new List<Risk>()
                 {
-                    new Risk() { key = "TEST_RISK_0", cost_days = 100 }
+                    new Risk() { key = "TEST_RISK_0", cost_days = 100 },
+                    new Risk() { key = "TEST_RISK_1", cost_days = 200, endEvent = "EVENT_END_TEST_RISK_1"}
                 },
 
                 personName = new PersonName(new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" },

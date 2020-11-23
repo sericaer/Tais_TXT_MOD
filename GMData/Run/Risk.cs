@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using DataVisit;
+using DynamicData;
 using Newtonsoft.Json;
 
 namespace GMData.Run
 {
-    public class RiskMgr
-    {
-        [DataVisitorProperty("start")]
-        public string start
-        {
-            set
-            {
-                GMRoot.runner.risks.Add(new Risk(value));
-            }
-        }
-    }
+    //public class RiskMgr
+    //{
+    //    [DataVisitorProperty("start")]
+    //    public string start
+    //    {
+    //        set
+    //        {
+    //            GMRoot.runner.risks.Add(new Risk(value));
+    //        }
+    //    }
+    //}
 
     [JsonObject(MemberSerialization.OptIn)]
     public class Risk : INotifyPropertyChanged
@@ -44,9 +45,100 @@ namespace GMData.Run
             this.percent = 0.0M;
         }
 
-        internal void DaysInc()
+        public void DaysInc2()
         {
             percent += 100 / (decimal)def.cost_days;
         }
+
+        public IEnumerable<(string, object)> DaysInc()
+        {
+            percent += 100 / (decimal)def.cost_days;
+
+            if(isEnd && endEvent != null)
+            {
+                yield return (endEvent, this);
+            }
+        }
+    }
+
+    [JsonObject(MemberSerialization.OptIn)]
+    public class Risks : ISourceList<Risk>
+    {
+        [DataVisitorProperty("start")]
+        public string start
+        {
+            set
+            {
+                list.Add(new Risk(value));
+            }
+        }
+
+        [JsonProperty]
+        public IEnumerable<Risk> elems
+        {  
+            get
+            {
+                return list.Items;
+            }
+            set
+            {
+                list.Edit(inner =>
+                {
+                    inner.Clear();
+                    inner.AddRange(value);
+                });
+            }
+        }
+
+        internal IEnumerable<(string key, object obj)> DaysInc()
+        {
+            foreach(var risk in list.Items)
+            {
+                foreach ( var eventDef in risk.DaysInc())
+                {
+                    yield return eventDef;
+                }
+
+                if (risk.isEnd)
+                {
+                    list.Remove(risk);
+                }
+            }
+        }
+
+        public Risks()
+        {
+            list = new SourceList<Risk>();
+        }
+
+        private SourceList<Risk> list;
+
+        public IObservable<int> CountChanged => list.CountChanged;
+
+        public IEnumerable<Risk> Items => list.Items;
+
+        public int Count => list.Count;
+
+        public IObservable<IChangeSet<Risk>> Connect(Func<Risk, bool> predicate = null)
+        {
+            return list.Connect(predicate);
+        }
+
+        public void Dispose()
+        {
+            list.Dispose();
+        }
+
+        public void Edit(Action<IExtendedList<Risk>> updateAction)
+        {
+            list.Edit(updateAction);
+        }
+
+        public IObservable<IChangeSet<Risk>> Preview(Func<Risk, bool> predicate = null)
+        {
+            return list.Preview(predicate);
+        }
+
+
     }
 }

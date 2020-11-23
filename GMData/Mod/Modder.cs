@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GMData.Def;
 
 namespace GMData.Mod
@@ -136,6 +137,11 @@ namespace GMData.Mod
                 risks = this.risks,
                 adjusts = this.adjusts
             };
+        }
+
+        public GEvent FindEvent(string key)
+        {
+            return mods[0].events.Single(x => x.Key == key).Value;
         }
 
     }
