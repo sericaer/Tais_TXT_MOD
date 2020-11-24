@@ -17,6 +17,9 @@ namespace GMData.Def
         [SemanticProperty("random_event")]
         public RandomEvents randomEvent;
 
+        [SemanticPropertyArray("option")]
+        public List<Parser.Semantic.Option> options;
+
         private string file;
 
         public string key;

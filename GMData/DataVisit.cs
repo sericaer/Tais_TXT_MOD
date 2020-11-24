@@ -43,6 +43,11 @@ namespace DataVisit
             return VisitGet(raw);
         }
 
+        internal static void SetCurr(object obj)
+        {
+            currObj = obj;
+        }
+
         //public static object Get(string raw, Pos pos)
         //{
         //    object rslt = pos.obj;
@@ -247,6 +252,8 @@ namespace DataVisit
         }
 
         private static object rootObj;
+        private static object currObj;
+
         private static object enumerateObj;
         private static string enumerateKey;
     }

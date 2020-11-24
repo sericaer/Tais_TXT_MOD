@@ -8,18 +8,6 @@ using Newtonsoft.Json;
 
 namespace GMData.Run
 {
-    //public class RiskMgr
-    //{
-    //    [DataVisitorProperty("start")]
-    //    public string start
-    //    {
-    //        set
-    //        {
-    //            GMRoot.runner.risks.Add(new Risk(value));
-    //        }
-    //    }
-    //}
-
     [JsonObject(MemberSerialization.OptIn)]
     public class Risk : INotifyPropertyChanged
     {
@@ -45,11 +33,6 @@ namespace GMData.Run
             this.percent = 0.0M;
         }
 
-        public void DaysInc2()
-        {
-            percent += 100 / (decimal)def.cost_days;
-        }
-
         public IEnumerable<(string, object)> DaysInc()
         {
             percent += 100 / (decimal)def.cost_days;
@@ -57,6 +40,13 @@ namespace GMData.Run
             if(isEnd && endEvent != null)
             {
                 yield return (endEvent, this);
+            }
+
+            var randomGroup = def.randomEvent?.Calc().Where(x => x.value > 0);
+            if (randomGroup != null)
+            {
+                var randomEvent = Tools.GRandom.CalcGroup(randomGroup);
+                yield return (randomEvent, this);
             }
         }
     }

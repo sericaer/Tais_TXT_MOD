@@ -17,6 +17,7 @@ namespace GMData
 
             Parser.Semantic.Visitor.SetValueFunc = Visitor.Set;
             Parser.Semantic.Visitor.GetValueFunc = Visitor.Get;
+            Parser.Semantic.Visitor.SetCurrObj = Visitor.SetCurr;
         }
 
         public static Action<object[]> logger;

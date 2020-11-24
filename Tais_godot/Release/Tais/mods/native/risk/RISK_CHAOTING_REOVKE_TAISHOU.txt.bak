@@ -83,6 +83,6 @@ option =
     select = 
     {
         add = {risk.birbe, 10}
-        reduce = {economy.value, 10}
+        reduce = {economy, 10}
     }
 }

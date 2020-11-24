@@ -76,5 +76,80 @@ namespace NUnitTest.Tools
             Assert.LessOrEqual(Test3Count / max, 0.11);
             Assert.GreaterOrEqual(Test3Count / max, 0.09);
         }
+
+        [Test()]
+        public void TestCalcGroupWithEmpty()
+        {
+            List<(string, double)> group = new List<(string, double)>()
+            {
+                ("TEST1", 30),
+                ("TEST2", 20),
+            };
+
+            double Test1Count = 0;
+            double Test2Count = 1;
+
+            int max = 100000;
+            for (int i = 0; i < max; i++)
+            {
+                var str = GRandom.CalcGroup(group);
+                if (str == "TEST1")
+                {
+                    Test1Count++;
+                }
+                if (str == "TEST2")
+                {
+                    Test2Count++;
+                }
+            }
+
+            Assert.LessOrEqual(Test1Count / max, 0.31);
+            Assert.GreaterOrEqual(Test1Count / max, 0.29);
+
+            Assert.LessOrEqual(Test2Count / max, 0.21);
+            Assert.GreaterOrEqual(Test2Count / max, 0.19);
+        }
+
+        [Test()]
+        public void TestCalcGroupOverride()
+        {
+            List<(string, double)> group = new List<(string, double)>()
+            {
+                ("TEST1", 50),
+                ("TEST2", 50),
+                ("TEST3", 100)
+            };
+
+            double Test1Count = 0;
+            double Test2Count = 1;
+            double Test3Count = 1;
+
+            int max = 100000;
+            for (int i = 0; i < max; i++)
+            {
+                var str = GRandom.CalcGroup(group);
+                if (str == "TEST1")
+                {
+                    Test1Count++;
+                }
+                if (str == "TEST2")
+                {
+                    Test2Count++;
+                }
+                if (str == "TEST3")
+                {
+                    Test3Count++;
+                }
+            }
+
+            Assert.LessOrEqual(Test1Count / max, 0.26);
+            Assert.GreaterOrEqual(Test1Count / max, 0.24);
+
+            Assert.LessOrEqual(Test2Count / max, 0.26);
+            Assert.GreaterOrEqual(Test2Count / max, 0.24);
+
+            Assert.LessOrEqual(Test3Count / max, 0.51);
+            Assert.GreaterOrEqual(Test3Count / max, 0.49);
+        }
     }
 }

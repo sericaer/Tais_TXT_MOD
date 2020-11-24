@@ -40,7 +40,10 @@ namespace GMData.Tools
         public static string CalcGroup(IEnumerable<(string name, double prob)> groups)
         {
             var sum = groups.Sum(x => x.prob);
-
+            if(sum < 100)
+            {
+                sum = 100;
+            }
             var range = groups.Select(x => (name: x.name, Value: x.prob * 100 / sum)).ToArray();
 
             int raValue = ra.Next(1, 100);
@@ -57,7 +60,7 @@ namespace GMData.Tools
                 start = end;
             }
 
-            throw new Exception();
+            return null;
         }
 
         //public static string RandomGroup((string name, double prob)[] groups)

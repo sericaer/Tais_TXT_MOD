@@ -31,5 +31,7 @@ namespace Parser.Semantic
         public static Func<String, dynamic> GetValueFunc;
 
         public static Action<String, object> SetValueFunc;
+
+        public static Action<object> SetCurrObj;
     }
 }
