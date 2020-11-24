@@ -10,7 +10,42 @@ namespace UnitTest.DataVisit
     {
 
         [Test()]
-        public void TestVisitGetData()
+        public void TestVisitSetGetCurrData()
+        {
+            TestData.inst = new TestData()
+            {
+                sub = new TestDataSub { a = 14 },
+                elems = new List<TestElem>()
+                                             {
+                                                 new TestElem(){ b= 20},
+                                                 new TestElem(){ b= 21}
+                                             }
+            };
+
+            Visitor.InitVisitMap(typeof(TestData));
+            Visitor.SetVisitData(TestData.inst);
+
+            Assert.AreEqual(Visitor.Get("sub.a"), 14);
+
+            Visitor.Set("sub.a", 22);
+            Assert.AreEqual(Visitor.Get("sub.a"), 22);
+
+            Assert.AreEqual(Visitor.Get("sub.c"), 23);
+            Assert.AreEqual(Visitor.Get("sub.elem.b"), 20);
+
+            Visitor.SetCurr("elem", TestData.inst.elems[0]);
+            Assert.AreEqual(Visitor.Get("elem.b"), TestData.inst.elems[0].b);
+
+            Visitor.SetCurr("elem", TestData.inst.elems[1]);
+            Assert.AreEqual(Visitor.Get("elem.b"), TestData.inst.elems[1].b);
+
+            Visitor.Set("elem.b", 100);
+            Assert.AreEqual(100, TestData.inst.elems[1].b);
+            Assert.AreEqual(TestData.inst.elems[1].b, Visitor.Get("elem.b"));
+        }
+
+        [Test()]
+        public void TestVisitSetGetData()
         {
             TestData.inst = new TestData()
             {
