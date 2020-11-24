@@ -42,7 +42,7 @@ namespace GMData.Run
                 yield return (endEvent, this);
             }
 
-            var randomGroup = def.randomEvent?.Calc().Where(x => x.value > 0);
+            var randomGroup = def.CalcRandomEvent(this);
             if (randomGroup != null)
             {
                 var randomEvent = Tools.GRandom.CalcGroup(randomGroup);

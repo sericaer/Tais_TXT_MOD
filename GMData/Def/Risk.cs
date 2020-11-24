@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GMData.Mod;
 using Parser.Semantic;
 
@@ -42,6 +43,17 @@ namespace GMData.Def
             }
 
             return rslt;
+        }
+
+        internal IEnumerable<(string name, double value)> CalcRandomEvent(object obj)
+        {
+            Visitor.SetCurrObj("risk", obj);
+
+            var randomGroup = randomEvent?.Calc().Where(x => x.value > 0);
+
+            Visitor.RemoveCurrObj();
+
+            return randomGroup;
         }
 
         //public string CalcRandomEvent()

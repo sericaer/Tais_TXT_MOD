@@ -43,9 +43,14 @@ namespace DataVisit
             return VisitGet(raw);
         }
 
-        internal static void SetCurr(object obj)
+        internal static void RemoveCurrObj()
         {
-            currObj = obj;
+            curr = null;
+        }
+
+        internal static void SetCurr(string key, object obj)
+        {
+            curr = new Tuple<string, object>(key, obj);
         }
 
         //public static object Get(string raw, Pos pos)
@@ -67,12 +72,20 @@ namespace DataVisit
             var obj = rootObj;
 
             int i = 0;
-            if (enumerateObj != null && enumerateKey == splits[0])
+            if (curr != null && splits[0] == curr.Item1)
             {
-                type = enumerateObj.GetType();
-                obj = enumerateObj;
+                type = curr.Item2.GetType();
+                obj = curr.Item2;
                 i++;
             }
+
+            
+            //if (enumerateObj != null && enumerateKey == splits[0])
+            //{
+            //    type = enumerateObj.GetType();
+            //    obj = enumerateObj;
+            //    i++;
+            //}
 
             for (; i<splits.Length-1; i++)
             {
@@ -222,12 +235,18 @@ namespace DataVisit
             var obj = rootObj;
 
             int i = 0;
-            if (enumerateObj != null && enumerateKey == splits[0])
+            if (curr != null && splits[0] == curr.Item1)
             {
-                type = enumerateObj.GetType();
-                obj = enumerateObj;
+                type = curr.Item2.GetType();
+                obj = curr.Item2;
                 i++;
             }
+            //if (enumerateObj != null && enumerateKey == splits[0])
+            //{
+            //    type = enumerateObj.GetType();
+            //    obj = enumerateObj;
+            //    i++;
+            //}
 
             for (; i < splits.Length; i++)
             {
@@ -252,7 +271,7 @@ namespace DataVisit
         }
 
         private static object rootObj;
-        private static object currObj;
+        private static Tuple<string, object> curr;
 
         private static object enumerateObj;
         private static string enumerateKey;

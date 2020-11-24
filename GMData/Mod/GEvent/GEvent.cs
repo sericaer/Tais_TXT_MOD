@@ -79,7 +79,7 @@ namespace GMData.Mod
 
         public void SetCurrObj(object obj)
         {
-            Visitor.SetCurrObj(obj);
+            Visitor.SetCurrObj("", obj);
         }
         
         public Func<string, GEvent> GetNext;

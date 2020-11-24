@@ -32,6 +32,8 @@ namespace Parser.Semantic
 
         public static Action<String, object> SetValueFunc;
 
-        public static Action<object> SetCurrObj;
+        public static Action<string, object> SetCurrObj;
+
+        public static Action RemoveCurrObj;
     }
 }
