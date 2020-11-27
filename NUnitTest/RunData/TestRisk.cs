@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using DynamicData;
 using ReactiveMarbles.PropertyChanged;
+using Moq;
+using ImpromptuInterface;
+using Dynamitey;
 
 namespace UnitTest.RunData
 {
@@ -65,10 +68,45 @@ namespace UnitTest.RunData
         [SetUp]
         public void Init()
         {
+            
             risks = new GMData.Run.Risks();
 
             def0 = GMRoot.define.risks[0];
             def1 = GMRoot.define.risks[1];
+
+            const string def0_key = "TEST_RISK_0";
+            const string  def1_key = "TEST_RISK_1";
+
+            GMData.Run.Risk.funcGetDef = (key) =>
+            {
+                switch(key)
+                {
+                    case def0_key:
+                        {
+                            var def = new {
+                                key = key,
+                                cost_days = 200,
+                                CalcEndEvent = Return<GMData.Mod.GEvent>.Arguments<GMData.Run.Risk>(it =>
+                                {
+                                });
+                        };
+                            return def.ActLike<GMData.Def.IRisk>();
+                        }
+                        break;
+                    case def1_key:
+                        {
+                            var def = new
+                            {
+                                key = key,
+                                cost_days = 100,
+                            };
+                            return def.ActLike<GMData.Def.IRisk>();
+                        }
+                        break;
+                    default:
+                        throw new Exception();
+                }
+            };
         }
 
         [Test()]
@@ -111,6 +149,7 @@ namespace UnitTest.RunData
 
         private void TestRun()
         {
+
             GMData.Run.Risk removed = null;
             risks.Connect().OnItemRemoved(x => removed = x).Subscribe();
 
@@ -127,7 +166,7 @@ namespace UnitTest.RunData
                     if (eventDef.key != null)
                     {
                         Assert.AreEqual(def1.endEvent, eventDef.key);
-                        Assert.AreEqual(def1.key, ((GMData.Run.Risk)eventDef.obj).key);
+                        Assert.AreEqual(def1.key, ((GMData.Run.Risk)eventDef.objTuple.Item2).key);
                     }
                 }
 

@@ -39,12 +39,6 @@ namespace GMData.Run
         [JsonProperty, DataVisitorPropertyArray("party")]
         public List<Party> parties;
 
-        [JsonProperty]
-        public List<Risk> risks;
-
-        //[DataVisitorProperty("risk")]
-        //public RiskMgr riskMgr;
-
         public IObservable<decimal> registerPopNum;
 
         [JsonProperty, DataVisitorProperty("risk")]
@@ -81,8 +75,7 @@ namespace GMData.Run
 
             adjusts = Enum.GetValues(typeof(Adjust.EType)).Cast<Adjust.EType>().Select(x => new Adjust(x)).ToList();
 
-            //risks = new List<Risk>();
-            //riskMgr = new RiskMgr();
+            _risks = new Risks();
 
             var names = GMRoot.define.personName.GetRandomFamilyArray(families.Count);
             for (int i = 0; i < families.Count; i++)
@@ -152,15 +145,15 @@ namespace GMData.Run
             });
         }
 
-        public IEnumerable<(string, object)> DaysInc()
+        public IEnumerable<GMData.Mod.GEvent> DaysInc()
         {
             economy.DaysInc(date);
 
             date.Inc();
 
-            foreach(var eventDef in _risks.DaysInc())
+            foreach(var eventObj in _risks.DaysInc())
             {
-                yield return eventDef;
+                yield return eventObj;
             }
         }
 

@@ -40,11 +40,8 @@ namespace TaisGodot.Scripts
 				await ToSignal(ShowDialog(eventobj), "tree_exited");
 			}
 
-			foreach (var eventDef in GMRoot.runner.DaysInc())
+			foreach (var eventobj in GMRoot.runner.DaysInc())
 			{
-				var eventobj =  GMRoot.modder.FindEvent(eventDef.Item1);
-				eventobj.SetCurrObj(eventDef.Item2);
-
 				await ToSignal(ShowDialog(eventobj), "tree_exited");
 			}
 

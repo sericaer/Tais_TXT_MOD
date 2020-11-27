@@ -50,6 +50,24 @@ namespace Parser.Semantic
                 }
             }
 
+
+            var properties = t.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            foreach (var property in properties)
+            {
+                var Properties = property.GetCustomAttributes(typeof(SemanticProperty), false);
+                if (Properties.Count() != 0)
+                {
+                    ParseSemanticProperty(syntaxRoot, Properties.First() as SemanticProperty, property, ref rslt);
+                    continue;
+                }
+
+                Properties = property.GetCustomAttributes(typeof(SemanticPropertyArray), false);
+                if (Properties.Count() != 0)
+                {
+                    ParseSemanticPropertyList(syntaxRoot, Properties.First() as SemanticPropertyArray, property, ref rslt);
+                }
+            }
+
             return rslt;
         }
 
@@ -63,6 +81,45 @@ namespace Parser.Semantic
             }
 
             field.SetValue(obj, ConvertItem(item, field.FieldType));
+        }
+
+        private static void ParseSemanticProperty(SyntaxItem syntaxRoot, SemanticProperty property, PropertyInfo field, ref object obj)
+        {
+            var item = syntaxRoot.Find(property.key);
+            if (item == null)
+            {
+                return;
+                //throw new Exception($"can not find key:{property.key}");
+            }
+
+            field.SetValue(obj, ConvertItem(item, field.PropertyType));
+        }
+
+        private static void ParseSemanticPropertyList(SyntaxItem syntaxRoot, SemanticPropertyArray property, PropertyInfo field, ref object obj)
+        {
+            var items = syntaxRoot.Finds(property.key);
+            if (!items.Any())
+            {
+                return;
+                //throw new Exception($"can not find key:{property.key}");
+            }
+
+
+            if (!field.PropertyType.IsGenericType || field.PropertyType.GetGenericTypeDefinition() != typeof(List<>))
+            {
+                throw new Exception($"field type not list! {field.PropertyType.FullName}");
+            }
+
+            dynamic list = Activator.CreateInstance(field.PropertyType);
+
+            Type[] listParameters = field.PropertyType.GetGenericArguments();
+
+            foreach (var item in items)
+            {
+                list.Add((dynamic)ConvertItem(item, listParameters[0]));
+            }
+
+            field.SetValue(obj, list);
         }
 
         private static void ParseSemanticPropertyList(SyntaxItem syntaxRoot, SemanticPropertyArray property, FieldInfo field, ref object obj)

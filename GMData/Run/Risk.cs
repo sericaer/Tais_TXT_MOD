@@ -15,6 +15,8 @@ namespace GMData.Run
         public event PropertyChangedEventHandler PropertyChanged;
 #pragma warning restore 0067
 
+        internal static Func<string, Def.IRisk> funcGetDef;
+
         [JsonProperty]
         public string key;
 
@@ -23,9 +25,7 @@ namespace GMData.Run
 
         public bool isEnd => percent >= 100;
 
-        public string endEvent => def.endEvent;
-
-        private Def.Risk def => GMRoot.define.risks.Single(x => x.key == key);
+        private Def.IRisk def => funcGetDef(key); // GMRoot.define.risks.Single(x => x.key == key);
 
         public Risk(string key)
         {
@@ -33,20 +33,23 @@ namespace GMData.Run
             this.percent = 0.0M;
         }
 
-        public IEnumerable<(string, object)> DaysInc()
+        public IEnumerable<GMData.Mod.GEvent> DaysInc()
         {
             percent += 100 / (decimal)def.cost_days;
 
-            if(isEnd && endEvent != null)
+            if(isEnd)
             {
-                yield return (endEvent, this);
+                var endEvent = def.CalcEndEvent(this);
+                if(endEvent != null)
+                {
+                    yield return endEvent;
+                }
             }
 
-            var randomGroup = def.CalcRandomEvent(this);
-            if (randomGroup != null)
+            var randomEvent = def.CalcRandomEvent(this);
+            if (randomEvent != null)
             {
-                var randomEvent = Tools.GRandom.CalcGroup(randomGroup);
-                yield return (randomEvent, this);
+                yield return randomEvent;
             }
         }
     }
@@ -80,13 +83,13 @@ namespace GMData.Run
             }
         }
 
-        internal IEnumerable<(string key, object obj)> DaysInc()
+        internal IEnumerable<GMData.Mod.GEvent> DaysInc()
         {
             foreach(var risk in list.Items)
             {
-                foreach ( var eventDef in risk.DaysInc())
+                foreach ( var eventObj in risk.DaysInc())
                 {
-                    yield return eventDef;
+                    yield return eventObj;
                 }
 
                 if (risk.isEnd)

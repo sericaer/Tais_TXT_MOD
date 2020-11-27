@@ -98,7 +98,7 @@ namespace GMData.Mod
             }
         }
 
-        public List<Risk> risks
+        internal List<Risk> risks
         {
             get
             {

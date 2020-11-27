@@ -20,6 +20,12 @@ namespace GMData
             Parser.Semantic.Visitor.SetCurrObj = Visitor.SetCurr;
             Parser.Semantic.Visitor.RemoveCurrObj = Visitor.RemoveCurrObj;
 
+            
+        }
+
+        public static void AssocTypeStatic()
+        {
+            Run.Risk.funcGetDef = (key) => define.risks.Find(x => x.key == key);
         }
 
         public static Action<object[]> logger;

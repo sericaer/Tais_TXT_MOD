@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Parser.Semantic
 {
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class SemanticPropertyArray : Attribute
     {
         public SemanticPropertyArray(string key)

@@ -10,7 +10,12 @@ using Parser.Syntax;
 
 namespace GMData.Mod
 {
-    public abstract partial class GEvent
+    public interface IGMEvent
+    {
+
+    }
+
+    public abstract partial class GEvent : IGMEvent
     {
         public string key;
         public Title title;
@@ -76,15 +81,9 @@ namespace GMData.Mod
                 }
             }
         }
-
-        public void SetCurrObj(object obj)
-        {
-            Visitor.SetCurrObj("", obj);
-        }
         
         public Func<string, GEvent> GetNext;
-
-
+        internal Tuple<string, object> objTuple;
     }
 
 }

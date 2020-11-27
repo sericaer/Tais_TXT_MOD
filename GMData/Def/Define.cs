@@ -13,7 +13,7 @@ namespace GMData.Def
 
         public List<Adjust> adjusts;
 
-        public List<Risk> risks;
+        internal List<Risk> risks;
         //public Dictionary<string, PopDef> pops;
         public Dictionary<string, PartyDef> partys;
 

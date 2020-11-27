@@ -7,23 +7,40 @@ using Parser.Semantic;
 
 namespace GMData.Def
 {
-    public class Risk
+    internal interface IRisk
     {
-        [SemanticProperty("cost_days")]
-        public double cost_days;
+        string key { get; set; }
 
-        [SemanticProperty("end_event")]
-        public string endEvent;
+        double cost_days { get; set; }
 
-        [SemanticProperty("random_event")]
-        public RandomEvents randomEvent;
+        string endEvent { get; set; }
 
-        [SemanticPropertyArray("option")]
-        public List<Parser.Semantic.Option> options;
+        RandomEvents randomEvent { get; set; }
 
+        List<Parser.Semantic.Option> options { get; set; }
+
+        GEvent CalcEndEvent(Run.Risk risk);
+
+        GEvent CalcRandomEvent(Run.Risk risk);
+    }
+
+    internal class Risk : IRisk
+    {
         private string file;
 
-        public string key;
+        public string key { get; set; }
+
+        [SemanticProperty("cost_days")]
+        public double cost_days { get; set; }
+
+        [SemanticProperty("end_event")]
+        public string endEvent { get; set; }
+
+        [SemanticProperty("random_event")]
+        public RandomEvents randomEvent { get; set; }
+
+        [SemanticPropertyArray("option")]
+        public List<Parser.Semantic.Option> options { get; set; }
 
         internal static List<Risk> Load(string mod, string path)
         {
@@ -45,15 +62,46 @@ namespace GMData.Def
             return rslt;
         }
 
-        internal IEnumerable<(string name, double value)> CalcRandomEvent(object obj)
+        public GEvent CalcEndEvent(Run.Risk risk)
         {
-            Visitor.SetCurrObj("risk", obj);
+            if (endEvent != null)
+            {
+                return null;
+            }
+
+            var eventObj = GMRoot.modder.FindEvent(endEvent);
+            eventObj.objTuple = new Tuple<string, object>("risk", risk);
+            return eventObj;
+        }
+
+        internal IEnumerable<(string name, double value)> CalcRandomEventGroup(Run.Risk risk)
+        {
+            Visitor.SetCurrObj("risk", risk);
 
             var randomGroup = randomEvent?.Calc().Where(x => x.value > 0);
 
             Visitor.RemoveCurrObj();
 
             return randomGroup;
+        }
+
+        public GEvent CalcRandomEvent(Run.Risk risk)
+        {
+            Visitor.SetCurrObj("risk", risk);
+
+            var randomGroup = randomEvent?.Calc().Where(x => x.value > 0);
+
+            Visitor.RemoveCurrObj();
+
+            if (randomGroup != null)
+            {
+                var randomEvent = Tools.GRandom.CalcGroup(randomGroup);
+                var eventObj = GMRoot.modder.FindEvent(randomEvent);
+                eventObj.objTuple = new Tuple<string, object>("risk", risk);
+                return eventObj;
+            }
+
+            return null;
         }
 
         //public string CalcRandomEvent()

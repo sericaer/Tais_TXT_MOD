@@ -11,6 +11,8 @@ namespace UnitTest.RunData
     {
         public TestRunDataBase()
         {
+            //GMRoot.AssocTypeStatic();
+
             GMRoot.initData = new GMData.Init.InitData()
             {
                 start_date = new GMData.Init.Date()
