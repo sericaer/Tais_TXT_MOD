@@ -9,19 +9,19 @@ occur = 100
 
 option =
 {
-    desc = { EVENT_REPORT_TAX_EXTRA_SELECT_OPTION_1_DESC, chaoting.month_surplus }
-	select = 
-	{
-	    reduce = {economy.value, chaoting.month_surplus}
-	    add = {chaoting.report_tax_plus, chaoting.month_surplus}
-	}
+    desc = { EVENT_REPORT_TAX_EXTRA_SELECT_OPTION_1_DESC, economy.month_surplus }
+    select = 
+    {
+        reduce = {economy.value, economy.month_surplus}
+        add = {chaoting.year_report_tax, economy.month_surplus}
+    }
 }
 
 option =
 {
-	desc = EVENT_REPORT_TAX_EXTRA_SELECT_OPTION_2_DESC
-	select = 
-	{
-	    
-	}
+    desc = EVENT_REPORT_TAX_EXTRA_SELECT_OPTION_2_DESC
+    select = 
+    {
+        
+    }
 }

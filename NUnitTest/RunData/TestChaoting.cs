@@ -45,10 +45,13 @@ namespace UnitTest.RunData
             Assert.AreEqual(0, chaoting.extraTax);
 
             var extraTax = 100.0M;
-            chaoting.ReportMonthTax(chaoting.monthTaxRequest + extraTax);
 
-            Assert.AreEqual(extraTax, chaoting.extraTax);
-            
+            chaoting.yearReportTax = 250;
+            chaoting.yearRequestTax = 200;
+
+            Assert.AreEqual(chaoting.yearReportTax - chaoting.yearRequestTax, chaoting.extraTax);
+            Assert.AreEqual(0, chaoting.oweTax);
+
         }
 
         [Test()]
@@ -56,16 +59,11 @@ namespace UnitTest.RunData
         {
             Assert.AreEqual(0, chaoting.oweTax);
 
-            var oweTax = 100.0M;
-            chaoting.ReportMonthTax(chaoting.monthTaxRequest - oweTax);
+            chaoting.yearReportTax = 250;
+            chaoting.yearRequestTax = 300;
 
-            Assert.AreEqual(oweTax, chaoting.oweTax);
-
-            var plusTax = 120.0M;
-            chaoting.ReportTaxPlus(plusTax);
-
-            Assert.AreEqual(0, chaoting.oweTax);
-            Assert.AreEqual(plusTax - oweTax, chaoting.extraTax);
+            Assert.AreEqual(0, chaoting.extraTax);
+            Assert.AreEqual(chaoting.yearRequestTax - chaoting.yearReportTax, chaoting.oweTax);
         }
     }
 }

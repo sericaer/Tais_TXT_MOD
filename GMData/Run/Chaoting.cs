@@ -38,12 +38,22 @@ namespace GMData.Run
         [DataVisitorProperty("owe_tax")]
         public decimal oweTax => _extraTax < 0 ? _extraTax * -1 : 0;
 
+        [DataVisitorProperty("year_report_tax")]
+        public decimal yearReportTax { get; set; }
+
+        [DataVisitorProperty("year_request_tax")]
+        public decimal yearRequestTax { get; set; }
+
         [JsonProperty]
-        private decimal _extraTax;
+        private decimal _extraTax => yearReportTax - yearRequestTax;
 
-        internal static void DaysInc()
+        internal void DaysInc(Date date)
         {
-
+            if(date.day == 30)
+            {
+                yearReportTax += monthTaxReqort;
+                yearRequestTax += monthTaxRequest;
+            }
         }
 
         internal Chaoting(Def.Chaoting def, decimal popNum) : this()
@@ -53,16 +63,6 @@ namespace GMData.Run
             requestTaxLevel = def.tax_level;
 
             DataReactive(new StreamingContext());
-        }
-
-        internal void ReportMonthTax(decimal value)
-        {
-            _extraTax += value - monthTaxRequest;
-        }
-
-        internal void ReportTaxPlus(decimal value)
-        {
-            _extraTax += value;
         }
 
         [OnDeserialized]
@@ -90,6 +90,5 @@ namespace GMData.Run
             var levels = GMRoot.define.adjusts.Single(x => x.key == "REPORT_CHAOTING").levels;
             return (decimal)levels[level - 1].percent * 0.01M * num * 0.006M;
         }
-
     }
 }

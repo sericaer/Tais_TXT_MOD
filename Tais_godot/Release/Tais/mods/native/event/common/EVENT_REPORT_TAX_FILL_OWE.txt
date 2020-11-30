@@ -13,7 +13,7 @@ option =
 	select = 
 	{
 	    reduce = {economy.value, chaoting.owe_tax}
-	    add = {chaoting.report_tax_plus, chaoting.owe_tax}
+	    add = {chaoting.plus_report_tax, chaoting.owe_tax}
 	}
 }
 
