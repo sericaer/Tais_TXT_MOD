@@ -7,5 +7,36 @@ chaoting =
 {
     power_party = HUANGUAN
     report_pop_percent = 110
-    tax_level = 3
+    tax = 
+    {
+    	init_level = 3
+    	level = 
+    	{
+    		request = -80
+    	}
+    	level = 
+    	{
+    		request = -40
+    	}
+    	level = 
+    	{
+    		request = -20
+    	}
+    	level = 
+    	{
+    		request = 0
+    	}
+    	level = 
+    	{
+    		request = 30
+    	}
+    	level = 
+    	{
+    		request = 60
+    	}
+    	level = 
+    	{
+    		request = 100
+    	}
+    }
 }
