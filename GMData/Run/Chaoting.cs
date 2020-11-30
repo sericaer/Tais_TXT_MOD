@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using DataVisit;
 using Newtonsoft.Json;
+using ReactiveMarbles.PropertyChanged;
 
 namespace GMData.Run
 {
@@ -23,11 +24,7 @@ namespace GMData.Run
         [JsonProperty]
         public int requestTaxLevel { get; set; }
 
-        public int reportTaxLevel { get; set; }
-
         public decimal monthTaxRequest { get; private set; }
-
-        public decimal monthTaxReqort { get; private set; }
 
         [JsonProperty]
         internal string powerPartyName;
@@ -44,6 +41,8 @@ namespace GMData.Run
         [DataVisitorProperty("year_request_tax")]
         public decimal yearRequestTax { get; set; }
 
+        public ObsBufferedValue monthTaxReqort;
+
         [JsonProperty]
         private decimal _extraTax => yearReportTax - yearRequestTax;
 
@@ -51,7 +50,7 @@ namespace GMData.Run
         {
             if(date.day == 30)
             {
-                yearReportTax += monthTaxReqort;
+                yearReportTax += monthTaxReqort.value;
                 yearRequestTax += monthTaxRequest;
             }
         }
@@ -61,6 +60,7 @@ namespace GMData.Run
             powerPartyName = def.powerParty;
             reportPopNum = (int)(popNum * (decimal)def.reportPopPercent / 100);
             requestTaxLevel = def.tax_level;
+ 
 
             DataReactive(new StreamingContext());
         }
@@ -70,14 +70,15 @@ namespace GMData.Run
         {        
             Observable.CombineLatest(this.OBSProperty(x=>x.requestTaxLevel), this.OBSProperty(x => x.reportPopNum), CalcTax)
                       .Subscribe(sum=> monthTaxRequest = sum);
-            Observable.CombineLatest(this.OBSProperty(x => x.reportTaxLevel), this.OBSProperty(x => x.reportPopNum), CalcTax)
-                      .Subscribe(sum => monthTaxReqort = sum);
+
+            this.OBSProperty(x => x.monthTaxRequest).Subscribe(x => monthTaxReqort.baseValue = x);
         }
 
 
         [JsonConstructor]
         private Chaoting()
         {
+            monthTaxReqort = new ObsBufferedValue();
         }
 
         internal decimal CalcTax(int level, int num)

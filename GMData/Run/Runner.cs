@@ -114,7 +114,7 @@ namespace GMData.Run
                             }
                             break;
                         case Adjust.EType.REPORT_CHAOTING:
-                            chaoting.reportTaxLevel= level;
+                            chaoting.monthTaxReqort.SetBuffer(ad.etype.ToString(), (decimal)ad.levelDef.percent * chaoting.monthTaxReqort.baseValue * 0.01M);
                             break;
                     }
 
@@ -136,7 +136,7 @@ namespace GMData.Run
 
             registerPopNum = departs.CombineLatestSum(depart => depart.OBSProperty(x => x.popNum));
 
-            chaoting.OBSProperty(x=>x.monthTaxReqort).Subscribe(x=> economy.detail.reportChaoting = x);
+            chaoting.OBSProperty(x=>x.monthTaxReqort.value).Subscribe(x=> economy.detail.reportChaoting = x);
 
             persons.ForEach(p =>
             {

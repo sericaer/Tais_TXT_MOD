@@ -1,7 +1,7 @@
 init = 
 {
     valid = false
-    level = 7
+    level = 5
 }
 
 level = 
@@ -20,20 +20,20 @@ level =
 
 level = 
 {
+    percent = -20
+}
+
+level = 
+{
+    percent = -10
+}
+
+level = 
+{
     percent = 0
 }
 
 level = 
 {
-    percent = 30
-}
-
-level = 
-{
-    percent = 60
-}
-
-level = 
-{
-    percent = 100
+    percent = 20
 }
