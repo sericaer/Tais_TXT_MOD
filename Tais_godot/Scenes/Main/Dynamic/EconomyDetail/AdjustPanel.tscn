@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="D:/MyProject/GitHub/UIDesignToolDemo/resources/fonts/NSimSun/NSimSun-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Resources/fonts/NSimSun/NSimSun-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/Main/Dynamic/EconomyDetail/AdjustPanel.cs" type="Script" id=2]
 [ext_resource path="res://Resources/theme/toggleButton_theme.tres" type="Theme" id=3]
 
