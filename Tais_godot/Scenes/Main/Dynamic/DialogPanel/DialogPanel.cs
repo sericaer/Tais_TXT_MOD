@@ -11,7 +11,7 @@ namespace TaisGodot.Scripts
 	{
 		public const string path = "res://Scenes/Main/Dynamic/DialogPanel/DialogPanel.tscn";
 
-		internal static DialogPanel Instance(Node parent, GMData.Mod.GEvent eventObj)
+		internal static DialogPanel Instance(Node parent, GMData.Mod.IGEvent eventObj)
 		{
 			var dialogNode = (DialogPanel)ResourceLoader.Load<PackedScene>(path).Instance();
 			dialogNode.gEventObj = eventObj;
@@ -57,7 +57,7 @@ namespace TaisGodot.Scripts
 			{
 				this.Visible = false;
 
-				GEvent nextEvent = gEventObj.GetNext(nextEventKey);
+				IGEvent nextEvent = gEventObj.GetNext(nextEventKey);
 				if (nextEvent != null)
 				{
 					nextEventDialog = MainScene.ShowDialog(nextEvent);
@@ -100,7 +100,7 @@ namespace TaisGodot.Scripts
 			return rslt.ToArray();
 		}
 
-		internal GEvent gEventObj;
+		internal IGEvent gEventObj;
 
 		internal Node nextEventDialog;
 	}

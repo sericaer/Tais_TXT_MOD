@@ -19,9 +19,9 @@ namespace GMData.Def
 
         List<Parser.Semantic.Option> options { get; set; }
 
-        GEvent CalcEndEvent(Run.Risk risk);
+        Func<Run.Risk, IGEvent> CalcEndEvent { get; }
 
-        GEvent CalcRandomEvent(Run.Risk risk);
+        Func<Run.Risk, IGEvent> CalcRandomEvent { get;  }
     }
 
     internal class Risk : IRisk
@@ -41,6 +41,9 @@ namespace GMData.Def
 
         [SemanticPropertyArray("option")]
         public List<Parser.Semantic.Option> options { get; set; }
+        Func<Run.Risk, IGEvent> IRisk.CalcEndEvent { get => CalcEndEvent; }
+        Func<Run.Risk, IGEvent> IRisk.CalcRandomEvent { get => CalcRandomEvent; }
+
 
         internal static List<Risk> Load(string mod, string path)
         {
@@ -62,7 +65,7 @@ namespace GMData.Def
             return rslt;
         }
 
-        public GEvent CalcEndEvent(Run.Risk risk)
+        public IGEvent CalcEndEvent(Run.Risk risk)
         {
             if (endEvent != null)
             {
@@ -85,7 +88,7 @@ namespace GMData.Def
             return randomGroup;
         }
 
-        public GEvent CalcRandomEvent(Run.Risk risk)
+        public IGEvent CalcRandomEvent(Run.Risk risk)
         {
             Visitor.SetCurrObj("risk", risk);
 

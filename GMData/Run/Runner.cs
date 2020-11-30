@@ -145,7 +145,7 @@ namespace GMData.Run
             });
         }
 
-        public IEnumerable<GMData.Mod.GEvent> DaysInc()
+        public IEnumerable<GMData.Mod.IGEvent> DaysInc()
         {
             economy.DaysInc(date);
 

@@ -33,7 +33,7 @@ namespace GMData.Run
             this.percent = 0.0M;
         }
 
-        public IEnumerable<GMData.Mod.GEvent> DaysInc()
+        public IEnumerable<GMData.Mod.IGEvent> DaysInc()
         {
             percent += 100 / (decimal)def.cost_days;
 
@@ -83,7 +83,7 @@ namespace GMData.Run
             }
         }
 
-        internal IEnumerable<GMData.Mod.GEvent> DaysInc()
+        internal IEnumerable<GMData.Mod.IGEvent> DaysInc()
         {
             foreach(var risk in list.Items)
             {

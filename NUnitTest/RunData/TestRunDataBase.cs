@@ -1,12 +1,55 @@
 ﻿using DataVisit;
 using GMData;
 using GMData.Def;
+using GMData.Mod;
 using NUnit.Framework;
+using Parser.Semantic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace UnitTest.RunData
 {
+    public class RISK_DEF_MOCK : GMData.Def.IRisk
+    {
+        public string key { get; set; }
+        public double cost_days { get; set; }
+        public string endEvent { get; set; }
+        public RandomEvents randomEvent { get; set; }
+        public List<GMData.Mod.Option> options { get; set; }
+
+        public Func<GMData.Run.Risk, IGEvent> CalcEndEvent { get; set; }
+
+        public Func<GMData.Run.Risk, IGEvent> CalcRandomEvent { get; set; }
+
+        List<Parser.Semantic.Option> IRisk.options { get; set; }
+
+        public RISK_DEF_MOCK()
+        {
+            CalcEndEvent = _ =>
+            {
+                return null;
+            };
+
+            CalcRandomEvent = _ =>
+            {
+                return null;
+            };
+        }
+    }
+
+    public class GEvent_MOCK : GMData.Mod.IGEvent
+    {
+        public string key { get; set; }
+
+        public Title title { get; set; }
+        public Desc desc { get; set; }
+        public GMData.Mod.Option[] options { get; set; }
+
+        public Tuple<string, object> objTuple { get; set; }
+
+        public Func<string, IGEvent> GetNext { get; set; }
+    }
+
     public class TestRunDataBase
     {
         public TestRunDataBase()

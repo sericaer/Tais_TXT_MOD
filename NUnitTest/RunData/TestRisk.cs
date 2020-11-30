@@ -7,9 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DynamicData;
 using ReactiveMarbles.PropertyChanged;
-using Moq;
-using ImpromptuInterface;
-using Dynamitey;
+using GMData.Mod;
 
 namespace UnitTest.RunData
 {
@@ -60,52 +58,48 @@ namespace UnitTest.RunData
         //    }
         //}
 
+        
+
         private GMData.Run.Risks risks;
 
-        private GMData.Def.Risk def0;
-        private GMData.Def.Risk def1;
+        private RISK_DEF_MOCK def0 = new RISK_DEF_MOCK
+        {
+            key = "TEST_RISK_0",
+            cost_days = 200,
+
+            CalcEndEvent = (risk)=>
+            {
+                return new GEvent_MOCK()
+                {
+                    key = "EVENT_END_TEST_RISK_0",
+                    objTuple = new Tuple<string, object>("risk", risk)
+                };
+            }
+        };
+
+        private RISK_DEF_MOCK def1 = new RISK_DEF_MOCK
+        {
+            key = "TEST_RISK_1",
+            cost_days = 100,
+        };
+
 
         [SetUp]
         public void Init()
         {
-            
             risks = new GMData.Run.Risks();
-
-            def0 = GMRoot.define.risks[0];
-            def1 = GMRoot.define.risks[1];
-
-            const string def0_key = "TEST_RISK_0";
-            const string  def1_key = "TEST_RISK_1";
 
             GMData.Run.Risk.funcGetDef = (key) =>
             {
-                switch(key)
+                if(key == def1.key)
                 {
-                    case def0_key:
-                        {
-                            var def = new {
-                                key = key,
-                                cost_days = 200,
-                                CalcEndEvent = Return<GMData.Mod.GEvent>.Arguments<GMData.Run.Risk>(it =>
-                                {
-                                });
-                        };
-                            return def.ActLike<GMData.Def.IRisk>();
-                        }
-                        break;
-                    case def1_key:
-                        {
-                            var def = new
-                            {
-                                key = key,
-                                cost_days = 100,
-                            };
-                            return def.ActLike<GMData.Def.IRisk>();
-                        }
-                        break;
-                    default:
-                        throw new Exception();
+                    return def1;
                 }
+                if (key == def0.key)
+                {
+                    return def0;
+                }
+                return null;
             };
         }
 
@@ -118,8 +112,6 @@ namespace UnitTest.RunData
         [Test()]
         public void Test_Start()
         {
-            var def0 = GMRoot.define.risks[0];
-            var def1 = GMRoot.define.risks[1];
 
             GMData.Run.Risk riskAdd = null;
             GMData.Run.Risk riskRemove = null;
@@ -161,13 +153,15 @@ namespace UnitTest.RunData
 
             for (int i = 1; i <= Math.Max(def0.cost_days, def1.cost_days); i++)
             {
+                IGEvent currEvent = null;
                 foreach (var eventDef in risks.DaysInc())
                 {
-                    if (eventDef.key != null)
-                    {
-                        Assert.AreEqual(def1.endEvent, eventDef.key);
-                        Assert.AreEqual(def1.key, ((GMData.Run.Risk)eventDef.objTuple.Item2).key);
-                    }
+                    currEvent = eventDef;
+                }
+
+                if (i == def0.cost_days)
+                {
+
                 }
 
                 if (i <= def0.cost_days)
@@ -175,10 +169,16 @@ namespace UnitTest.RunData
                     Assert.AreEqual(i * 100 / def0.cost_days, percentRisk0);
                 }
 
-                Assert.AreEqual(i * 100 / def1.cost_days, percentRisk1);
+                if (i <= def1.cost_days)
+                {
+                    Assert.AreEqual(i * 100 / def1.cost_days, percentRisk1);
+                }
 
                 if (def0.cost_days == i)
                 {
+                    Assert.AreEqual("EVENT_END_TEST_RISK_0", currEvent.key);
+                    Assert.AreEqual(def0.key, ((GMData.Run.Risk)currEvent.objTuple.Item2).key);
+
                     Assert.AreEqual(def0.key, removed.key);
                     Assert.AreEqual(100, removed.percent);
                     Assert.AreEqual(true, removed.isEnd);

@@ -60,7 +60,7 @@ namespace TaisGodot.Scripts
 			}
 		}
 
-		internal static Node ShowDialog(GMData.Mod.GEvent eventobj)
+		internal static Node ShowDialog(GMData.Mod.IGEvent eventobj)
 		{
 			return DialogPanel.Instance(inst, eventobj);
 		}
