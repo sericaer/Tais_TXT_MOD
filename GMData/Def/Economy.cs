@@ -7,6 +7,6 @@ namespace GMData.Def
     public class Economy
     {
         [SemanticProperty("curr")]
-        public double curr;
+        public decimal curr;
     }
 }

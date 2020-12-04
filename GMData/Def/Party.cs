@@ -42,7 +42,7 @@ namespace GMData.Def
             public string peer;
 
             [SemanticProperty("value")]
-            public double value;
+            public decimal value;
         }
     }
 }

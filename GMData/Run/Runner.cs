@@ -69,7 +69,7 @@ namespace GMData.Run
 
             departs = GMRoot.define.departs.Select(def => new Depart(def)).ToList();
 
-            chaoting = new Chaoting(GMRoot.define.chaoting, pops.Where(x => x.def.is_collect_tax).Sum(x => x.num));
+            chaoting = new Chaoting(pops.Where(x => x.def.is_collect_tax).Sum(x => x.num));
 
             economy = new Economy(GMRoot.define.economy);
 

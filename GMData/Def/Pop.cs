@@ -18,7 +18,7 @@ namespace GMData.Def
         public bool is_family;
 
         [SemanticProperty("consume")]
-        public double? consume;
+        public decimal? consume;
 
         internal static List<Pop> Load(string name, string path)
         {

@@ -9,10 +9,17 @@ using System.Collections.Generic;
 using System.Linq;
 namespace UnitTest.RunData
 {
+    public class CHAOTING_DEF_MOCK : GMData.Def.IChaoting
+    {
+        public decimal reportPopPercent { get; set; }
+        public string powerParty { get; set; }
+        public TaxInfo taxInfo { get; set; }
+    }
+
     public class RISK_DEF_MOCK : GMData.Def.IRisk
     {
         public string key { get; set; }
-        public double cost_days { get; set; }
+        public decimal cost_days { get; set; }
         public string endEvent { get; set; }
         public RandomEvents randomEvent { get; set; }
         public List<GMData.Mod.Option> options { get; set; }
@@ -290,7 +297,6 @@ namespace UnitTest.RunData
                 {
                     reportPopPercent = 110,
                     powerParty = "TEST_PARTY",
-                    tax_level = 3,
                 },
 
                 risks = new List<Risk>()

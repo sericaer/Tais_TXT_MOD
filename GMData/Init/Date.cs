@@ -6,12 +6,12 @@ namespace GMData.Init
     public class Date
     {
         [DataVisitorProperty("day")]
-        public double day;
+        public decimal day;
 
         [DataVisitorProperty("month")]
-        public double month;
+        public decimal month;
 
         [DataVisitorProperty("year")]
-        public double year;
+        public decimal year;
     }
 }

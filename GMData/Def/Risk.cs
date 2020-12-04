@@ -11,7 +11,7 @@ namespace GMData.Def
     {
         string key { get; set; }
 
-        double cost_days { get; set; }
+        decimal cost_days { get; set; }
 
         string endEvent { get; set; }
 
@@ -31,7 +31,7 @@ namespace GMData.Def
         public string key { get; set; }
 
         [SemanticProperty("cost_days")]
-        public double cost_days { get; set; }
+        public decimal cost_days { get; set; }
 
         [SemanticProperty("end_event")]
         public string endEvent { get; set; }
@@ -77,7 +77,7 @@ namespace GMData.Def
             return eventObj;
         }
 
-        internal IEnumerable<(string name, double value)> CalcRandomEventGroup(Run.Risk risk)
+        internal IEnumerable<(string name, decimal value)> CalcRandomEventGroup(Run.Risk risk)
         {
             Visitor.SetCurrObj("risk", risk);
 

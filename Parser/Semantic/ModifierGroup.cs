@@ -12,9 +12,9 @@ namespace Parser.Semantic
             return SemanticParser.DoParser<ModifierGroup>(item);
         }
 
-        public double CalcValue()
+        public decimal CalcValue()
         {
-            double modifierValue = 0.0;
+            decimal modifierValue = 0.0M;
             if(modifiers != null)
             {
                 modifierValue = modifiers.Where(x => x.condition == null || x.condition.Rslt()).Sum(x => x.value);
@@ -26,7 +26,7 @@ namespace Parser.Semantic
         }
 
         [SemanticProperty("base")]
-        double? baseValue = null;
+        decimal? baseValue = null;
 
         [SemanticPropertyArray("modifier")]
         List<Modifier> modifiers = null;
@@ -40,7 +40,7 @@ namespace Parser.Semantic
         }
 
         [SemanticProperty("value")]
-        internal double value;
+        internal decimal value;
 
         [SemanticProperty("condition")]
         internal Condition condition;

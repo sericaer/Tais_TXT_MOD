@@ -38,16 +38,16 @@ namespace NUnitTest.Tools
         [Test()]
         public void TestCalcGroup()
         {
-            List<(string, double)> group = new List<(string, double)>()
+            List<(string, decimal)> group = new List<(string, decimal)>()
             {
                 ("TEST1", 70),
                 ("TEST2", 20),
                 ("TEST3", 10)
             };
 
-            double Test1Count = 0;
-            double Test2Count = 1;
-            double Test3Count = 1;
+            decimal Test1Count = 0;
+            decimal Test2Count = 1;
+            decimal Test3Count = 1;
 
             int max = 100000;
             for (int i = 0; i < max; i++)
@@ -80,14 +80,14 @@ namespace NUnitTest.Tools
         [Test()]
         public void TestCalcGroupWithEmpty()
         {
-            List<(string, double)> group = new List<(string, double)>()
+            List<(string, decimal)> group = new List<(string, decimal)>()
             {
                 ("TEST1", 30),
                 ("TEST2", 20),
             };
 
-            double Test1Count = 0;
-            double Test2Count = 1;
+            decimal Test1Count = 0;
+            decimal Test2Count = 1;
 
             int max = 100000;
             for (int i = 0; i < max; i++)
@@ -113,16 +113,16 @@ namespace NUnitTest.Tools
         [Test()]
         public void TestCalcGroupOverride()
         {
-            List<(string, double)> group = new List<(string, double)>()
+            List<(string, decimal)> group = new List<(string, decimal)>()
             {
                 ("TEST1", 50),
                 ("TEST2", 50),
                 ("TEST3", 100)
             };
 
-            double Test1Count = 0;
-            double Test2Count = 1;
-            double Test3Count = 1;
+            decimal Test1Count = 0;
+            decimal Test2Count = 1;
+            decimal Test3Count = 1;
 
             int max = 100000;
             for (int i = 0; i < max; i++)

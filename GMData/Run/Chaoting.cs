@@ -18,6 +18,8 @@ namespace GMData.Run
         public event PropertyChangedEventHandler PropertyChanged;
 #pragma warning restore 0067
 
+        internal static Func<Def.IChaoting> getDef;
+
         [JsonProperty]
         public int reportPopNum { get; set; }
 
@@ -42,6 +44,7 @@ namespace GMData.Run
         public decimal yearRequestTax { get; set; }
 
         public ObsBufferedValue monthTaxReqort;
+        
 
         [JsonProperty]
         private decimal _extraTax => yearReportTax - yearRequestTax;
@@ -55,12 +58,13 @@ namespace GMData.Run
             }
         }
 
-        internal Chaoting(Def.Chaoting def, decimal popNum) : this()
+        internal Chaoting(decimal popNum) : this()
         {
+            var def = getDef();
+
             powerPartyName = def.powerParty;
             reportPopNum = (int)(popNum * (decimal)def.reportPopPercent / 100);
-            requestTaxLevel = def.tax_level;
- 
+            requestTaxLevel = def.taxInfo.init_level;
 
             DataReactive(new StreamingContext());
         }
@@ -88,8 +92,9 @@ namespace GMData.Run
                 return 0;
             }
 
-            var levels = GMRoot.define.adjusts.Single(x => x.key == "REPORT_CHAOTING").levels;
-            return (decimal)levels[level - 1].percent * 0.01M * num * 0.006M;
+            var def = getDef();
+
+            return (decimal)def.taxInfo.levels[level - 1].per_person * num;
         }
     }
 }

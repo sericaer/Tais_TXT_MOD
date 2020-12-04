@@ -12,7 +12,7 @@ namespace Parser.Semantic
             return new RandomEvents(item.values);
         }
 
-        public IEnumerable<(string name, double value)> Calc()
+        public IEnumerable<(string name, decimal value)> Calc()
         {
             return list.Select(x => (x.name, x.modifier.CalcValue()));
         }

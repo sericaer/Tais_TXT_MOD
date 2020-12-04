@@ -37,7 +37,7 @@ namespace GMData.Tools
             return false;
         }
 
-        public static string CalcGroup(IEnumerable<(string name, double prob)> groups)
+        public static string CalcGroup(IEnumerable<(string name, decimal prob)> groups)
         {
             var sum = groups.Sum(x => x.prob);
             if(sum < 100)
@@ -48,10 +48,10 @@ namespace GMData.Tools
 
             int raValue = ra.Next(1, 100);
 
-            double start = 0;
+            decimal start = 0;
             for(int i=0; i<range.Count(); i++)
             {
-                double end = start + range[i].Value;
+                decimal end = start + range[i].Value;
                 if (raValue >= start && raValue < end)
                 {
                     return range[i].name;

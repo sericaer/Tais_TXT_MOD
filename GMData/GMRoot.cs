@@ -12,6 +12,8 @@ namespace GMData
 
         public static void Init()
         {
+            AssocTypeStatic();
+
             Visitor.InitVisitMap(typeof(Init.InitData));
             Visitor.InitVisitMap(typeof(Run.Runner));
 
@@ -26,6 +28,7 @@ namespace GMData
         public static void AssocTypeStatic()
         {
             Run.Risk.funcGetDef = (key) => define.risks.Find(x => x.key == key);
+            Run.Chaoting.getDef = ()=> define.chaoting;
         }
 
         public static Action<object[]> logger;

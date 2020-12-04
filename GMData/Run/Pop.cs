@@ -63,12 +63,12 @@ namespace GMData.Run
 
         }
 
-        internal Pop(Depart depart, string name, double num, string party)
+        internal Pop(Depart depart, string name, decimal num, string party)
         {
             this.name = name;
 
             this.depart = depart;
-            this.num = (decimal)num;
+            this.num = num;
 
             if(def.is_family)
             {

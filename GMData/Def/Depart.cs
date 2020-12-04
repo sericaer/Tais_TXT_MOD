@@ -25,7 +25,7 @@ namespace GMData.Def
             public string type;
 
             [SemanticProperty("num")]
-            public double num;
+            public decimal num;
 
             [SemanticProperty("party")]
             public string party;
@@ -34,13 +34,13 @@ namespace GMData.Def
         public class COLOR
         {
             [SemanticProperty("r")]
-            public double r;
+            public decimal r;
 
             [SemanticProperty("g")]
-            public double g;
+            public decimal g;
 
             [SemanticProperty("b")]
-            public double b;
+            public decimal b;
         }
 
         internal static List<Depart> Load(string name, string path)

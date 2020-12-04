@@ -173,7 +173,7 @@ namespace Parser.Semantic
                 {
                     return strValue.ToString();
                 }
-                else if (currType == typeof(double) || currType == typeof(int))
+                else if (currType == typeof(decimal) || currType == typeof(int))
                 {
                     var digitValue = strValue as DigitValue;
                     if (digitValue == null)
