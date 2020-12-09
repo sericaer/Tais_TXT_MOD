@@ -73,7 +73,7 @@ namespace TaisGodot.Scripts
 
 		private string GetLevelDesc(GMData.Run.Adjust.EType type, GMData.Def.Adjust.Level levelInfo)
 		{
-			var list = new List<(string desc, double percent)>();
+			var list = new List<(string desc, decimal percent)>();
 			list.Add((type.ToString(), levelInfo.percent));
 
 			if(levelInfo.effect_pop_consume != null)
