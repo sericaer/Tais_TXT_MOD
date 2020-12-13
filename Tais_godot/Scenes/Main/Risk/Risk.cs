@@ -22,10 +22,16 @@ namespace TaisGodot.Scripts
 
 		public override void _Ready()
 		{
-			GetNode<Label>("VBoxContainer/Label").Text = gmObj.key;
-			GetNode<ReactiveProgressBar>("VBoxContainer/ProgressBar").Assoc(gmObj.OBSProperty(x=>x.percent));
+			//GetNode<Label>("VBoxContainer/Label").Text = gmObj.key;
+			//GetNode<ReactiveProgressBar>("VBoxContainer/ProgressBar").Assoc(gmObj.OBSProperty(x=>x.percent));
 		}
 
+		private void _on_Button_pressed()
+		{
+			RiskPanel.Instance(MainScene.inst, gmObj);
+		}
 
-    }
+	}
 }
+
+

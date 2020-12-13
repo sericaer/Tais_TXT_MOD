@@ -9,6 +9,7 @@ namespace TaisGodot.Scripts
 {
 	class RiskContainer : HBoxContainer
 	{
+
 		public override void _Ready()
 		{
 			GMRoot.runner._risks.Connect().OnItemAdded(_on_RiskObjAdd).Subscribe().EndWith(this);
