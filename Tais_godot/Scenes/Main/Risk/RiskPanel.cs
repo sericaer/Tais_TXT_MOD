@@ -1,6 +1,7 @@
 using DynamicData;
 using Godot;
 using System;
+using System.Linq;
 using TaisGodot.Scripts;
 
 public class RiskPanel : Panel
@@ -28,23 +29,40 @@ public class RiskPanel : Panel
 		desc.Text = $"{gmObj.key}_DESC";
 		title.Text = $"{gmObj.key}_TITLE";
 
-		foreach(var elem in gmObj.unselectOpts)
+		for (int i= 0; i < gmObj.unselectOpts.Count(); i++)
         {
-			var label = new Label();
-			label.Text = TranslateServerEx.Translate(elem.desc.format, elem.desc.argv); ;
+			var elem = gmObj.unselectOpts.ElementAt(i);
+
+			var btn = new Button();
+			btn.Text = TranslateServerEx.Translate(elem.desc.format, elem.desc.argv);
+			btn.Name = elem.desc.name;
+
+			btn.Connect("pressed", this, nameof(_on_ButtonChoice_Pressed), new Godot.Collections.Array() { i});
+
 		}
 
 		foreach (var elem in gmObj.selectedChoices.Items)
 		{
-			var label = new Label();
-			label.Text = TranslateServerEx.Translate(elem);
+			OptionSelected(elem);
 		}
 
 		gmObj.selectedChoices.Connect().OnItemAdded(x=>OptionSelected(x)).Subscribe().EndWith(this);
 	}
 
-    private void OptionSelected(string x)
+	private void _on_ButtonChoice_Pressed(int index)
     {
-        throw new NotImplementedException();
+		gmObj.SelectChoice(index);
     }
+
+    private void OptionSelected(string desc)
+    {
+		var opt = optContainer.GetChildren<Label>().Single(x => x.Name == desc);
+		optContainer.RemoveChild(opt);
+
+		var label = new Label();
+		label.Text = TranslateServerEx.Translate(desc);
+		label.Name = desc;
+
+		vaildContainer.AddChild(label);
+	}
 }
