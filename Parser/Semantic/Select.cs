@@ -7,7 +7,12 @@ using Parser.Syntax;
 
 namespace Parser.Semantic
 {
-    public class Select
+    public interface ISelect
+    {
+        void Do();
+    }
+
+    public class Select : ISelect
     {
         public static Select Parse(SyntaxItem item)
         {

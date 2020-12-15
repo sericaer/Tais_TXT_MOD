@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using UnitTest.Modder.Mock;
 
-namespace UnitTest.Modder.Event
+namespace UnitTest.Modder.Risk
 {
     [TestFixture()]
     public class TestRisk : TestModBase
@@ -17,24 +17,37 @@ namespace UnitTest.Modder.Event
 
             end_event = EVENT_RISK_TEST_END
 
-            random_event = 
+            choice =
             {
-                EVENT_RISK_TEST_RANDON_1 =
+		        desc = RISK_TEST_OPTION_1_DESC
+		
+                select = 
                 {
-                    modifier = 
-                    {
-                        value = 0.01
-                    }
+                    reduce = {economy.value, 10}
                 }
+    
+                random_event = 
+                {
+		                EVENT_RISK_TEST_RANDON_1 =
+		                {
+		                    base = 0.5
+		                }
+                }
+            }
 
-                EVENT_RISK_TEST_RANDON_2 =
+            choice =
+            {   
+		        desc = RISK_TEST_OPTION_2_DESC
+
+                random_event = 
                 {
-                    modifier = 
-                    {
-                        value = 0.02
-                    }
+		                EVENT_RISK_TEST_RANDON_2 =
+		                {
+		                    base = 2
+		                }
                 }
-            }");
+            }
+");
 
 
         [Test()]
@@ -47,13 +60,23 @@ namespace UnitTest.Modder.Event
             Assert.AreEqual(30, risk.cost_days);
             Assert.AreEqual("EVENT_RISK_TEST_END", risk.endEvent);
 
-            var rd1 = risk.randomEvent.list.SingleOrDefault(x => x.name == "EVENT_RISK_TEST_RANDON_1");
-            Assert.NotNull(rd1);
-            Assert.AreEqual(0.01, rd1.modifier.CalcValue());
+            Assert.AreEqual(2, risk.options.Count());
 
-            var rd2 = risk.randomEvent.list.SingleOrDefault(x => x.name == "EVENT_RISK_TEST_RANDON_2");
-            Assert.NotNull(rd2);
-            Assert.AreEqual(0.02, rd2.modifier.CalcValue());
+            var opt1 = risk.options[0];
+            Assert.AreEqual("RISK_TEST_OPTION_1_DESC", opt1.desc.name);
+            Assert.AreEqual(1, opt1.randomEvent.Calc().Count());
+
+            var randomEvent1 = opt1.randomEvent;
+            Assert.AreEqual("EVENT_RISK_TEST_RANDON_1", randomEvent1.Calc().First().name);
+
+            var opt2 = risk.options[1];
+            Assert.AreEqual("RISK_TEST_OPTION_2_DESC", opt2.desc.name);
+
+            Assert.AreEqual(1, opt2.randomEvent.Calc().Count());
+
+            var randomEvent2 = opt2.randomEvent;
+            Assert.AreEqual("EVENT_RISK_TEST_RANDON_2", randomEvent2.Calc().First().name);
+
         }
     }
 }

@@ -23,14 +23,20 @@ namespace GMData.Run
         [JsonProperty]
         public decimal percent { get; set; }
 
+        [JsonProperty]
+        public GMSourceList<string> selectedChoices;
+
+        public IEnumerable<Def.IChoice> unselectOpts => def.options.Where(x => !selectedChoices.Items.Contains<string>(x.desc.name));
+
         public bool isEnd => percent >= 100;
 
-        private Def.IRisk def => funcGetDef(key); // GMRoot.define.risks.Single(x => x.key == key);
+        internal Def.IRisk def => funcGetDef(key); // GMRoot.define.risks.Single(x => x.key == key);
 
         public Risk(string key)
         {
             this.key = key;
             this.percent = 0.0M;
+            this.selectedChoices = new GMSourceList<string>();
         }
 
         public IEnumerable<GMData.Mod.IGEvent> DaysInc()
@@ -46,29 +52,39 @@ namespace GMData.Run
                 }
             }
 
-            var randomEvent = def.CalcRandomEvent(this);
-            if (randomEvent != null)
+            if(selectedChoices.Count != 0)
             {
-                yield return randomEvent;
+                var selected = def.options.Where(x => selectedChoices.Items.Contains<string>(x.desc.name));
+                foreach (var elem in selected)
+                {
+                    var randomEvent = elem.CalcRandomEvent(this);
+                    if (randomEvent != null)
+                    {
+                        yield return randomEvent;
+                    }
+                }
             }
+
+        }
+
+        public void SelectChoice(int index)
+        {
+            var optName = def.options[index].desc.name;
+            if (selectedChoices.Items.Contains<string>(optName))
+            {
+                return;
+            }
+
+            selectedChoices.Add(optName);
         }
     }
 
     [JsonObject(MemberSerialization.OptIn)]
-    public class Risks : ISourceList<Risk>
+    public class GMSourceList<T> : ISourceList<T>
     {
-        [DataVisitorProperty("start")]
-        public string start
-        {
-            set
-            {
-                list.Add(new Risk(value));
-            }
-        }
-
         [JsonProperty]
-        public IEnumerable<Risk> elems
-        {  
+        public IEnumerable<T> elems
+        {
             get
             {
                 return list.Items;
@@ -83,36 +99,20 @@ namespace GMData.Run
             }
         }
 
-        internal IEnumerable<GMData.Mod.IGEvent> DaysInc()
+        public GMSourceList()
         {
-            foreach(var risk in list.Items)
-            {
-                foreach ( var eventObj in risk.DaysInc())
-                {
-                    yield return eventObj;
-                }
-
-                if (risk.isEnd)
-                {
-                    list.Remove(risk);
-                }
-            }
+            list = new SourceList<T>();
         }
 
-        public Risks()
-        {
-            list = new SourceList<Risk>();
-        }
-
-        private SourceList<Risk> list;
+        private SourceList<T> list;
 
         public IObservable<int> CountChanged => list.CountChanged;
 
-        public IEnumerable<Risk> Items => list.Items;
+        public IEnumerable<T> Items => list.Items;
 
         public int Count => list.Count;
 
-        public IObservable<IChangeSet<Risk>> Connect(Func<Risk, bool> predicate = null)
+        public IObservable<IChangeSet<T>> Connect(Func<T, bool> predicate = null)
         {
             return list.Connect(predicate);
         }
@@ -122,16 +122,49 @@ namespace GMData.Run
             list.Dispose();
         }
 
-        public void Edit(Action<IExtendedList<Risk>> updateAction)
+        public void Edit(Action<IExtendedList<T>> updateAction)
         {
             list.Edit(updateAction);
         }
 
-        public IObservable<IChangeSet<Risk>> Preview(Func<Risk, bool> predicate = null)
+        public IObservable<IChangeSet<T>> Preview(Func<T, bool> predicate = null)
         {
             return list.Preview(predicate);
         }
+    }
 
+    [JsonObject(MemberSerialization.OptIn)]
+    public class Risks : GMSourceList<Risk>
+    {
+        [DataVisitorProperty("start")]
+        public string start
+        {
+            set
+            {
+                this.Add(new Risk(value));
+            }
+        }
+
+        internal IEnumerable<GMData.Mod.IGEvent> DaysInc()
+        {
+            foreach(var risk in Items)
+            {
+                foreach ( var eventObj in risk.DaysInc())
+                {
+                    yield return eventObj;
+                }
+
+                if (risk.isEnd)
+                {
+                    this.Remove(risk);
+                }
+            }
+        }
+
+        public Risks()
+        {
+
+        }
 
     }
 }

@@ -1,3 +1,4 @@
+using DynamicData;
 using Godot;
 using System;
 using TaisGodot.Scripts;
@@ -24,6 +25,26 @@ public class RiskPanel : Panel
 
 	public override void _Ready()
 	{
-		
+		desc.Text = $"{gmObj.key}_DESC";
+		title.Text = $"{gmObj.key}_TITLE";
+
+		foreach(var elem in gmObj.unselectOpts)
+        {
+			var label = new Label();
+			label.Text = TranslateServerEx.Translate(elem.desc.format, elem.desc.argv); ;
+		}
+
+		foreach (var elem in gmObj.selectedChoices.Items)
+		{
+			var label = new Label();
+			label.Text = TranslateServerEx.Translate(elem);
+		}
+
+		gmObj.selectedChoices.Connect().OnItemAdded(x=>OptionSelected(x)).Subscribe().EndWith(this);
 	}
+
+    private void OptionSelected(string x)
+    {
+        throw new NotImplementedException();
+    }
 }

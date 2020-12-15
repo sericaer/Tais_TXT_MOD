@@ -105,6 +105,8 @@
     <Compile Include="Def\Adjust.cs" />
     <Compile Include="Run\Family.cs" />
     <Compile Include="Run\Person.cs" />
+    <Compile Include="Def\Choice.cs" />
+    <Compile Include="Def\Desc.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

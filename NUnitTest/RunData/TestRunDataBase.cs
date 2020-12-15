@@ -21,23 +21,15 @@ namespace UnitTest.RunData
         public string key { get; set; }
         public decimal cost_days { get; set; }
         public string endEvent { get; set; }
-        public RandomEvents randomEvent { get; set; }
-        public List<GMData.Mod.Option> options { get; set; }
+        public IRandomEvents randomEvent { get; set; }
 
         public Func<GMData.Run.Risk, IGEvent> CalcEndEvent { get; set; }
 
-        public Func<GMData.Run.Risk, IGEvent> CalcRandomEvent { get; set; }
-
-        List<Parser.Semantic.Option> IRisk.options { get; set; }
+        public IChoice[] options { get; set; }
 
         public RISK_DEF_MOCK()
         {
             CalcEndEvent = _ =>
-            {
-                return null;
-            };
-
-            CalcRandomEvent = _ =>
             {
                 return null;
             };
@@ -49,7 +41,7 @@ namespace UnitTest.RunData
         public string key { get; set; }
 
         public Title title { get; set; }
-        public Desc desc { get; set; }
+        public GMData.Mod.Desc desc { get; set; }
         public GMData.Mod.Option[] options { get; set; }
 
         public Tuple<string, object> objTuple { get; set; }

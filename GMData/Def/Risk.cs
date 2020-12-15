@@ -4,24 +4,21 @@ using System.IO;
 using System.Linq;
 using GMData.Mod;
 using Parser.Semantic;
+using Parser.Syntax;
 
 namespace GMData.Def
 {
-    internal interface IRisk
+    public interface IRisk
     {
-        string key { get; set; }
+        string key { get;}
 
-        decimal cost_days { get; set; }
+        decimal cost_days { get;}
 
-        string endEvent { get; set; }
+        string endEvent { get;}
 
-        RandomEvents randomEvent { get; set; }
-
-        List<Parser.Semantic.Option> options { get; set; }
+        IChoice[] options { get;}
 
         Func<Run.Risk, IGEvent> CalcEndEvent { get; }
-
-        Func<Run.Risk, IGEvent> CalcRandomEvent { get;  }
     }
 
     internal class Risk : IRisk
@@ -30,20 +27,18 @@ namespace GMData.Def
 
         public string key { get; set; }
 
+        public IChoice[] options => _options.Select(x=>x as IChoice).ToArray();
+
         [SemanticProperty("cost_days")]
         public decimal cost_days { get; set; }
 
         [SemanticProperty("end_event")]
         public string endEvent { get; set; }
 
-        [SemanticProperty("random_event")]
-        public RandomEvents randomEvent { get; set; }
+        [SemanticPropertyArray("choice")]
+        public List<Choice> _options { get; set; }
 
-        [SemanticPropertyArray("option")]
-        public List<Parser.Semantic.Option> options { get; set; }
         Func<Run.Risk, IGEvent> IRisk.CalcEndEvent { get => CalcEndEvent; }
-        Func<Run.Risk, IGEvent> IRisk.CalcRandomEvent { get => CalcRandomEvent; }
-
 
         internal static List<Risk> Load(string mod, string path)
         {
@@ -65,7 +60,7 @@ namespace GMData.Def
             return rslt;
         }
 
-        public IGEvent CalcEndEvent(Run.Risk risk)
+        public IGEvent CalcEndEvent(object risk)
         {
             if (endEvent != null)
             {
@@ -76,41 +71,6 @@ namespace GMData.Def
             eventObj.objTuple = new Tuple<string, object>("risk", risk);
             return eventObj;
         }
-
-        internal IEnumerable<(string name, decimal value)> CalcRandomEventGroup(Run.Risk risk)
-        {
-            Visitor.SetCurrObj("risk", risk);
-
-            var randomGroup = randomEvent?.Calc().Where(x => x.value > 0);
-
-            Visitor.RemoveCurrObj();
-
-            return randomGroup;
-        }
-
-        public IGEvent CalcRandomEvent(Run.Risk risk)
-        {
-            Visitor.SetCurrObj("risk", risk);
-
-            var randomGroup = randomEvent?.Calc().Where(x => x.value > 0);
-
-            Visitor.RemoveCurrObj();
-
-            if (randomGroup != null)
-            {
-                var randomEvent = Tools.GRandom.CalcGroup(randomGroup);
-                var eventObj = GMRoot.modder.FindEvent(randomEvent);
-                eventObj.objTuple = new Tuple<string, object>("risk", risk);
-                return eventObj;
-            }
-
-            return null;
-        }
-
-        //public string CalcRandomEvent()
-        //{
-        //    return randomEvent.Calc();
-        //}
 
     }
 }

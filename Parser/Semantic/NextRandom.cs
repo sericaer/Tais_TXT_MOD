@@ -5,7 +5,12 @@ using Parser.Syntax;
 
 namespace Parser.Semantic
 {
-    public class RandomEvents
+    public interface IRandomEvents
+    {
+        IEnumerable<(string name, decimal value)> Calc();
+    }
+
+    public class RandomEvents : IRandomEvents
     {
         public static RandomEvents Parse(SyntaxItem item)
         {

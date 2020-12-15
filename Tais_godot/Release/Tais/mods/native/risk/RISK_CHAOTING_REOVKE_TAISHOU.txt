@@ -2,87 +2,33 @@ cost_days = 30
 
 end_event = EVENT_TAISHOU_IS_REVOKED
 
-random_event = 
+choice =
 {
-    EVENT_RISK_CANCELED_BY_POWER_PART =
+		desc = RISK_CHAOTING_REVOKE_TAISHOU_CHOICE_1_DESC
+		
+    select = 
     {
-        modifer = 
-        {
-            value = 2
-            
-            condition = 
-            {
-                equal = {chaoting.power_party, taishou.party}
-            }
-        }
+        reduce = {economy.value, 10}
     }
     
-    EVENT_RISK_CANCELED_BY_BIRBE =
+    random_event = 
     {
-        modifer = 
-        {
-            value = 0.5
-            
-            condition = 
-            {
-                greater = {risk.birbe, 5}
-            }
-        }
-        modifer = 
-        {
-            value = 0.5
-            
-            condition = 
-            {
-                greater = {risk.birbe, 10}
-            }
-        }
-        modifer = 
-        {
-            value = 0.5
-            
-            condition = 
-            {
-                greater = {risk.birbe, 15}
-            }
-        }
-        modifer = 
-        {
-            value = 0.5
-            
-            condition = 
-            {
-                greater = {risk.birbe, 20}
-            }
-        }
-        modifer = 
-        {
-            value = 0.5
-            
-            condition = 
-            {
-                greater = {risk.birbe, 25}
-            }
-        }
-        modifer = 
-        {
-            value = 0.5
-            
-            condition = 
-            {
-                greater = {risk.birbe, 30}
-            }
-        }
+		    EVENT_RISK_CANCELED_BY_BIRBE =
+		    {
+		        base = 0.5
+		    }
     }
 }
 
-option =
-{
-    desc = BIRBE
-    
-    select = 
+choice =
+{   
+		desc = RISK_CHAOTING_REVOKE_TAISHOU_CHOICE_2_DESC
+
+    random_event = 
     {
-        add = {risk.birbe, 10}
-        reduce = {economy.value, 10}
+		    EVENT_RISK_CANCELED_BY_POWER_PART =
+		    {
+		        base = 2
+		    }
     }
 }

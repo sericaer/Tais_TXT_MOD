@@ -68,13 +68,13 @@ namespace UnitTest.DataVisit
             Assert.AreEqual(Visitor.Get("sub.c"), 23);
             Assert.AreEqual(Visitor.Get("sub.elem.b"), 20);
 
-            int i = 0;
-            Visitor.Pos pos = null;
-            while (Visitor.EnumerateVisit("elem", ref pos))
-            {
-                Assert.AreEqual(Visitor.Get("elem.b"), TestData.inst.elems[i].b);
-                i++;
-            }
+            //int i = 0;
+            //Visitor.Pos pos = null;
+            //while (Visitor.EnumerateVisit("elem", ref pos))
+            //{
+            //    Assert.AreEqual(Visitor.Get("elem.b"), TestData.inst.elems[i].b);
+            //    i++;
+            //}
         }
     }
 
